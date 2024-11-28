@@ -15,6 +15,7 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 public class Archivo {
@@ -50,22 +51,38 @@ public class Archivo {
         this.metadata = metadata;
     }
 
-    public void create_file(String name) {
-        File file = new File("./Registros/" + name + ".txt");
+    public boolean create_file(String name) {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnValue = chooser.showOpenDialog(null);
 
-        try {
-            // Try to create the file
-            if (file.createNewFile()) {
-                System.out.println("File created: " + file.getName());
-                FileRegistros = file;
-                filename = file.getName();
-            } else {
-                System.out.println("File already exists.");
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedDirectory = chooser.getSelectedFile();
+            File file = new File(selectedDirectory.getAbsolutePath() + "/" + name + ".txt");
+            try {
+                file.createNewFile();
+                open_file(file);
+                JOptionPane.showMessageDialog(null, "El archivo se a creado.");
+                return true;
+            } catch (IOException io) {
+                JOptionPane.showMessageDialog(null, "Error al crear el archivo");
+                return false;
             }
 
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+        } else {
+            JOptionPane.showMessageDialog(null, "No se seleciono ningun directorio");
+            return false;
+        }
+    }
+
+    public boolean open_file(File selected) throws IOException {
+        //modificar
+        FileRegistros = selected;
+        filename = selected.getName();
+        try {
+            return LoadMetaData();
+        } catch (Exception e) {
+            return false;
         }
     }
 
@@ -107,30 +124,20 @@ public class Archivo {
         }
     }
 
-    public void open_file(File selected) throws IOException {
-        //modificar
-        FileRegistros = selected;
-        filename = selected.getName();
-        try {
-            LoadMetaData();
-        } catch (Exception e) {
-            System.out.println("error");
-        }
-    }
-
-    public void LoadMetaData() throws IOException {
+    public boolean LoadMetaData() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FileRegistros))) {
             // Leer la primera línea de los metadatos y limpiar espacios innecesarios
             String line = reader.readLine();
             if (line == null || line.trim().isEmpty()) {
-                throw new IOException("Metadatos vacíos o archivo no válido.");
+                JOptionPane.showMessageDialog(null, "Metadatos vacíos o archivo no válido.");
+                return false;
             }
             line = line.trim();
 
             // Procesar la línea como metadatos
             String[] temp_metadata = line.split(";");
             if (temp_metadata.length < 3) {
-                throw new IOException("Formato de metadatos inválido.");
+                return false;
             }
 
             String[] temp_campos = temp_metadata[1].split("\\|");
@@ -151,10 +158,11 @@ public class Archivo {
                     campos,
                     Integer.parseInt(temp_metadata[2].trim())
             );
+            return true;
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al cargar los metadatos: " + e.getMessage());
             e.printStackTrace();
-            throw e;
+            return false;
         }
     }
 
@@ -404,7 +412,5 @@ public class Archivo {
         }
         return false;
     }
-    
-    
 
 }

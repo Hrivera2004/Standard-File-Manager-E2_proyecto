@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class Campo {
     //tipo: 0 = boolean, 1 = int, 2 = float, 3 = string, 4 = char
-    //Longitud maxima 50
+    //Longitud maxima 256    //Longitud maxima 256
     int tipo, longitud;
     String nombre_campo;
     boolean iskey;
