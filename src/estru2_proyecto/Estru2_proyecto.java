@@ -2398,22 +2398,24 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
     private void jButton_Registros_CruzarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_CruzarMouseClicked
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(null, "A continuación seleccione el archivo secundario para cruzar");
-
-        Select_OpenFile(archivo2_temporal);
-        if (archivo2_temporal.getMetadata() != null) {
-            loadJList(archivo1_principal, jList_Registros_Cruzar_Campos1, jLabel_Registros_Cruzar_Archivo1);
-            loadJList(archivo2_temporal, jList_Registros_Cruzar_Campos2, jLabel_Registros_Cruzar_Archivo2);
-
-        }else{
+        if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()|| archivo1_principal.getMetadata() == null) {
+            JOptionPane.showMessageDialog(null, "Error: Abra, llene el archivo antes o cree un archivo antes.");
+            return;
+        } else {
+            JOptionPane.showMessageDialog(null, "A continuación seleccione el archivo secundario para cruzar");
             
+            Select_OpenFile(archivo2_temporal);
+            if (archivo2_temporal.getMetadata() != null) {
+                loadJList(archivo1_principal, jList_Registros_Cruzar_Campos1, jLabel_Registros_Cruzar_Archivo1);
+                loadJList(archivo2_temporal, jList_Registros_Cruzar_Campos2, jLabel_Registros_Cruzar_Archivo2);
+                abrirDialog(jDialog_Registros_cruzar);
+            } else {
+                JOptionPane.showMessageDialog(null, "El archivo selecionado esta vacio");
+            }
         }
-       
-    }//GEN-LAST:event_jButton_Registros_CruzarMouseClicked
-    public void loadJList(Archivo archivo, JList jlist, JLabel label) {
-        DefaultListModel model = new DefaultListModel<>();
 
-    }
+    }//GEN-LAST:event_jButton_Registros_CruzarMouseClicked
+
     private void jButton_Registros_borrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_borrarMouseClicked
         // TODO add your handling code here:
         //borrar registro
@@ -2770,6 +2772,15 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
     static Archivo archivo1_principal = new Archivo();
     static Archivo archivo2_temporal = new Archivo();
+
+    public void loadJList(Archivo archivo, JList jlist, JLabel jlabel) {
+        DefaultListModel model = new DefaultListModel<>();
+        for (Campo campo : archivo.getMetadata().getCampos()) {
+            model.add(model.size(), campo.getNombre_campo());
+        }
+        jlist.setModel(model);
+        jlabel.setText(archivo.getFilename());
+    }
 
     boolean check_name(String name) {
         if (name.length() < 50) {
