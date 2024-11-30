@@ -7,7 +7,11 @@ package estru2_proyecto;
 import java.awt.HeadlessException;
 import java.awt.event.KeyAdapter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Random;
@@ -237,11 +241,21 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jRadioButton_Campos_Bool.setFont(new java.awt.Font("DialogInput", 1, 11)); // NOI18N
         jRadioButton_Campos_Bool.setForeground(new java.awt.Color(0, 0, 0));
         jRadioButton_Campos_Bool.setText("Bool");
+        jRadioButton_Campos_Bool.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jRadioButton_Campos_BoolMouseClicked(evt);
+            }
+        });
 
         jRadioButton_Campos_Int.setBackground(new java.awt.Color(204, 255, 204));
         jRadioButton_Campos_Int.setFont(new java.awt.Font("DialogInput", 1, 11)); // NOI18N
         jRadioButton_Campos_Int.setForeground(new java.awt.Color(0, 0, 0));
         jRadioButton_Campos_Int.setText("Int");
+        jRadioButton_Campos_Int.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jRadioButton_Campos_IntMouseClicked(evt);
+            }
+        });
         jRadioButton_Campos_Int.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton_Campos_IntActionPerformed(evt);
@@ -252,11 +266,21 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jRadioButton_Campos_Si.setFont(new java.awt.Font("DialogInput", 1, 10)); // NOI18N
         jRadioButton_Campos_Si.setForeground(new java.awt.Color(0, 0, 0));
         jRadioButton_Campos_Si.setText("Si");
+        jRadioButton_Campos_Si.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jRadioButton_Campos_SiMouseClicked(evt);
+            }
+        });
 
         jRadioButton_Campos_Float.setBackground(new java.awt.Color(204, 255, 204));
         jRadioButton_Campos_Float.setFont(new java.awt.Font("DialogInput", 1, 11)); // NOI18N
         jRadioButton_Campos_Float.setForeground(new java.awt.Color(0, 0, 0));
         jRadioButton_Campos_Float.setText("Float");
+        jRadioButton_Campos_Float.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jRadioButton_Campos_FloatMouseClicked(evt);
+            }
+        });
         jRadioButton_Campos_Float.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton_Campos_FloatActionPerformed(evt);
@@ -287,6 +311,11 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 jRadioButton_Campos_StringStateChanged(evt);
             }
         });
+        jRadioButton_Campos_String.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jRadioButton_Campos_StringMouseClicked(evt);
+            }
+        });
         jRadioButton_Campos_String.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton_Campos_StringActionPerformed(evt);
@@ -301,6 +330,11 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jRadioButton_Campos_Char.setFont(new java.awt.Font("DialogInput", 1, 11)); // NOI18N
         jRadioButton_Campos_Char.setForeground(new java.awt.Color(0, 0, 0));
         jRadioButton_Campos_Char.setText("Char");
+        jRadioButton_Campos_Char.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jRadioButton_Campos_CharMouseClicked(evt);
+            }
+        });
         jRadioButton_Campos_Char.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton_Campos_CharActionPerformed(evt);
@@ -680,7 +714,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel_Campos_Modificar_Longitud, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jSpinner_Campos_Modificar_Longitud))))
-                .addGap(215, 257, Short.MAX_VALUE))
+                .addGap(215, 253, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jButton_Campos_Modificar_Regresar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1927,8 +1961,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         if (jRadioButton_Campos_No.isSelected()) {
             temp.setIskey(false);
         } else if (jRadioButton_Campos_Si.isSelected()) {
-            if (temp.getTipo() == 0) { // Validar que boolean no sea llave
-                JOptionPane.showMessageDialog(jDialog_Campos_Crear, "Un campo de tipo boolean no puede ser llave.");
+            if (temp.getTipo() == 0 && temp.getTipo() == 4) { // Validar que boolean no sea llave
+                JOptionPane.showMessageDialog(jDialog_Campos_Crear, "Un campo de tipo boolean/Char no puede ser llave.");
                 buttonGroup_Campos_Llave.clearSelection(); // Limpiar selección de llave
                 return;
             }
@@ -2089,7 +2123,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         }
 
         // Modificar el campo en la lista de campos
-        archivo1_principal.getMetadata().getCampos().get(jComboBox_Modificar.getSelectedIndex()).modify(tipo, longitud, nombre, key);
+        archivo1_principal.getMetadata().edit_campo(jComboBox_Modificar.getSelectedIndex(), tipo, longitud, nombre, key);
         try {
             archivo1_principal.addMetadataToFile();
             JOptionPane.showMessageDialog(jDialog_Campos_Modificar, "Campo modificado exitosamente.");
@@ -2145,8 +2179,12 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             jSpinner_Campos_Modificar_Longitud.setEnabled(false);
             Campo c = archivo1_principal.getMetadata().getCampos().get(jComboBox_Modificar.getSelectedIndex());
             jTextField_Campos_Modificar_Nombre.setText(c.getNombre_campo());
+            jRadioButton_Campos_Modificar_No.setEnabled(true);
+            jRadioButton_Campos_Modificar_Si.setEnabled(true);
             if (c.getTipo() == 0) {
                 jRadioButton_Campos_Modificar_Bool.setSelected(true);
+                jRadioButton_Campos_Modificar_No.setEnabled(false);
+                jRadioButton_Campos_Modificar_Si.setEnabled(false);
             } else if (c.getTipo() == 1) {
                 jRadioButton_Campos_Modificar_Int.setSelected(true);
             } else if (c.getTipo() == 2) {
@@ -2156,6 +2194,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 jSpinner_Campos_Modificar_Longitud.setEnabled(true);
             } else if (c.getTipo() == 4) {
                 jRadioButton_Campos_Modificar_Char.setSelected(true);
+                jRadioButton_Campos_Modificar_No.setEnabled(false);
+                jRadioButton_Campos_Modificar_Si.setEnabled(false);
             }
             jSpinner_Campos_Modificar_Longitud.setValue(c.getLongitud());
             if (c.isIskey() == false) {
@@ -2398,12 +2438,12 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
     private void jButton_Registros_CruzarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_CruzarMouseClicked
         // TODO add your handling code here:
-        if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()|| archivo1_principal.getMetadata() == null) {
+        if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty() || archivo1_principal.getMetadata() == null) {
             JOptionPane.showMessageDialog(null, "Error: Abra, llene el archivo antes o cree un archivo antes.");
             return;
         } else {
             JOptionPane.showMessageDialog(null, "A continuación seleccione el archivo secundario para cruzar");
-            
+
             Select_OpenFile(archivo2_temporal);
             if (archivo2_temporal.getMetadata() != null) {
                 loadJList(archivo1_principal, jList_Registros_Cruzar_Campos1, jLabel_Registros_Cruzar_Archivo1);
@@ -2453,7 +2493,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (!jTextField_Archivo_Crear.getText().isEmpty() && check_name(jTextField_Archivo_Crear.getText())) {
             if (archivo1_principal.create_file(jTextField_Archivo_Crear.getText())) {
-                jLabel_Archivo_currentFile.setText(archivo1_principal.getFilename());
+                jLabel_Archivo_currentFile.setText("Archivo Abierto: " + archivo1_principal.getFilename());
                 jPanel_Archivo_crear.setVisible(false);
                 jTextField_Archivo_Crear.setText("Ingrese el nombre del archivo...");
             }
@@ -2531,26 +2571,44 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         // TODO add your handling code here:
         jTable_Registro_introducir.clearSelection();
         DefaultTableModel model = (DefaultTableModel) jTable_Registro_introducir.getModel();
-        ArrayList<Object> datos = new ArrayList();
+        ArrayList<Object> datos = new ArrayList<>();
 
+        // Validación de datos según los tipos definidos
         for (int i = 0; i < model.getColumnCount(); i++) {
             Object temp = model.getValueAt(0, i);
             if (determineMatch(archivo1_principal.getMetadata().getCampos().get(i).getTipo(), temp)) {
                 datos.add(temp);
             } else {
-                JOptionPane.showMessageDialog(null, "Asegurese que el dato en la columna " + i + "linea 1 este ingresado correctamente");
+                JOptionPane.showMessageDialog(null, "Asegúrese que el dato en la columna " + i + " de la línea 1 esté ingresado correctamente.");
                 return;
             }
         }
 
-        Registro registro = new Registro(datos,archivo1_principal.getMetadata().getKeyElement());
+        Registro registro = new Registro(datos);
         try {
+            // Introducir registro en archivo principal
             archivo1_principal.introducirRegistro(registro);
-            JOptionPane.showMessageDialog(null, "Se ha creado el registro.");
+
+            // Obtener la clave principal del registro
+            int keyIndex = archivo1_principal.getMetadata().getKeyElement();
+            if (keyIndex == -1) {
+                JOptionPane.showMessageDialog(null, "No se ha definido una clave principal.");
+                return;
+            }
+            Object key = datos.get(keyIndex);
+
+            // Insertar clave en el árbol B
+            btree.insert((Comparable) key);
+
+            // Guardar el árbol B en un archivo binario
+            btree.printTree();
+            guardarArbolEnArchivo();
+
+            JOptionPane.showMessageDialog(null, "Se ha creado el registro y actualizado el árbol B.");
             jDialog_Registros_Introducir.show(false);
             this.show(true);
-        } catch (HeadlessException e) {
-            JOptionPane.showMessageDialog(null, "Error al introducir");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al introducir: " + e.getMessage());
         }
 
     }//GEN-LAST:event_jButton_IntroducirRegistros_crearMouseClicked
@@ -2606,6 +2664,45 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private void jButton_Archivo_NuevoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Archivo_NuevoMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton_Archivo_NuevoMouseEntered
+
+    private void jRadioButton_Campos_SiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton_Campos_SiMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jRadioButton_Campos_SiMouseClicked
+
+    private void jRadioButton_Campos_CharMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton_Campos_CharMouseClicked
+        // TODO add your handling code here:
+        if (jRadioButton_Campos_Char.isSelected()) {
+            jRadioButton_Campos_Si.setEnabled(false);
+            jRadioButton_Campos_No.setSelected(true);
+        }
+    }//GEN-LAST:event_jRadioButton_Campos_CharMouseClicked
+
+    private void jRadioButton_Campos_IntMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton_Campos_IntMouseClicked
+        // TODO add your handling code here:
+        jRadioButton_Campos_Si.setEnabled(true);
+
+    }//GEN-LAST:event_jRadioButton_Campos_IntMouseClicked
+
+    private void jRadioButton_Campos_FloatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton_Campos_FloatMouseClicked
+        // TODO add your handling code here:
+        jRadioButton_Campos_Si.setEnabled(true);
+
+    }//GEN-LAST:event_jRadioButton_Campos_FloatMouseClicked
+
+    private void jRadioButton_Campos_StringMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton_Campos_StringMouseClicked
+        // TODO add your handling code here:
+        jRadioButton_Campos_Si.setEnabled(true);
+
+    }//GEN-LAST:event_jRadioButton_Campos_StringMouseClicked
+
+    private void jRadioButton_Campos_BoolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton_Campos_BoolMouseClicked
+        // TODO add your handling code here:
+        if (jRadioButton_Campos_Bool.isSelected()) {
+            jRadioButton_Campos_Si.setEnabled(false);
+            jRadioButton_Campos_No.setSelected(true);
+        }
+    }//GEN-LAST:event_jRadioButton_Campos_BoolMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -2772,6 +2869,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
     static Archivo archivo1_principal = new Archivo();
     static Archivo archivo2_temporal = new Archivo();
+    static BTree btree = new BTree(3);
 
     public void loadJList(Archivo archivo, JList jlist, JLabel jlabel) {
         DefaultListModel model = new DefaultListModel<>();
@@ -2884,6 +2982,34 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "El archivo no existe: " + selected.getName());
             }
+        }
+        jLabel_Archivo_currentFile.setText("Archivo Abierto: " + archivo1_principal.getFilename());
+    }
+
+    public void guardarArbolEnArchivo() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo1_principal.getFilename() + ".dat"))) {
+            oos.writeObject(btree);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar el árbol B en el archivo: " + e.getMessage());
+        }
+    }
+
+    private void cargarArbolDesdeArchivo() {
+        String filename = archivo1_principal.getFilename() + ".dat"; // Nombre completo del archivo
+        File file = new File(filename);
+
+        if (!file.exists()) {
+            JOptionPane.showMessageDialog(null, "El archivo no existe: " + filename);
+            return;
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            btree = (BTree) ois.readObject();
+            JOptionPane.showMessageDialog(null, "Árbol cargado con éxito.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar el archivo: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "No se pudo encontrar la clase BTree: " + e.getMessage());
         }
     }
 }

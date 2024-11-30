@@ -13,9 +13,7 @@ import java.util.ArrayList;
  */
 //tamaño maximo de 256 bytes
 public class Registro {
-    
-    private int clave=-1;
-    private ArrayList<Object> data = new ArrayList<>();
+        private ArrayList<Object> data = new ArrayList<>();
     private boolean borrado = false;
     private int RRN = -1;
     private int RRN_next = -1;
@@ -25,16 +23,15 @@ public class Registro {
     }
 
 
-    public Registro(ArrayList<Object> data,int clave) {
+    public Registro(ArrayList<Object> data) {
         this.data = data;
-        this.clave = clave;
+
     }
 
-    public Registro(ArrayList<Object> data, boolean borrado, int RRN_next, int clave, int s) {
+    public Registro(ArrayList<Object> data, boolean borrado, int RRN_next) {
         this.data = data;
         this.borrado = borrado;
         this.RRN_next = RRN_next;
-        this.clave = clave;
     }
     
     public Registro(ArrayList<Object> data, boolean borrado, int RRN, int RRN_next) {
@@ -84,9 +81,7 @@ public class Registro {
         for (Object dato : data) {
             temp.append(dato).append(";");
         }
-        return temp + "|" + borrado + "|" + RRN_next + '|' + clave + '|';
+        return temp + "|" + borrado + "|" + RRN_next + '|';
     }
-    public Object getclave(){
-        return data.get(clave);
-    }
+
 }

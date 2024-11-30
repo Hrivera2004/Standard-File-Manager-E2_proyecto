@@ -4,100 +4,91 @@
  */
 package estru2_proyecto;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.io.Serializable;
 
 /**
  *
- * @author hriverav
+ * @author pepes
  */
-public class BTreeNode {
-    Registro[] keys;
-    int t;
-    BTreeNode[] children;
+public class BTreeNode implements Serializable {
+
+    private Comparable[] keys;
+    private BTreeNode[] children;
+    private boolean isLeaf;
+    private int t;
     int n;
-    boolean leaf;
 
     public BTreeNode(int t, boolean leaf) {
         this.t = t;
-        this.leaf = leaf;
-        keys = new Registro[2 * t - 1];
+        this.isLeaf = leaf;
+        keys = new Comparable[2 * t - 1];
         children = new BTreeNode[2 * t];
-        n = 0;
+        this.n = 0;
     }
 
-    public Registro[] getKeys() {
+    public Comparable[] getKeys() {
         return keys;
-    }
-
-    public void setKeys(Registro[] keys) {
-        this.keys = keys;
-    }
-
-    public int getT() {
-        return t;
-    }
-
-    public void setT(int t) {
-        this.t = t;
     }
 
     public BTreeNode[] getChildren() {
         return children;
     }
 
-    public void setChildren(BTreeNode[] children) {
-        this.children = children;
+    public boolean isLeaf() {
+        return isLeaf;
     }
 
-    public int getN() {
+    public void setLeaf(boolean isLeaf) {
+        this.isLeaf = isLeaf;
+    }
+
+    public int getDegree() {
+        return t;
+    }
+
+    public int getNumKeys() {
         return n;
     }
 
-    public void setN(int n) {
+    public void setNumKeys(int n) {
         this.n = n;
     }
 
-    public boolean isLeaf() {
-        return leaf;
+    public int binarySearch(Object key) {
+        int left = 0, right = n - 1;
+
+        while (left <= right) {
+            int mid = (left + right) / 2;
+
+            Comparable<Object> midKey = (Comparable<Object>) keys[mid];
+            Comparable<Object> searchKey = (Comparable<Object>) key;
+
+            int cmp = midKey.compareTo(searchKey);
+
+            if (cmp == 0) {
+                return mid; // Clave encontrada
+            } else if (cmp < 0) {
+                left = mid + 1; // Buscar en la mitad derecha
+            } else {
+                right = mid - 1; // Buscar en la mitad izquierda
+            }
+        }
+
+        return -(left + 1); // Retorna la posición de inserción como valor negativo
     }
 
-    public void setLeaf(boolean leaf) {
-        this.leaf = leaf;
-    }
-
-    @Override
     public String toString() {
-        return "BTreeNode{" + "keys=" + keys + ", t=" + t + ", children=" + children + ", n=" + n + ", leaf=" + leaf + '}';
-    }
-    
-    public boolean compare(Registro key1,Registro key2){
-        if ((key1.getclave() instanceof Float) && (key2.getclave() instanceof Float)) {
-            return (((Float)key1.getclave()) < ((Float)key2.getclave()));
-        }else{
-            if (key1.getclave().toString().compareTo(key2.getclave().toString()) > 0) {
-                return false;
-            }else{
-                return true;
-            }
+        if (n == 0) {
+            return "Nodo vacío"; // O cualquier mensaje que te ayude a ver que el nodo está vacío
         }
-    }
-    
-    public Registro search(Registro key) {
-        int left = 0;
-        int right = keys.length - 1;
-        while(left <= right){
-            int mid = left + (right-left)/2;
-            if (keys[mid].getclave() == key.getclave()) {
-                return keys[mid];
-            }
-            if (compare(key,keys[mid])) {
-                right = mid-1;
-            }else{
-                left = mid + 1; 
-            }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            sb.append(keys[i]).append(" ");
         }
-        return null;
+        return sb.toString().trim();  // Devuelve las claves como una cadena separada por espacios
     }
 
+    void setNumberKeys(int length) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

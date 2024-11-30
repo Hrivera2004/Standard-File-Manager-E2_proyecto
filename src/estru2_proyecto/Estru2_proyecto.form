@@ -219,6 +219,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Bool"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jRadioButton_Campos_BoolMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="jRadioButton_Campos_Int">
               <Properties>
@@ -234,6 +237,7 @@
                 <Property name="text" type="java.lang.String" value="Int"/>
               </Properties>
               <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jRadioButton_Campos_IntMouseClicked"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButton_Campos_IntActionPerformed"/>
               </Events>
             </Component>
@@ -250,6 +254,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Si"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jRadioButton_Campos_SiMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="jRadioButton_Campos_Float">
               <Properties>
@@ -265,6 +272,7 @@
                 <Property name="text" type="java.lang.String" value="Float"/>
               </Properties>
               <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jRadioButton_Campos_FloatMouseClicked"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButton_Campos_FloatActionPerformed"/>
               </Events>
             </Component>
@@ -301,6 +309,7 @@
               <Events>
                 <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jRadioButton_Campos_StringItemStateChanged"/>
                 <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jRadioButton_Campos_StringStateChanged"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jRadioButton_Campos_StringMouseClicked"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButton_Campos_StringActionPerformed"/>
               </Events>
             </Component>
@@ -329,6 +338,7 @@
                 <Property name="text" type="java.lang.String" value="Char"/>
               </Properties>
               <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jRadioButton_Campos_CharMouseClicked"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButton_Campos_CharActionPerformed"/>
               </Events>
             </Component>
@@ -576,7 +586,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace min="215" pref="257" max="32767" attributes="0"/>
+                      <EmptySpace min="215" pref="253" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>

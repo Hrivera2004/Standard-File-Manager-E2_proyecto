@@ -59,6 +59,10 @@ public class Archivo {
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedDirectory = chooser.getSelectedFile();
             File file = new File(selectedDirectory.getAbsolutePath() + "/" + name + ".txt");
+            if (file.exists()) {
+                JOptionPane.showMessageDialog(null, "El archivo ya existe.");
+                return false;
+            }
             try {
                 file.createNewFile();
                 open_file(file);
@@ -78,7 +82,8 @@ public class Archivo {
     public boolean open_file(File selected) throws IOException {
         //modificar
         FileRegistros = selected;
-        filename = selected.getName();
+        int lastIndex = selected.getName().lastIndexOf('.');
+        filename = selected.getName().substring(0,lastIndex);
         try {
             return LoadMetaData();
         } catch (Exception e) {
@@ -110,9 +115,6 @@ public class Archivo {
                 sb.append(" ");
             }
             metadataString = sb.toString() + "\n";
-
-            // Asegurar que no haya espacios en blanco extras
-            metadataString = metadataString.trim() + "\n";
 
             // Sobrescribir los primeros 500 bytes del archivo
             file.seek(0);
@@ -165,7 +167,7 @@ public class Archivo {
             return false;
         }
     }
-    
+
     //hacer que verifique que no existe el registro al momento de introducir
     //No se crea ni se carga nada de arraylist todo se hace directamene en el archivo
     public void introducirRegistro(Registro registro) {
@@ -208,6 +210,7 @@ public class Archivo {
         }
     }
 // almomento de leer usar \\| porque | es char especial
+
     public Registro LoadRegistro(int RRN) {
         try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "rw")) {
             long offset = 500; // Start after metadata
@@ -226,7 +229,7 @@ public class Archivo {
                 data.add(split2[i]);
             }
 
-            Registro registro = new Registro(data, Boolean.parseBoolean(split1[1]), Integer.parseInt(split1[2]) , Integer.parseInt(split1[3]) , 0);
+            Registro registro = new Registro(data, Boolean.parseBoolean(split1[1]), Integer.parseInt(split1[2]));
             return registro;
 
         } catch (FileNotFoundException e) {
