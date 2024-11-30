@@ -2543,7 +2543,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             }
         }
 
-        Registro registro = new Registro(datos);
+        Registro registro = new Registro(datos,archivo1_principal.getMetadata().getKeyElement());
         try {
             archivo1_principal.introducirRegistro(registro);
             JOptionPane.showMessageDialog(null, "Se ha creado el registro.");

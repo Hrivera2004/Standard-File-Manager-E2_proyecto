@@ -165,7 +165,8 @@ public class Archivo {
             return false;
         }
     }
-
+    
+    //hacer que verifique que no existe el registro al momento de introducir
     //No se crea ni se carga nada de arraylist todo se hace directamene en el archivo
     public void introducirRegistro(Registro registro) {
         if (metadata == null) {
@@ -207,7 +208,6 @@ public class Archivo {
         }
     }
 // almomento de leer usar \\| porque | es char especial
-
     public Registro LoadRegistro(int RRN) {
         try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "rw")) {
             long offset = 500; // Start after metadata
@@ -226,7 +226,7 @@ public class Archivo {
                 data.add(split2[i]);
             }
 
-            Registro registro = new Registro(data, Boolean.parseBoolean(split1[1]), Integer.parseInt(split1[2]));
+            Registro registro = new Registro(data, Boolean.parseBoolean(split1[1]), Integer.parseInt(split1[2]) , Integer.parseInt(split1[3]) , 0);
             return registro;
 
         } catch (FileNotFoundException e) {
