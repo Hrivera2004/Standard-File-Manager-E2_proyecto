@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class Llave implements Serializable{
     private Long RRN;
     private Comparable key; 
-
+    
     public Llave() {
     }
     

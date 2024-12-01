@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class BTreeNode implements Serializable {
 
-    private Comparable[] keys;
+    private Llave[] keys;
     private BTreeNode[] children;
     private boolean isLeaf;
     private int t;
@@ -21,12 +21,12 @@ public class BTreeNode implements Serializable {
     public BTreeNode(int t, boolean leaf) {
         this.t = t;
         this.isLeaf = leaf;
-        keys = new Comparable[2 * t - 1];
+        keys = new Llave[2 * t - 1];
         children = new BTreeNode[2 * t];
         this.n = 0;
     }
 
-    public Comparable[] getKeys() {
+    public Llave[] getKeys() {
         return keys;
     }
 
@@ -60,7 +60,7 @@ public class BTreeNode implements Serializable {
     while (left <= right) {
         int mid = (left + right) / 2;
 
-        Comparable<Object> midKey = (Comparable<Object>) keys[mid];
+        Comparable<Object> midKey = (Comparable<Object>) keys[mid].getKey();
         Comparable<Object> searchKey = (Comparable<Object>) key;
 
         int cmp = midKey.compareTo(searchKey);

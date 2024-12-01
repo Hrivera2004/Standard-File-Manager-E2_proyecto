@@ -2680,11 +2680,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 // Introducir registro en archivo principal
                 archivo1_principal.introducirRegistro(registro);
                 // Insertar clave en el árbol B
-                System.out.println("dadaadadad");
-                btree.insert((Comparable) key);
+                btree.insert(new Llave((Comparable) key, archivo1_principal.getLatest_modified()));
                 // Guardar el árbol B en un archivo binario
                 btree.printTree();
-                guardarArbolEnArchivo();
+                guardarArbolEnArchivo(archivo1_principal);
                 JOptionPane.showMessageDialog(null, "Se ha creado el registro y actualizado el árbol B.");
             }
             // Obtener la clave principal del registro
@@ -3158,8 +3157,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jLabel_Archivo_currentFile.setText("Archivo Abierto: " + archivo1_principal.getFilename());
     }
 
-    public void guardarArbolEnArchivo() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo1_principal.getFilename() + ".dat"))) {
+    public void guardarArbolEnArchivo(Archivo archivo) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./ArbolesB/"+archivo.getFilename() + ".dat"))) {
             oos.writeObject(btree);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al guardar el árbol B en el archivo: " + e.getMessage());
@@ -3167,7 +3166,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }
 
     private BTree cargarArbolDesdeArchivo(Archivo archivo) {
-        String filename = archivo.getFilename() + ".dat"; // Nombre completo del archivo
+        String filename = "./ArbolesB/"+archivo.getFilename() + ".dat"; // Nombre completo del archivo
         File file = new File(filename);
 
         if (!file.exists()) {

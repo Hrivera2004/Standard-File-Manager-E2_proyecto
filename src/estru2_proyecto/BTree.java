@@ -33,7 +33,7 @@ public class BTree implements Serializable {
         int index = node.binarySearch(key);
 
         // Si la clave existe en el nodo
-        if (index >= 0 && index < node.getNumKeys() && node.getKeys()[index].equals(key)) {
+        if (index >= 0 && index < node.getNumKeys() && node.getKeys()[index].getKey().equals(key)) {
             return node;
         }
 
@@ -47,15 +47,16 @@ public class BTree implements Serializable {
         return searchInNode(node.getChildren()[childIndex], key);
     }
 
-    public void insert(Comparable key) {
+    public void insert(Llave key) {
         if (root == null) {
             root = new BTreeNode(t, true);
         }
-        if (search(key) != null) {
+        if (search(key.getKey()) != null) {
             System.out.println("No pueden haber elementos repetidos");
             return;
         }
 
+            
         if (root.getNumKeys() == 2 * t - 1) {
             BTreeNode newNode = new BTreeNode(t, false);
             newNode.getChildren()[0] = root;
@@ -68,7 +69,7 @@ public class BTree implements Serializable {
     }
 
     // Método para insertar una clave en un nodo que no está lleno
-    private void insertNonFull(BTreeNode node, Comparable key) {
+    private void insertNonFull(BTreeNode node, Llave key) {
         int i = node.getNumKeys() - 1;
 
         if (node.isLeaf()) {
@@ -89,7 +90,7 @@ public class BTree implements Serializable {
 
         } else {
             // Si el nodo no es hoja, buscamos el hijo adecuado
-            int position = node.binarySearch(key);
+            int position = node.binarySearch(key.getKey());
 
             // Asegúrate de que la posición esté dentro del rango
             if (position < 0) {
@@ -101,7 +102,7 @@ public class BTree implements Serializable {
                 splitChild(node, position);
 
                 // Después de dividir, el hijo medio se mueve a la posición i del nodo actual
-                if (key.compareTo(node.getKeys()[position]) > 0) {
+                if (key.getKey().compareTo(node.getKeys()[position].getKey()) > 0) {
                     position++;
                 }
             }
@@ -188,20 +189,20 @@ public class BTree implements Serializable {
         int position = node.binarySearch(key);
 
         // Caso 1: La clave está en el nodo actual
-        if (position < node.getNumKeys() && node.getKeys()[position].compareTo(key) == 0) {
+        if (position < node.getNumKeys() && node.getKeys()[position].getKey().compareTo(key) == 0) {
             if (node.isLeaf()) {
                 // Caso 1a: Si el nodo es hoja, simplemente elimina la clave
                 removeKey(node, position);
             } else {
                 // Caso 1b: Si el nodo no es hoja, buscar predecesor o sucesor
                 if (node.getChildren()[position].getNumKeys() >= t) {
-                    Comparable predecessorKey = findPredecessorKey(node, position);
+                    Llave predecessorKey = findPredecessorKey(node, position);
                     node.getKeys()[position] = predecessorKey;
-                    deleteKey(node.getChildren()[position], predecessorKey);
+                    deleteKey(node.getChildren()[position], predecessorKey.getKey());
                 } else if (node.getChildren()[position + 1].getNumKeys() >= t) {
-                    Comparable successorKey = findSuccessorKey(node, position);
+                    Llave successorKey = findSuccessorKey(node, position);
                     node.getKeys()[position] = successorKey;
-                    deleteKey(node.getChildren()[position + 1], successorKey);
+                    deleteKey(node.getChildren()[position + 1], successorKey.getKey());
                 } else {
                     // Caso 1c: Ambos hijos tienen menos de t claves, fusionar
                     mergeNodes(node, position);
@@ -241,7 +242,7 @@ public class BTree implements Serializable {
     }
 
 // Encuentra el predecesor de una clave en un nodo
-    private Comparable findPredecessorKey(BTreeNode node, int index) {
+    private Llave findPredecessorKey(BTreeNode node, int index) {//-----------------------------------------------------
         BTreeNode child = node.getChildren()[index];
         while (!child.isLeaf()) {
             child = child.getChildren()[child.getNumKeys()];
@@ -250,7 +251,7 @@ public class BTree implements Serializable {
     }
 
 // Encuentra el sucesor de una clave en un nodo
-    private Comparable findSuccessorKey(BTreeNode node, int index) {
+    private Llave findSuccessorKey(BTreeNode node, int index) { //-----------------------------------------------------
         BTreeNode child = node.getChildren()[index + 1];
         while (!child.isLeaf()) {
             child = child.getChildren()[0];
