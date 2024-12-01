@@ -54,39 +54,41 @@ public class BTreeNode implements Serializable {
         this.n = n;
     }
 
-    public int binarySearch(Object key) {
-        int left = 0, right = n - 1;
+   public int binarySearch(Object key) {
+    int left = 0, right = n - 1;
 
-        while (left <= right) {
-            int mid = (left + right) / 2;
+    while (left <= right) {
+        int mid = (left + right) / 2;
 
-            Comparable<Object> midKey = (Comparable<Object>) keys[mid];
-            Comparable<Object> searchKey = (Comparable<Object>) key;
+        Comparable<Object> midKey = (Comparable<Object>) keys[mid];
+        Comparable<Object> searchKey = (Comparable<Object>) key;
 
-            int cmp = midKey.compareTo(searchKey);
+        int cmp = midKey.compareTo(searchKey);
 
-            if (cmp == 0) {
-                return mid; // Clave encontrada
-            } else if (cmp < 0) {
-                left = mid + 1; // Buscar en la mitad derecha
-            } else {
-                right = mid - 1; // Buscar en la mitad izquierda
-            }
+        if (cmp == 0) {
+            return mid; // Clave encontrada
+        } else if (cmp < 0) {
+            left = mid + 1; // Buscar en la mitad derecha
+        } else {
+            right = mid - 1; // Buscar en la mitad izquierda
         }
-
-        return -(left + 1); // Retorna la posición de inserción como valor negativo
     }
+
+    return -(left + 1); // Retorna la posición de inserción como valor negativo
+}
+
 
     public String toString() {
-        if (n == 0) {
-            return "Nodo vacío"; // O cualquier mensaje que te ayude a ver que el nodo está vacío
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < n; i++) {
-            sb.append(keys[i]).append(" ");
-        }
-        return sb.toString().trim();  // Devuelve las claves como una cadena separada por espacios
+    if (n == 0) {
+        return "Nodo vacío"; // O cualquier mensaje que te ayude a ver que el nodo está vacío
     }
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < n; i++) {
+        sb.append(keys[i]).append(" ");
+    }
+    return sb.toString().trim();  // Devuelve las claves como una cadena separada por espacios
+}
+
 
     void setNumberKeys(int length) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

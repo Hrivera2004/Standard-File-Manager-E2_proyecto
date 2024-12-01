@@ -13,15 +13,13 @@ import java.util.ArrayList;
  */
 //tamaño maximo de 256 bytes
 public class Registro {
-        private ArrayList<Object> data = new ArrayList<>();
+    private ArrayList<Object> data = new ArrayList<>();
     private boolean borrado = false;
-    private int RRN = -1;
+    private long RRN = -1;
     private int RRN_next = -1;
-    
-    
+
     public Registro() {
     }
-
 
     public Registro(ArrayList<Object> data) {
         this.data = data;
@@ -33,12 +31,12 @@ public class Registro {
         this.borrado = borrado;
         this.RRN_next = RRN_next;
     }
-    
-    public Registro(ArrayList<Object> data, boolean borrado, int RRN, int RRN_next) {
+
+    public Registro(ArrayList<Object> data, boolean borrado, int RRN_next, int RRN) {
         this.data = data;
         this.borrado = borrado;
-        this.RRN = RRN;
         this.RRN_next = RRN_next;
+        this.RRN = RRN;
     }
 
     public ArrayList<Object> getData() {
@@ -65,19 +63,18 @@ public class Registro {
         this.RRN_next = RRN_next;
     }
 
-    public int getRRN() {
+    public long getRRN() {
         return RRN;
     }
 
-    public void setRRN(int RRN) {
+    public void setRRN(long RRN) {
         this.RRN = RRN;
     }
-    
 
     @Override
     public String toString() {
         StringBuilder temp = new StringBuilder();
-        
+
         for (Object dato : data) {
             temp.append(dato).append(";");
         }

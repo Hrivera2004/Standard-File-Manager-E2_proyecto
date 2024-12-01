@@ -169,7 +169,6 @@ public class BTree implements Serializable {
             }
         }
     }
-
     public void delete(Comparable key) {
         if (root == null) {
             System.out.println("El árbol está vacío.");

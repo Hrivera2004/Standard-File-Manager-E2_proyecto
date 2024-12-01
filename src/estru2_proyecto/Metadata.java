@@ -17,10 +17,8 @@ import javax.swing.JOptionPane;
 //tipo: 0 = boolean, 1 = int, 2 = float, 3 = string, 4 = char
 //500 bytes
 public class Metadata {
-
     private int RRN_headAvail = -1;
     //Solo 10 porque es una cantidad rasonable
-    //la posicion de campos pertenece a la misma posicion de tipos
     private ArrayList<Campo> campos;
     private int KeyElement = -1;
 
@@ -29,7 +27,7 @@ public class Metadata {
         this.campos = campos;
         this.KeyElement = KeyElement;
     }
-
+    
     public Metadata() {
     }
 
@@ -41,11 +39,13 @@ public class Metadata {
         this.campos = campos;
     }
 
-    public int getKeyElement() {
+    public int getKeyElement_pos() {
         return KeyElement;
     }
-
-    public void setKeyElement(int KeyElement) {
+    public Campo getKeyElement() {
+        return campos.get(KeyElement);
+    }
+    public void setKeyElement_pos(int KeyElement) {
         this.KeyElement = KeyElement;
     }
 

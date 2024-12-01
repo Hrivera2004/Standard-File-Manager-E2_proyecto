@@ -8,13 +8,18 @@ import java.awt.HeadlessException;
 import java.awt.event.KeyAdapter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -174,11 +179,17 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jList_Registros_Cruzar_Campos2 = new javax.swing.JList<>();
         jScrollPane7 = new javax.swing.JScrollPane();
         jList_Registros_Cruzar_Campos1 = new javax.swing.JList<>();
-        jButton2 = new javax.swing.JButton();
+        jButton_Registros_Cruzar_Cruzar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jLabel_Registros_Cruzar_Archivo2 = new javax.swing.JLabel();
+        jLabel_Registros_Cruzar = new javax.swing.JLabel();
         jLabel_Registros_Cruzar_Archivo1 = new javax.swing.JLabel();
         jLabel_Registros_OpcionesRegistros4 = new javax.swing.JLabel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jList_Registros_Cruzar_CamposPares = new javax.swing.JList<>();
+        jLabel_Registros_Cruzar_Archivo3 = new javax.swing.JLabel();
+        jButton_Registros_Cruzar_pares = new javax.swing.JButton();
+        jLabel_Registros_Cruzar_Archivo2 = new javax.swing.JLabel();
+        jButton_Registros_Cruzar_Reset = new javax.swing.JButton();
         jTabbedPane_Menu = new javax.swing.JTabbedPane();
         jPanel_Archivo = new javax.swing.JPanel();
         jPanel_Archivo_crear = new javax.swing.JPanel();
@@ -1181,6 +1192,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        jList_Registros_Cruzar_Campos2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane6.setViewportView(jList_Registros_Cruzar_Campos2);
 
         jList_Registros_Cruzar_Campos1.setModel(new javax.swing.AbstractListModel<String>() {
@@ -1188,15 +1200,21 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        jList_Registros_Cruzar_Campos1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane7.setViewportView(jList_Registros_Cruzar_Campos1);
 
-        jButton2.setText("Cruzar Archivos");
+        jButton_Registros_Cruzar_Cruzar.setText("Cruzar Archivos");
+        jButton_Registros_Cruzar_Cruzar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_Registros_Cruzar_CruzarMouseClicked(evt);
+            }
+        });
 
-        jButton3.setText("Cancelar");
+        jButton3.setText("Regresar");
 
-        jLabel_Registros_Cruzar_Archivo2.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
-        jLabel_Registros_Cruzar_Archivo2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel_Registros_Cruzar_Archivo2.setText(" ");
+        jLabel_Registros_Cruzar.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
+        jLabel_Registros_Cruzar.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel_Registros_Cruzar.setText("Campos a Cruzar");
 
         jLabel_Registros_Cruzar_Archivo1.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
         jLabel_Registros_Cruzar_Archivo1.setForeground(new java.awt.Color(0, 0, 0));
@@ -1204,46 +1222,115 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         jLabel_Registros_OpcionesRegistros4.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
         jLabel_Registros_OpcionesRegistros4.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel_Registros_OpcionesRegistros4.setText("              Cruzar Archivos:");
+        jLabel_Registros_OpcionesRegistros4.setText("                           Cruzar Archivos:");
+
+        jList_Registros_Cruzar_CamposPares.setModel(new DefaultListModel()
+        );
+        jList_Registros_Cruzar_CamposPares.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane8.setViewportView(jList_Registros_Cruzar_CamposPares);
+
+        jLabel_Registros_Cruzar_Archivo3.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
+        jLabel_Registros_Cruzar_Archivo3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel_Registros_Cruzar_Archivo3.setText(" ");
+
+        jButton_Registros_Cruzar_pares.setText("-->");
+        jButton_Registros_Cruzar_pares.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_Registros_Cruzar_paresMouseClicked(evt);
+            }
+        });
+
+        jLabel_Registros_Cruzar_Archivo2.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
+        jLabel_Registros_Cruzar_Archivo2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel_Registros_Cruzar_Archivo2.setText(" ");
+
+        jButton_Registros_Cruzar_Reset.setText("Reset");
+        jButton_Registros_Cruzar_Reset.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_Registros_Cruzar_ResetMouseClicked(evt);
+            }
+        });
+        jButton_Registros_Cruzar_Reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_Registros_Cruzar_ResetActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel_Registros_CruzarLayout = new javax.swing.GroupLayout(jPanel_Registros_Cruzar);
         jPanel_Registros_Cruzar.setLayout(jPanel_Registros_CruzarLayout);
         jPanel_Registros_CruzarLayout.setHorizontalGroup(
             jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_Registros_CruzarLayout.createSequentialGroup()
-                .addGap(108, 108, 108)
+                .addGap(36, 36, 36)
                 .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel_Registros_OpcionesRegistros4, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
+                    .addComponent(jLabel_Registros_OpcionesRegistros4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel_Registros_CruzarLayout.createSequentialGroup()
-                        .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                        .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel_Registros_Cruzar_Archivo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                            .addComponent(jScrollPane6)
-                            .addComponent(jLabel_Registros_Cruzar_Archivo2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(108, 108, 108))
+                            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                            .addComponent(jLabel_Registros_Cruzar_Archivo1, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
+                        .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_Registros_CruzarLayout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel_Registros_Cruzar, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel_Registros_CruzarLayout.createSequentialGroup()
+                                    .addGap(71, 71, 71)
+                                    .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel_Registros_CruzarLayout.createSequentialGroup()
+                                            .addComponent(jLabel_Registros_Cruzar_Archivo2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_Registros_CruzarLayout.createSequentialGroup()
+                                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(57, 57, 57)
+                                            .addComponent(jButton_Registros_Cruzar_pares)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(jButton_Registros_Cruzar_Reset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_Registros_CruzarLayout.createSequentialGroup()
+                                .addGap(425, 425, 425)
+                                .addComponent(jButton_Registros_Cruzar_Cruzar, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(28, 28, 28))
+            .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_Registros_CruzarLayout.createSequentialGroup()
+                    .addContainerGap(416, Short.MAX_VALUE)
+                    .addComponent(jLabel_Registros_Cruzar_Archivo3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(240, 240, 240)))
         );
         jPanel_Registros_CruzarLayout.setVerticalGroup(
             jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_Registros_CruzarLayout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
+                .addContainerGap(48, Short.MAX_VALUE)
                 .addComponent(jLabel_Registros_OpcionesRegistros4)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel_Registros_Cruzar_Archivo2)
-                    .addComponent(jLabel_Registros_Cruzar_Archivo1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(50, 50, 50)
+                    .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel_Registros_Cruzar_Archivo1)
+                        .addComponent(jLabel_Registros_Cruzar_Archivo2))
+                    .addComponent(jLabel_Registros_Cruzar, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel_Registros_CruzarLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel_Registros_CruzarLayout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addComponent(jButton_Registros_Cruzar_pares)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton_Registros_Cruzar_Reset)
+                .addGap(21, 21, 21)
                 .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19))
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_Registros_Cruzar_Cruzar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25))
+            .addGroup(jPanel_Registros_CruzarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel_Registros_CruzarLayout.createSequentialGroup()
+                    .addGap(98, 98, 98)
+                    .addComponent(jLabel_Registros_Cruzar_Archivo3)
+                    .addContainerGap(382, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout jDialog_Registros_cruzarLayout = new javax.swing.GroupLayout(jDialog_Registros_cruzar.getContentPane());
@@ -2439,15 +2526,14 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private void jButton_Registros_CruzarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_CruzarMouseClicked
         // TODO add your handling code here:
         if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty() || archivo1_principal.getMetadata() == null) {
-            JOptionPane.showMessageDialog(null, "Error: Abra, llene el archivo antes o cree un archivo antes.");
+            JOptionPane.showMessageDialog(null, "Error: Abra, llene o cree el archivo antes.");
             return;
         } else {
             JOptionPane.showMessageDialog(null, "A continuación seleccione el archivo secundario para cruzar");
-
             Select_OpenFile(archivo2_temporal);
             if (archivo2_temporal.getMetadata() != null) {
                 loadJList(archivo1_principal, jList_Registros_Cruzar_Campos1, jLabel_Registros_Cruzar_Archivo1);
-                loadJList(archivo2_temporal, jList_Registros_Cruzar_Campos2, jLabel_Registros_Cruzar_Archivo2);
+                loadJList(archivo2_temporal, jList_Registros_Cruzar_Campos2, jLabel_Registros_Cruzar);
                 abrirDialog(jDialog_Registros_cruzar);
             } else {
                 JOptionPane.showMessageDialog(null, "El archivo selecionado esta vacio");
@@ -2477,7 +2563,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         if (encontrado != null) {
             int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea borrar este registro?");
             if (confirmacion == JOptionPane.YES_OPTION) {
-                boolean exito = archivo1_principal.borrarRegistro(encontrado.getRRN()); // Usar el RRN actual
+                boolean exito = archivo1_principal.borrarRegistro((int)encontrado.getRRN()); // Usar el RRN actual
                 if (exito) {
                     JOptionPane.showMessageDialog(null, "Registro borrado con éxito.");
                 } else {
@@ -2586,31 +2672,31 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         Registro registro = new Registro(datos);
         try {
-            // Introducir registro en archivo principal
-            archivo1_principal.introducirRegistro(registro);
-
+            int keyIndex = archivo1_principal.getMetadata().getKeyElement_pos();
+            Object key = datos.get(keyIndex);
+            if (btree.search(key) != null) {
+                JOptionPane.showMessageDialog(null, "No se puede insertar elementos repetidos");
+            } else {
+                // Introducir registro en archivo principal
+                archivo1_principal.introducirRegistro(registro);
+                // Insertar clave en el árbol B
+                System.out.println("dadaadadad");
+                btree.insert((Comparable) key);
+                // Guardar el árbol B en un archivo binario
+                btree.printTree();
+                guardarArbolEnArchivo();
+                JOptionPane.showMessageDialog(null, "Se ha creado el registro y actualizado el árbol B.");
+            }
             // Obtener la clave principal del registro
-            int keyIndex = archivo1_principal.getMetadata().getKeyElement();
             if (keyIndex == -1) {
                 JOptionPane.showMessageDialog(null, "No se ha definido una clave principal.");
                 return;
             }
-            Object key = datos.get(keyIndex);
-
-            // Insertar clave en el árbol B
-            btree.insert((Comparable) key);
-
-            // Guardar el árbol B en un archivo binario
-            btree.printTree();
-            guardarArbolEnArchivo();
-
-            JOptionPane.showMessageDialog(null, "Se ha creado el registro y actualizado el árbol B.");
             jDialog_Registros_Introducir.show(false);
             this.show(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al introducir: " + e.getMessage());
         }
-
     }//GEN-LAST:event_jButton_IntroducirRegistros_crearMouseClicked
 
     private void jTable_Registro_introducirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable_Registro_introducirKeyPressed
@@ -2704,6 +2790,87 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jRadioButton_Campos_BoolMouseClicked
 
+    private void jButton_Registros_Cruzar_paresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_Cruzar_paresMouseClicked
+        // TODO add your handling code here:
+        DefaultListModel model = (DefaultListModel) jList_Registros_Cruzar_CamposPares.getModel();
+        if (model.isEmpty()) {
+            if (jList_Registros_Cruzar_Campos1.isSelectionEmpty() || jList_Registros_Cruzar_Campos2.isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Error: Selecione 2 campos");
+            } else {
+                model.addElement(jList_Registros_Cruzar_Campos1.getSelectedValue());
+                model.addElement(jList_Registros_Cruzar_Campos2.getSelectedValue());
+                jList_Registros_Cruzar_CamposPares.setModel(model);
+            }
+        } else {
+            JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Ya seleciono los 2 campos a relacionar");
+        }
+
+    }//GEN-LAST:event_jButton_Registros_Cruzar_paresMouseClicked
+
+    private void jButton_Registros_Cruzar_ResetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_Cruzar_ResetMouseClicked
+        // TODO add your handling code here:
+        jList_Registros_Cruzar_CamposPares.setModel(new DefaultListModel<>());
+    }//GEN-LAST:event_jButton_Registros_Cruzar_ResetMouseClicked
+
+    private void jButton_Registros_Cruzar_CruzarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_Cruzar_CruzarMouseClicked
+        // TODO add your handling code here:
+        Cruzar();
+    }//GEN-LAST:event_jButton_Registros_Cruzar_CruzarMouseClicked
+
+    private void jButton_Registros_Cruzar_ResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Registros_Cruzar_ResetActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_Registros_Cruzar_ResetActionPerformed
+    private void Cruzar() {
+//        NO BORRAR TALVEZ ES UTIL
+//         Map<Integer,Integer> Common = new HashMap<>();
+//         Map<String,Integer> List1 = new HashMap<>();
+//        
+//        for (int i = 0; i < jList_Registros_Cruzar_Campos1.getModel().getSize(); i++) {
+//            List1.put((String) jList_Registros_Cruzar_Campos1.getModel().getElementAt(i), i);
+//        }
+//        for (int i = 0; i < jList_Registros_Cruzar_Campos2.getModel().getSize(); i++) {
+//            String element2 = (String) jList_Registros_Cruzar_Campos2.getModel().getElementAt(i);
+//            if (List1.containsKey(element2)) {
+//                int posInList1 = List1.get(element2);
+//                int posInList2 = i;
+//                Common.put(posInList1, posInList2);
+//            }
+//        }
+//        if (Common.isEmpty()) {
+//            JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Error: No se pudo relacionar los campos");
+//            return;
+//        }    
+        String Key1_name = archivo1_principal.getMetadata().getKeyElement().getNombre_campo();
+        String Key2_name = archivo2_temporal.getMetadata().getKeyElement().getNombre_campo();
+        if (!Key1_name.equalsIgnoreCase(Key2_name)) {
+            JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Error: No se pudo relacionar los campos claves");
+            return;
+        }
+        try {
+            File cross = new File(archivo1_principal.getFilename() + "-" + archivo2_temporal.getFilename() + ".txt");
+            cross.createNewFile();
+
+            btree = cargarArbolDesdeArchivo(archivo1_principal);
+            BTree Btree2 = cargarArbolDesdeArchivo(archivo2_temporal);
+            
+            CruzarCampos(cross,Btree2,btree.getRoot());
+            
+            //recorrer el arbol del primero
+            //Determinar que campo se va a usar
+            //Usando el campo a relacionar buscar en el binario del segundo
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void CruzarCampos(File File, BTree btree ,BTreeNode node) {
+        for (int i = 0; i < node.getNumKeys(); i++) {
+            
+        }
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -2744,7 +2911,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup_ModificarLlave;
     private javax.swing.ButtonGroup buttonGroup_ModificarTipo;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton_Archivo_Abrir;
     private javax.swing.JButton jButton_Archivo_Cerrar;
@@ -2767,6 +2933,9 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JButton jButton_IntroducirRegistros_crear;
     private javax.swing.JButton jButton_Registros_Buscar;
     private javax.swing.JButton jButton_Registros_Cruzar;
+    private javax.swing.JButton jButton_Registros_Cruzar_Cruzar;
+    private javax.swing.JButton jButton_Registros_Cruzar_Reset;
+    private javax.swing.JButton jButton_Registros_Cruzar_pares;
     private javax.swing.JButton jButton_Registros_Listar;
     private javax.swing.JButton jButton_Registros_Modificar;
     private javax.swing.JButton jButton_Registros_Prueba;
@@ -2805,13 +2974,16 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_Campos_Modificar_Nombre;
     private javax.swing.JLabel jLabel_Campos_Nombre;
     private javax.swing.JLabel jLabel_Campos_OpcionesCampo;
+    private javax.swing.JLabel jLabel_Registros_Cruzar;
     private javax.swing.JLabel jLabel_Registros_Cruzar_Archivo1;
     private javax.swing.JLabel jLabel_Registros_Cruzar_Archivo2;
+    private javax.swing.JLabel jLabel_Registros_Cruzar_Archivo3;
     private javax.swing.JLabel jLabel_Registros_OpcionesRegistros;
     private javax.swing.JLabel jLabel_Registros_OpcionesRegistros1;
     private javax.swing.JLabel jLabel_Registros_OpcionesRegistros4;
     private javax.swing.JList<String> jList_Registros_Cruzar_Campos1;
     private javax.swing.JList<String> jList_Registros_Cruzar_Campos2;
+    private javax.swing.JList<String> jList_Registros_Cruzar_CamposPares;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -2853,6 +3025,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JSpinner jSpinner_Campos_Longitud;
     private javax.swing.JSpinner jSpinner_Campos_Modificar_Longitud;
     private javax.swing.JTabbedPane jTabbedPane_Menu;
@@ -2994,22 +3167,23 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         }
     }
 
-    private void cargarArbolDesdeArchivo() {
-        String filename = archivo1_principal.getFilename() + ".dat"; // Nombre completo del archivo
+    private BTree cargarArbolDesdeArchivo(Archivo archivo) {
+        String filename = archivo.getFilename() + ".dat"; // Nombre completo del archivo
         File file = new File(filename);
 
         if (!file.exists()) {
             JOptionPane.showMessageDialog(null, "El archivo no existe: " + filename);
-            return;
+            return null;
         }
 
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
-            btree = (BTree) ois.readObject();
-            JOptionPane.showMessageDialog(null, "Árbol cargado con éxito.");
+            return (BTree) ois.readObject();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al cargar el archivo: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null, "No se pudo encontrar la clase BTree: " + e.getMessage());
         }
+        return null;
     }
+
 }

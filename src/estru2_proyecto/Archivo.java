@@ -19,12 +19,19 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 public class Archivo {
-
     public File FileRegistros = null;
     private String filename = "";
     private Metadata metadata; //500 bytes
-
+    private long latest_modified = -1;
     public Archivo() {
+    }
+
+    public long getLatest_modified() {
+        return latest_modified;
+    }
+
+    public void setLatest_modified(long latest_modified) {
+        this.latest_modified = latest_modified;
     }
 
     public File getFileRegistros() {
@@ -183,17 +190,19 @@ public class Archivo {
                 // Write to the available list position
                 offset += metadata.getRRN_headAvail() * 256;
                 //Cambiar la cabeza del avail list
-                next = LoadRegistro(metadata.getRRN_headAvail()).getRRN_next();
+                Registro head_avail = LoadRegistro(metadata.getRRN_headAvail());
+                next = head_avail.getRRN_next();
                 metadata.setRRN_headAvail(next);
-
+                latest_modified = head_avail.getRRN();
             } else {
                 // Append to the end of the file
                 offset = file.length();
+                latest_modified = cant_Registros();
             }
-            System.out.println(registro.toString());
+
             StringBuilder sb = new StringBuilder(registro.toString());
             while (sb.length() < 255) {
-                sb.append(" ");  // Append spaces until length reaches 500
+                sb.append(" ");  // Append spaces until length reaches 255
             }
             String registrostring = sb.toString() + "\n";
 
@@ -414,6 +423,5 @@ public class Archivo {
             e.printStackTrace();
         }
         return false;
-    }
-
+    }  
 }
