@@ -5,7 +5,6 @@
 package estru2_proyecto;
 
 import java.awt.HeadlessException;
-import java.awt.event.KeyAdapter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,15 +14,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.CellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
@@ -34,13 +27,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.TableModelEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.DocumentFilter;
 import javax.swing.text.NumberFormatter;
 
 /**
@@ -1814,6 +1802,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             try {
                 // TODO add your handling code here:
                 archivo1_principal.close_file();
+                btree = null;
                 jLabel_Archivo_currentFile.setText("Archivo Abierto: n\\a");
 
             } catch (IOException ex) {
@@ -2563,7 +2552,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         if (encontrado != null) {
             int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea borrar este registro?");
             if (confirmacion == JOptionPane.YES_OPTION) {
-                boolean exito = archivo1_principal.borrarRegistro((int)encontrado.getRRN()); // Usar el RRN actual
+                boolean exito = archivo1_principal.borrarRegistro((int) encontrado.getRRN()); // Usar el RRN actual
                 if (exito) {
                     JOptionPane.showMessageDialog(null, "Registro borrado con éxito.");
                 } else {
@@ -2799,6 +2788,9 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 model.addElement(jList_Registros_Cruzar_Campos1.getSelectedValue());
                 model.addElement(jList_Registros_Cruzar_Campos2.getSelectedValue());
                 jList_Registros_Cruzar_CamposPares.setModel(model);
+                jList_Registros_Cruzar_Campos1.setEnabled(false);
+                jList_Registros_Cruzar_Campos2.setEnabled(false);
+
             }
         } else {
             JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Ya seleciono los 2 campos a relacionar");
@@ -2809,6 +2801,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private void jButton_Registros_Cruzar_ResetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_Cruzar_ResetMouseClicked
         // TODO add your handling code here:
         jList_Registros_Cruzar_CamposPares.setModel(new DefaultListModel<>());
+        jList_Registros_Cruzar_Campos1.setEnabled(true);
+                jList_Registros_Cruzar_Campos2.setEnabled(true);
     }//GEN-LAST:event_jButton_Registros_Cruzar_ResetMouseClicked
 
     private void jButton_Registros_Cruzar_CruzarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_Cruzar_CruzarMouseClicked
@@ -2846,13 +2840,13 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             return;
         }
         try {
-            File cross = new File(archivo1_principal.getFilename() + "-" + archivo2_temporal.getFilename() + ".txt");
+            File cross = new File("./CrossFiles/" + archivo1_principal.getFilename() + "-" + archivo2_temporal.getFilename() + ".txt");
             cross.createNewFile();
 
             btree = cargarArbolDesdeArchivo(archivo1_principal);
-            BTree Btree2 = cargarArbolDesdeArchivo(archivo2_temporal);
-            
-            
+            BTree btree_temporal = cargarArbolDesdeArchivo(archivo2_temporal);
+            btree.CrossTree(btree_temporal, cross, archivo1_principal, archivo2_temporal, jList_Registros_Cruzar_Campos1.getSelectedIndex(), jList_Registros_Cruzar_Campos2.getSelectedIndex());
+
             //recorrer el arbol del primero
             //Determinar que campo se va a usar
             //Usando el campo a relacionar buscar en el binario del segundo
@@ -2860,12 +2854,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void CruzarCampos(File File, BTree btree ,BTreeNode node) {
-        for (int i = 0; i < node.getNumKeys(); i++) {
-            
         }
     }
 
@@ -3158,7 +3146,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }
 
     public void guardarArbolEnArchivo(Archivo archivo) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./ArbolesB/"+archivo.getFilename() + ".dat"))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./ArbolesB/" + archivo.getFilename() + ".dat"))) {
             oos.writeObject(btree);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al guardar el árbol B en el archivo: " + e.getMessage());
@@ -3166,7 +3154,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }
 
     private BTree cargarArbolDesdeArchivo(Archivo archivo) {
-        String filename = "./ArbolesB/"+archivo.getFilename() + ".dat"; // Nombre completo del archivo
+        String filename = "./ArbolesB/" + archivo.getFilename() + ".dat"; // Nombre completo del archivo
         File file = new File(filename);
 
         if (!file.exists()) {

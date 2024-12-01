@@ -3,24 +3,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package estru2_proyecto;
+
 import java.io.Serializable;
 
 /**
  *
  * @author HP
  */
-public class Llave implements Serializable{
+public class Llave implements Serializable {
+
     private Long RRN;
-    private Comparable key; 
-    
+    private Comparable key;
+    private static final long SerialVersionUID = 777;
+
     public Llave() {
     }
-    
+
     public Llave(Comparable key, long RRN) {
         this.key = key;
         this.RRN = RRN;
     }
-    
+
     public Comparable getKey() {
         return key;
     }
@@ -41,7 +44,5 @@ public class Llave implements Serializable{
     public String toString() {
         return "Llave{" + "RRN=" + RRN + ", key=" + key + '}';
     }
-    
-    
-}
 
+}

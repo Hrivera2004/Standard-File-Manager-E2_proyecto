@@ -4,8 +4,15 @@
  */
 package estru2_proyecto;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,6 +30,22 @@ public class BTree implements Serializable {
 
     public BTree() {
 
+    }
+
+    public BTreeNode getRoot() {
+        return root;
+    }
+
+    public void setRoot(BTreeNode root) {
+        this.root = root;
+    }
+
+    public int getT() {
+        return t;
+    }
+
+    public void setT(int t) {
+        this.t = t;
     }
 
     public BTreeNode search(Object key) {
@@ -56,7 +79,6 @@ public class BTree implements Serializable {
             return;
         }
 
-            
         if (root.getNumKeys() == 2 * t - 1) {
             BTreeNode newNode = new BTreeNode(t, false);
             newNode.getChildren()[0] = root;
@@ -74,7 +96,7 @@ public class BTree implements Serializable {
 
         if (node.isLeaf()) {
             // Buscar el lugar donde insertar la clave usando búsqueda binaria
-            int position = node.binarySearch(key);
+            int position = node.binarySearch(key.getKey());
 
             // Asegúrate de que la posición esté dentro del rango
             if (position < 0) {
@@ -149,6 +171,48 @@ public class BTree implements Serializable {
         parent.getChildren()[index + 1] = newChild;
     }
 
+    public void CrossTree(BTree Btree2, File file, Archivo archivo1, Archivo archivo2, int campo1, int campo2) {
+        if (root != null && Btree2.getRoot() != null) {
+            CrossTreeNode(root, file, Btree2, archivo1, archivo2, campo1, campo2);
+        } else {
+            System.out.println("El árbol está vacío.");
+        }
+    }
+
+    private void CrossTreeNode(BTreeNode node, File file, BTree Btree2, Archivo archivo1, Archivo archivo2, int campo1, int campo2) {
+        if (node != null) {
+            try {
+                // Imprimir las claves del nodo
+                try (BufferedWriter bf = new BufferedWriter(new FileWriter(file))) {
+                    for (Llave key : node.getKeys()) {
+                        if (key != null) {
+                            Registro registro1 = archivo1.LoadRegistro(key.getRRN());
+                            BTreeNode temp = Btree2.search(key.getKey());
+                            if (temp != null) {
+                                Llave llave_temp = temp.getKeys()[temp.binarySearch(key.getKey())];
+                                Registro registro2 = archivo2.LoadRegistro(llave_temp.getRRN());
+                                bf.write(registro1.getData().get(campo1).toString() + "-" + registro2.getData().get(campo2).toString() + "\n");
+                            }
+                        }
+
+                    }
+                    bf.close();
+                }
+
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Error in cross tree: ");
+                Logger.getLogger(BTree.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            // Imprimir los hijos de este nodo
+            for (int i = 0; i <= node.getNumKeys(); i++) {
+                if (node.getChildren()[i] != null) {
+                    CrossTreeNode(node.getChildren()[i], file, Btree2, archivo1, archivo2, campo1, campo2);
+                }
+            }
+        }
+    }
+
     public void printTree() {
         if (root != null) {
             printTreeNode(root, "", true);
@@ -170,6 +234,7 @@ public class BTree implements Serializable {
             }
         }
     }
+
     public void delete(Comparable key) {
         if (root == null) {
             System.out.println("El árbol está vacío.");
@@ -242,7 +307,7 @@ public class BTree implements Serializable {
     }
 
 // Encuentra el predecesor de una clave en un nodo
-    private Llave findPredecessorKey(BTreeNode node, int index) {//-----------------------------------------------------
+    private Llave findPredecessorKey(BTreeNode node, int index) {
         BTreeNode child = node.getChildren()[index];
         while (!child.isLeaf()) {
             child = child.getChildren()[child.getNumKeys()];
@@ -251,7 +316,7 @@ public class BTree implements Serializable {
     }
 
 // Encuentra el sucesor de una clave en un nodo
-    private Llave findSuccessorKey(BTreeNode node, int index) { //-----------------------------------------------------
+    private Llave findSuccessorKey(BTreeNode node, int index) {
         BTreeNode child = node.getChildren()[index + 1];
         while (!child.isLeaf()) {
             child = child.getChildren()[0];

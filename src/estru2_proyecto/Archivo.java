@@ -220,7 +220,7 @@ public class Archivo {
     }
 // almomento de leer usar \\| porque | es char especial
 
-    public Registro LoadRegistro(int RRN) {
+    public Registro LoadRegistro(long RRN) {
         try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "rw")) {
             long offset = 500; // Start after metadata
             offset += 256 * RRN;
