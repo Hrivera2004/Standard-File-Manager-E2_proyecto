@@ -2853,7 +2853,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             btree = cargarArbolDesdeArchivo(archivo1_principal);
             BTree Btree2 = cargarArbolDesdeArchivo(archivo2_temporal);
             
-            CruzarCampos(cross,Btree2,btree.getRoot());
             
             //recorrer el arbol del primero
             //Determinar que campo se va a usar
