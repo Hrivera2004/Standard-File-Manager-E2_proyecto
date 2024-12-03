@@ -85,11 +85,9 @@ public class Metadata {
                     if (KeyElements_Secundary[1] != -1) {
                         int option = JOptionPane.showConfirmDialog(null, "Ya tiene 2 llaves secundarias\nDesea replazarla 1 por la nueva llave que introdujo?.", "Error: Ya hay una key principal", JOptionPane.YES_NO_OPTION);
                         if (option == JOptionPane.YES_OPTION) {
-                            Campo oldKeyCampo = campos.get(KeyElement); // Guardamos el campo que será reemplazado
-                            oldKeyCampo.setIskey(false); // Desmarcar el campo anterior como llave principal
-                            KeyElement = campos.size();
+                            
                         } else {
-                            campo.setIskey(false);
+                            
                         }
                     }
                 }
