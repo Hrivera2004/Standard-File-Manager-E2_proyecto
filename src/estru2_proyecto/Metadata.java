@@ -111,5 +111,15 @@ public class Metadata {
         }
         return ((RRN_headAvail == -1) ? -1 : " " + RRN_headAvail) + ";" + temp + ";" + KeyElement + ";";
     }
-
+    public ArrayList<String> getKeys(){
+        ArrayList<String> keys = new ArrayList();
+        for (int i = 0; i < campos.size(); i++) {
+            if (campos.get(i).iskey ||campos.get(i).iskey_secundary) {
+                keys.add(campos.get(i).getNombre_campo()+"-"+i);
+            }
+            
+        }
+        return keys;
+    }
+    
 }

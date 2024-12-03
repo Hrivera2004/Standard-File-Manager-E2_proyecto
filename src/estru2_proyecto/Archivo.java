@@ -19,10 +19,12 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 public class Archivo {
+
     public File FileRegistros = null;
     private String filename = "";
     private Metadata metadata; //500 bytes
     private long latest_modified = -1;
+
     public Archivo() {
     }
 
@@ -90,7 +92,7 @@ public class Archivo {
         //modificar
         FileRegistros = selected;
         int lastIndex = selected.getName().lastIndexOf('.');
-        filename = selected.getName().substring(0,lastIndex);
+        filename = selected.getName().substring(0, lastIndex);
         try {
             return LoadMetaData();
         } catch (Exception e) {
@@ -101,7 +103,9 @@ public class Archivo {
     //modificar
     public void close_file() throws IOException {//guarda y cierra el archivo
         try {
-            addMetadataToFile();
+            if (metadata != null) {
+                addMetadataToFile();
+            }
             FileRegistros = null;
             filename = "";
             metadata = null;
@@ -158,7 +162,8 @@ public class Archivo {
                         split[0].trim(),
                         Integer.parseInt(split[1].trim()),
                         Integer.parseInt(split[2].trim()),
-                        split[3].trim().equals("1")
+                        split[3].trim().equals("1"),
+                        split[4].trim().equals("1")
                 ));
             }
 
@@ -423,5 +428,5 @@ public class Archivo {
             e.printStackTrace();
         }
         return false;
-    }  
+    }
 }

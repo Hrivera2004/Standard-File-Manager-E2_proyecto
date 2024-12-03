@@ -16,15 +16,17 @@ public class Campo {
     int tipo, longitud;
     String nombre_campo;
     boolean iskey;
-
+    boolean iskey_secundary;
+    
     public Campo() {
     }
 
-    public Campo(String nombre_campo, int tipo, int longitud, boolean iskey) {
+    public Campo(String nombre_campo, int tipo, int longitud, boolean iskey, boolean iskeay_secundary) {
         this.tipo = tipo;
         this.longitud = longitud;
         this.nombre_campo = nombre_campo;
         this.iskey = iskey;
+        this.iskey_secundary = iskey;
     }
 
     public int getTipo() {
@@ -68,8 +70,7 @@ public class Campo {
 
     @Override
     public String toString() {
-        return nombre_campo + "-" + tipo + "-" + longitud + "-" + ((iskey) ? "1" : "0") + '|';
-
+        return nombre_campo + "-" + tipo + "-" + longitud + "-" + ((iskey) ? "1" : "0") + "-"+((iskey_secundary) ? "1" : "0")+'|';
     }
 
 }

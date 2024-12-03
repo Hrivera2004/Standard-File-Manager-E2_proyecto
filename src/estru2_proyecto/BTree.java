@@ -171,7 +171,7 @@ public class BTree implements Serializable {
         parent.getChildren()[index + 1] = newChild;
     }
 
-    public void CrossTree(BTree Btree2, File file, Archivo archivo1, Archivo archivo2, int campo1, int campo2) {
+    public void CrossTree(BTree Btree2, File file, Archivo archivo1, Archivo archivo2, int[] campo1, int[] campo2) {
         if (root != null && Btree2.getRoot() != null) {
             CrossTreeNode(root, file, Btree2, archivo1, archivo2, campo1, campo2);
         } else {
@@ -179,7 +179,7 @@ public class BTree implements Serializable {
         }
     }
 
-    private void CrossTreeNode(BTreeNode node, File file, BTree Btree2, Archivo archivo1, Archivo archivo2, int campo1, int campo2) {
+    private void CrossTreeNode(BTreeNode node, File file, BTree Btree2, Archivo archivo1, Archivo archivo2, int[] campo1, int[] campo2) {
         if (node != null) {
             try {
                 // Imprimir las claves del nodo
@@ -191,10 +191,19 @@ public class BTree implements Serializable {
                             if (temp != null) {
                                 Llave llave_temp = temp.getKeys()[temp.binarySearch(key.getKey())];
                                 Registro registro2 = archivo2.LoadRegistro(llave_temp.getRRN());
-                                bf.write(registro1.getData().get(campo1).toString() + "-" + registro2.getData().get(campo2).toString() + "\n");
+                                StringBuilder write = new StringBuilder();
+
+                                for (int i : campo1) {
+                                    write.append(registro1.getData().get(i).toString()).append(" ");
+                                }
+                                write.append("- ");
+                                for (int i : campo2) {
+                                    write.append(registro2.getData().get(i).toString()).append(" ");
+                                }
+                                
+                                bf.write(write.toString() + "\n");
                             }
                         }
-
                     }
                     bf.close();
                 }
