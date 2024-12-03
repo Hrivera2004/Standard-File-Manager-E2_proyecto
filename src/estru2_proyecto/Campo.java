@@ -21,12 +21,20 @@ public class Campo {
     public Campo() {
     }
 
-    public Campo(String nombre_campo, int tipo, int longitud, boolean iskey, boolean iskeay_secundary) {
+    public Campo(String nombre_campo, int tipo, int longitud, boolean iskey, boolean iskey_secundary) {
         this.tipo = tipo;
         this.longitud = longitud;
         this.nombre_campo = nombre_campo;
         this.iskey = iskey;
-        this.iskey_secundary = iskey;
+        this.iskey_secundary = iskey_secundary;
+    }
+    
+    public boolean isIskey_secundary() {
+        return iskey_secundary;
+    }
+
+    public void setIskey_secundary(boolean iskey_secundary) {
+        this.iskey_secundary = iskey_secundary;
     }
 
     public int getTipo() {

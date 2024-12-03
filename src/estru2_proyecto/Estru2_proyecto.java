@@ -67,6 +67,16 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         buttonGroup_EliminarTipo.add(jRadioButton_Campos_Eliminar_String);
         jPanel_Archivo_crear.setVisible(false);
         this.setLocationRelativeTo(null);
+
+        File folder = new File("./ArbolesB/");
+        File[] files = folder.listFiles();
+        DefaultListModel model = new DefaultListModel<String>();
+        for (File file : files) {
+            if (file.getName().endsWith(".dat")) {
+                model.add(model.size(), file.getName());
+            }
+        }
+        jList_Indices_ReIndexar.setModel(model);
     }
 
     /**
@@ -211,6 +221,17 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jButton_Registros_Cruzar = new javax.swing.JButton();
         jButton_Registros_borrar = new javax.swing.JButton();
         jPanel_indices = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jButton_Indicie_Crear = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jList_Indices_CrearIndices = new javax.swing.JList<>();
+        jLabel_indices_crearIndices = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jList_Indices_ReIndexar = new javax.swing.JList<>();
+        jButton_Indices_ReIndexar = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
         jPanel_Estandarizacion = new javax.swing.JPanel();
 
         jDialog_Campos_Crear.setResizable(false);
@@ -715,7 +736,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel_Campos_Modificar_Longitud, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jSpinner_Campos_Modificar_Longitud))))
-                .addGap(215, 253, Short.MAX_VALUE))
+                .addGap(215, 257, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jButton_Campos_Modificar_Regresar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1590,7 +1611,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                     .addGroup(jPanel_CamposLayout.createSequentialGroup()
                         .addGap(233, 233, 233)
                         .addComponent(jLabel_Campos_OpcionesCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         jPanel_CamposLayout.setVerticalGroup(
             jPanel_CamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1688,7 +1709,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                     .addGroup(jPanel_RegistrosLayout.createSequentialGroup()
                         .addGap(310, 310, 310)
                         .addComponent(jLabel_Registros_OpcionesRegistros)))
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         jPanel_RegistrosLayout.setVerticalGroup(
             jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1716,15 +1737,126 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         jTabbedPane_Menu.addTab("Registros", jPanel_Registros);
 
+        jPanel7.setBackground(new java.awt.Color(204, 255, 204));
+
+        jPanel8.setBackground(new java.awt.Color(0, 102, 0));
+
+        jButton_Indicie_Crear.setText("Crear Índices ");
+        jButton_Indicie_Crear.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_Indicie_CrearMouseClicked(evt);
+            }
+        });
+
+        jList_Indices_CrearIndices.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jList_Indices_CrearIndices.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane5.setViewportView(jList_Indices_CrearIndices);
+
+        jLabel_indices_crearIndices.setText("Archivo: ");
+        jLabel_indices_crearIndices.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap(45, Short.MAX_VALUE)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton_Indicie_Crear, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                    .addComponent(jLabel_indices_crearIndices, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING))
+                .addGap(44, 44, 44))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addComponent(jLabel_indices_crearIndices)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton_Indicie_Crear)
+                .addGap(20, 20, 20))
+        );
+
+        jPanel9.setBackground(new java.awt.Color(0, 153, 51));
+
+        jList_Indices_ReIndexar.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList_Indices_ReIndexar.setPreferredSize(new java.awt.Dimension(12, 2));
+        jScrollPane8.setViewportView(jList_Indices_ReIndexar);
+
+        jButton_Indices_ReIndexar.setText("Re Indexar Archivo");
+        jButton_Indices_ReIndexar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_Indices_ReIndexarMouseClicked(evt);
+            }
+        });
+
+        jLabel6.setText("Archivos de indice: ");
+        jLabel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addContainerGap(56, Short.MAX_VALUE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton_Indices_ReIndexar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(44, 44, 44))))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton_Indices_ReIndexar)
+                .addGap(20, 20, 20))
+        );
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(92, 92, 92)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(92, 92, 92))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(50, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel_indicesLayout = new javax.swing.GroupLayout(jPanel_indices);
         jPanel_indices.setLayout(jPanel_indicesLayout);
         jPanel_indicesLayout.setHorizontalGroup(
             jPanel_indicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 791, Short.MAX_VALUE)
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel_indicesLayout.setVerticalGroup(
             jPanel_indicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 464, Short.MAX_VALUE)
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jTabbedPane_Menu.addTab("Indices", jPanel_indices);
@@ -1733,7 +1865,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jPanel_Estandarizacion.setLayout(jPanel_EstandarizacionLayout);
         jPanel_EstandarizacionLayout.setHorizontalGroup(
             jPanel_EstandarizacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 791, Short.MAX_VALUE)
+            .addGap(0, 796, Short.MAX_VALUE)
         );
         jPanel_EstandarizacionLayout.setVerticalGroup(
             jPanel_EstandarizacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1763,7 +1895,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private void jButton_Archivo_Nuevo1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Archivo_Nuevo1MouseClicked
         // TODO add your handling code here:
 
-        int option = JOptionPane.showConfirmDialog(this, "Esta seguro que quiere salir?\nTodo su progreso sera guardado.", "Salir", JOptionPane.YES_NO_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, "Esta seguro que quiere salir?\nTodo su progreso sera guardado.", "Salir", JOptionPane.YES_NO_OPTION);
         if (option == JOptionPane.YES_OPTION) {
             //Guardar todo
             if (!archivo1_principal.getFilename().isEmpty()) {
@@ -1789,6 +1921,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 archivo1_principal.close_file();
                 btree = new BTree(3);
                 jLabel_Archivo_currentFile.setText("Archivo Abierto: n\\a");
+                jList_Indices_CrearIndices.setModel(new DefaultListModel<>());
+                jLabel_indices_crearIndices.setText("n\\a");
 
             } catch (IOException ex) {
                 Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
@@ -1859,7 +1993,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes");
         } else if (archivo1_principal.getMetadata() == null || archivo1_principal.getMetadata().getCampos() == null || archivo1_principal.getMetadata().getCampos().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No tiene campos para eliminar.");
+            JOptionPane.showMessageDialog(null, "No tiene campos para eliminar.");
         } else {
 
         }
@@ -1869,7 +2003,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes");
         } else if (archivo1_principal.getMetadata() == null || archivo1_principal.getMetadata().getCampos() == null || archivo1_principal.getMetadata().getCampos().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No tiene campos para listar.");
+            JOptionPane.showMessageDialog(null, "No tiene campos para listar.");
         } else {
             llenar_Tabla(jTable_Campos_Listar);
             abrirDialog(jDialog_Campos_Listar);
@@ -1881,7 +2015,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes");
         } else if (archivo1_principal.getMetadata() == null || archivo1_principal.getMetadata().getCampos() == null || archivo1_principal.getMetadata().getCampos().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No tiene campos para modificar.");
+            JOptionPane.showMessageDialog(null, "No tiene campos para modificar.");
         } else {
             jComboBox_Modificar.removeAllItems();
             for (int i = 0; i < archivo1_principal.getMetadata().getCampos().size(); i++) {
@@ -1948,13 +2082,13 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         // Validación: Verificar si el nombre del campo está vacío
         if (jTextField_Campos_Nombre.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un nombre para el campo.");
+            JOptionPane.showMessageDialog(null, "Debe ingresar un nombre para el campo.");
             return;
         }
 
         // Validación: Nombre del campo no debe exceder los 25 caracteres
         if (jTextField_Campos_Nombre.getText().length() > 25) {
-            JOptionPane.showMessageDialog(this, "El nombre del campo no puede tener más de 25 caracteres.");
+            JOptionPane.showMessageDialog(null, "El nombre del campo no puede tener más de 25 caracteres.");
             jTextField_Campos_Nombre.setText("");
             return;
         }
@@ -2027,6 +2161,29 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 buttonGroup_Campos_Llave.clearSelection(); // Limpiar selección de llave
                 return;
             }
+            Object[] options = {"Secondary", "Primary"};
+
+            // Display the JOptionPane
+            int result = JOptionPane.showOptionDialog(
+                    null,
+                    "Choose an option:",
+                    "Custom Options",
+                    JOptionPane.YES_NO_OPTION, // Use YES_NO_OPTION type for simplicity
+                    JOptionPane.QUESTION_MESSAGE, // Icon type
+                    null, // Default icon
+                    options, // Custom options
+                    options[1] // Default option (highlighted)
+            );
+            if (result == 0) {
+                temp.setIskey(false);
+                temp.setIskey_secundary(true);
+            }else if (result == 1){
+                temp.setIskey(true);
+                temp.setIskey_secundary(false);
+            }else{
+                JOptionPane.showMessageDialog(null, "Error espesifique el tipo de llave");
+                return;
+            }
             temp.setIskey(true);
         } else {
             JOptionPane.showMessageDialog(jDialog_Campos_Crear, "Debe especificar si es llave.");
@@ -2058,6 +2215,18 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(jDialog_Campos_Crear, "Error al guardar el campo.");
         }
+
+        if (archivo1_principal.getMetadata() != null) {
+            DefaultListModel model = new DefaultListModel<>();
+            for (String campo : archivo1_principal.getMetadata().getKeys()) {
+                if (rootPaneCheckingEnabled) {
+                    model.add(model.size(), campo);
+                }
+            }
+            jList_Indices_CrearIndices.setModel(model);
+            jLabel_indices_crearIndices.setText(archivo1_principal.getFilename());
+            loadJList(archivo1_principal, jList_Indices_CrearIndices, jLabel_indices_crearIndices);
+        }
     }//GEN-LAST:event_jButton_Campos_CrearCampoMouseClicked
 
     private void jButton_Campos_CrearCampoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Campos_CrearCampoActionPerformed
@@ -2076,13 +2245,13 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         // Validación: Verificar si el nombre del campo está vacío
         if (jTextField_Campos_Modificar_Nombre.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un nombre para el campo.");
+            JOptionPane.showMessageDialog(null, "Debe ingresar un nombre para el campo.");
             return;
         }
 
         // Validación: Nombre del campo no debe exceder los 25 caracteres
         if (jTextField_Campos_Modificar_Nombre.getText().length() > 25) {
-            JOptionPane.showMessageDialog(this, "El nombre del campo no puede tener más de 25 caracteres.");
+            JOptionPane.showMessageDialog(null, "El nombre del campo no puede tener más de 25 caracteres.");
             jTextField_Campos_Modificar_Nombre.setText("");
             return;
         }
@@ -2171,15 +2340,15 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         // Verificación adicional para asegurarse de que el campo tiene datos completos
         if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un nombre para el campo.");
+            JOptionPane.showMessageDialog(null, "Debe ingresar un nombre para el campo.");
             return;
         }
         if (tipo == -1) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un tipo de dato.");
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un tipo de dato.");
             return;
         }
         if (longitud <= 0) {
-            JOptionPane.showMessageDialog(this, "La longitud debe ser mayor a 0.");
+            JOptionPane.showMessageDialog(null, "La longitud debe ser mayor a 0.");
             return;
         }
 
@@ -2199,6 +2368,17 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(jDialog_Campos_Modificar, "Error al modificar el campo.");
         }
 
+        if (archivo1_principal.getMetadata() != null) {
+            DefaultListModel model = new DefaultListModel<>();
+            for (String campo : archivo1_principal.getMetadata().getKeys()) {
+                if (rootPaneCheckingEnabled) {
+                    model.add(model.size(), campo);
+                }
+            }
+            jList_Indices_CrearIndices.setModel(model);
+            jLabel_indices_crearIndices.setText(archivo1_principal.getFilename());
+            loadJList(archivo1_principal, jList_Indices_CrearIndices, jLabel_indices_crearIndices);
+        }
         jDialog_Campos_Modificar.setVisible(false);
 
     }//GEN-LAST:event_jButton_Campos_Modificat_ConfirmarMouseClicked
@@ -2330,6 +2510,21 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(jDialog_Campos_Crear, "Error al eliminar el campo.");
         }
+        if (archivo1_principal.getMetadata() != null) {
+            if (archivo1_principal.getMetadata() != null) {
+                DefaultListModel model = new DefaultListModel<>();
+                for (String campo : archivo1_principal.getMetadata().getKeys()) {
+                    if (rootPaneCheckingEnabled) {
+                        model.add(model.size(), campo);
+                    }
+
+                }
+                jList_Indices_CrearIndices.setModel(model);
+                jLabel_indices_crearIndices.setText(archivo1_principal.getFilename());
+                loadJList(archivo1_principal, jList_Indices_CrearIndices, jLabel_indices_crearIndices);
+
+            }
+        }
         jDialog_Campos_Eliminar.setVisible(false);
     }//GEN-LAST:event_jButton_Campos_Eliminar_ConfirmarMouseClicked
 
@@ -2345,7 +2540,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes");
         } else if (archivo1_principal.getMetadata() == null || archivo1_principal.getMetadata().getCampos() == null || archivo1_principal.getMetadata().getCampos().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No tiene campos para eliminar.");
+            JOptionPane.showMessageDialog(null, "No tiene campos para eliminar.");
         } else {
             jComboBox_Eliminar.removeAllItems();
             for (int i = 0; i < archivo1_principal.getMetadata().getCampos().size(); i++) {
@@ -2674,6 +2869,16 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al introducir: " + e.getMessage());
         }
+
+        File folder = new File("./ArbolesB/");
+        File[] files = folder.listFiles();
+        DefaultListModel model1 = new DefaultListModel<String>();
+        for (File file : files) {
+            if (file.getName().endsWith(".dat")) {
+                model1.add(model1.size(), file.getName());
+            }
+        }
+        jList_Indices_ReIndexar.setModel(model1);
     }//GEN-LAST:event_jButton_IntroducirRegistros_crearMouseClicked
 
     private void jTable_Registro_introducirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable_Registro_introducirKeyPressed
@@ -2787,48 +2992,45 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jDialog_Registros_cruzar.setVisible(false);
         this.setVisible(true);
     }//GEN-LAST:event_jButton3MouseClicked
-    private void Cruzar() {
-        String[] Split1 = jComboBox_Registros_cruzar1.getSelectedItem().toString().split("-");
-        String Key1_name = Split1[0];
-        int Key1_pos = Integer.parseInt(Split1[1]);
-        
 
-        String[] Split2 = jComboBox_Registros_cruzar2.getSelectedItem().toString().split("-");
-        String Key2_name = Split2[0];
-        int Key2_pos = Integer.parseInt(Split2[1]);
-        
-        
-        if (archivo1_principal.getMetadata().getCampos().get(Key1_pos).getTipo() != archivo2_temporal.getMetadata().getCampos().get(Key2_pos).getTipo()) {
-            JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Error: No se pudo relacionar los campos selecionados");
-            return;
-        }
-        File cross = new File("./CrossFiles/" + archivo1_principal.getFilename() + "-" + archivo2_temporal.getFilename() + ".txt");
-        if (cross.exists()) {
-            cross.delete();
-        } else {
-            try {
-                cross.createNewFile();
-            } catch (IOException ex) {
-                Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+    private void jButton_Indicie_CrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Indicie_CrearMouseClicked
+        // TODO add your handling code here:
+        if (jList_Indices_CrearIndices.getModel().getSize() != 0) {
+            if (jList_Indices_CrearIndices.isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null, "Selecione un campo para crear un archivo de indices correspondiente.");
+                return;
+            }
+            int option = JOptionPane.showInternalConfirmDialog(null, "Esta seguro que desea continuar?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+            if (option == 1) {
+                String[] split = jList_Indices_CrearIndices.getSelectedValue().split("-");
+                int key_pos = Integer.parseInt(split[1]);
+
+                btree = new BTree(3);
+                long cant_Registros = archivo1_principal.cant_Registros();
+                if (cant_Registros != 0) {
+                    for (long i = 0; i < cant_Registros; i++) {
+                        Registro registro = archivo1_principal.LoadRegistro(i);
+                        //se tiene que cambiar
+                        btree.insert(new Llave((Comparable) registro.getData().get(key_pos), i));
+
+                    }
+                    guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getCampos().get(key_pos).getNombre_campo());
+                    JOptionPane.showMessageDialog(null, "Se ha creado el Archivo en ./Btree/");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Intente ingresar registros en el archivo antes de continuar");
+
+                }
+
+            } else {
+                return;
             }
         }
 
-        BTree btree_temporal_1 = cargarArbolDesdeArchivo(archivo1_principal, Key1_name);
-        BTree btree_temporal_2 = cargarArbolDesdeArchivo(archivo2_temporal, Key2_name);
+    }//GEN-LAST:event_jButton_Indicie_CrearMouseClicked
 
-        btree_temporal_1.CrossTree(btree_temporal_2,
-                cross,
-                archivo1_principal,
-                archivo2_temporal,
-                jList_Registros_Cruzar_Campos1.getSelectedIndices(),
-                jList_Registros_Cruzar_Campos2.getSelectedIndices()
-        );
-        try {
-            JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Se creo el archivo cruzado en: "+cross.getCanonicalPath());
-        } catch (IOException ex) {
-            Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    private void jButton_Indices_ReIndexarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Indices_ReIndexarMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_Indices_ReIndexarMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -2889,6 +3091,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JButton jButton_Campos_Modificar_Regresar;
     private javax.swing.JButton jButton_Campos_Modificat_Confirmar;
     private javax.swing.JButton jButton_Campos_Regresar;
+    private javax.swing.JButton jButton_Indices_ReIndexar;
+    private javax.swing.JButton jButton_Indicie_Crear;
     private javax.swing.JButton jButton_IntroducirRegistros_crear;
     private javax.swing.JButton jButton_Registros_Buscar;
     private javax.swing.JButton jButton_Registros_Cruzar;
@@ -2915,6 +3119,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel_Archivo_currentFile;
     private javax.swing.JLabel jLabel_Campos_CrearCampo;
     private javax.swing.JLabel jLabel_Campos_CrearCampo1;
@@ -2942,6 +3147,9 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_Registros_OpcionesRegistros1;
     private javax.swing.JLabel jLabel_Registros_OpcionesRegistros4;
     private javax.swing.JLabel jLabel_Registros_OpcionesRegistros5;
+    private javax.swing.JLabel jLabel_indices_crearIndices;
+    private javax.swing.JList<String> jList_Indices_CrearIndices;
+    private javax.swing.JList<String> jList_Indices_ReIndexar;
     private javax.swing.JList<String> jList_Registros_Cruzar_Campos1;
     private javax.swing.JList<String> jList_Registros_Cruzar_Campos2;
     private javax.swing.JPanel jPanel1;
@@ -2950,6 +3158,9 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanel_Archivo;
     private javax.swing.JPanel jPanel_Archivo_crear;
     private javax.swing.JPanel jPanel_Campos;
@@ -2983,8 +3194,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JSpinner jSpinner_Campos_Longitud;
     private javax.swing.JSpinner jSpinner_Campos_Modificar_Longitud;
     private javax.swing.JTabbedPane jTabbedPane_Menu;
@@ -3111,9 +3324,20 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 } catch (IOException ex) {
                     Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                if (archivo.getMetadata() != null) {
+                    DefaultListModel model = new DefaultListModel<>();
+                    for (String campo : archivo.getMetadata().getKeys()) {
+                        if (rootPaneCheckingEnabled) {
+                            model.add(model.size(), campo);
+                        }
 
+                    }
+                    jList_Indices_CrearIndices.setModel(model);
+                    jLabel_indices_crearIndices.setText(archivo.getFilename());
+                    loadJList(archivo, jList_Indices_CrearIndices, jLabel_indices_crearIndices);
+                }
             } else {
-                JOptionPane.showMessageDialog(this, "El archivo no existe: " + selected.getName());
+                JOptionPane.showMessageDialog(null, "El archivo no existe: " + selected.getName());
             }
         }
         jLabel_Archivo_currentFile.setText("Archivo Abierto: " + archivo1_principal.getFilename());
@@ -3121,6 +3345,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
     public void guardarArbolEnArchivo(Archivo archivo, String fieldname) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./ArbolesB/" + archivo.getFilename() + "-" + fieldname + ".dat"))) {
+            btree.setFather_filepath(archivo.getFileRegistros().getCanonicalPath());
             oos.writeObject(btree);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al guardar el árbol B en el archivo: " + e.getMessage());
@@ -3155,5 +3380,46 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             jcombobox.addItem(keys);
         }
 
+    }
+
+    private void Cruzar() {
+        String[] Split1 = jComboBox_Registros_cruzar1.getSelectedItem().toString().split("-");
+        String Key1_name = Split1[0];
+        int Key1_pos = Integer.parseInt(Split1[1]);
+
+        String[] Split2 = jComboBox_Registros_cruzar2.getSelectedItem().toString().split("-");
+        String Key2_name = Split2[0];
+        int Key2_pos = Integer.parseInt(Split2[1]);
+
+        if (archivo1_principal.getMetadata().getCampos().get(Key1_pos).getTipo() != archivo2_temporal.getMetadata().getCampos().get(Key2_pos).getTipo()) {
+            JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Error: No se pudo relacionar los campos selecionados");
+            return;
+        }
+        File cross = new File("./CrossFiles/" + archivo1_principal.getFilename() + "-" + archivo2_temporal.getFilename() + ".txt");
+        if (cross.exists()) {
+            cross.delete();
+        } else {
+            try {
+                cross.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        BTree btree_temporal_1 = cargarArbolDesdeArchivo(archivo1_principal, Key1_name);
+        BTree btree_temporal_2 = cargarArbolDesdeArchivo(archivo2_temporal, Key2_name);
+
+        btree_temporal_1.CrossTree(btree_temporal_2,
+                cross,
+                archivo1_principal,
+                archivo2_temporal,
+                jList_Registros_Cruzar_Campos1.getSelectedIndices(),
+                jList_Registros_Cruzar_Campos2.getSelectedIndices()
+        );
+        try {
+            JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Se creo el archivo cruzado en: " + cross.getCanonicalPath());
+        } catch (IOException ex) {
+            Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

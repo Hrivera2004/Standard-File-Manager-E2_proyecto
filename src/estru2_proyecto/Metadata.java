@@ -17,17 +17,21 @@ import javax.swing.JOptionPane;
 //tipo: 0 = boolean, 1 = int, 2 = float, 3 = string, 4 = char
 //500 bytes
 public class Metadata {
+
     private int RRN_headAvail = -1;
     //Solo 10 porque es una cantidad rasonable
     private ArrayList<Campo> campos;
     private int KeyElement = -1;
+    private int[] KeyElements_Secundary = {-1, -1};
 
-    public Metadata(int RRN_headAvail, ArrayList<Campo> campos, int KeyElement) {
+    public Metadata(int RRN_headAvail, ArrayList<Campo> campos, int KeyElement, int KeyElement_s1, int KeyElement_s2) {
         this.RRN_headAvail = RRN_headAvail;
         this.campos = campos;
         this.KeyElement = KeyElement;
+        this.KeyElements_Secundary[0] = KeyElement_s1;
+        this.KeyElements_Secundary[1] = KeyElement_s2;
     }
-    
+
     public Metadata() {
     }
 
@@ -42,9 +46,11 @@ public class Metadata {
     public int getKeyElement_pos() {
         return KeyElement;
     }
+
     public Campo getKeyElement() {
         return campos.get(KeyElement);
     }
+
     public void setKeyElement_pos(int KeyElement) {
         this.KeyElement = KeyElement;
     }
@@ -70,6 +76,21 @@ public class Metadata {
                         KeyElement = campos.size();
                     } else {
                         campo.setIskey(false);
+                    }
+                }
+            }
+            //falta
+            if (campo.isIskey_secundary()) {
+                if (KeyElements_Secundary[0] != -1) {
+                    if (KeyElements_Secundary[1] != -1) {
+                        int option = JOptionPane.showConfirmDialog(null, "Ya tiene 2 llaves secundarias\nDesea replazarla 1 por la nueva llave que introdujo?.", "Error: Ya hay una key principal", JOptionPane.YES_NO_OPTION);
+                        if (option == JOptionPane.YES_OPTION) {
+                            Campo oldKeyCampo = campos.get(KeyElement); // Guardamos el campo que será reemplazado
+                            oldKeyCampo.setIskey(false); // Desmarcar el campo anterior como llave principal
+                            KeyElement = campos.size();
+                        } else {
+                            campo.setIskey(false);
+                        }
                     }
                 }
             }
@@ -111,15 +132,17 @@ public class Metadata {
         }
         return ((RRN_headAvail == -1) ? -1 : " " + RRN_headAvail) + ";" + temp + ";" + KeyElement + ";";
     }
-    public ArrayList<String> getKeys(){
+
+    public ArrayList<String> getKeys() {
         ArrayList<String> keys = new ArrayList();
-        for (int i = 0; i < campos.size(); i++) {
-            if (campos.get(i).iskey ||campos.get(i).iskey_secundary) {
-                keys.add(campos.get(i).getNombre_campo()+"-"+i);
-            }
-            
+        keys.add(campos.get(KeyElement).getNombre_campo() + "-" + KeyElement);
+        if (KeyElements_Secundary[0] != -1) {
+            keys.add(campos.get(KeyElements_Secundary[0]).getNombre_campo() + "-" + KeyElement);
+        }
+        if (KeyElements_Secundary[1] != -1) {
+            keys.add(campos.get(KeyElements_Secundary[1]).getNombre_campo() + "-" + KeyElement);
         }
         return keys;
     }
-    
+
 }

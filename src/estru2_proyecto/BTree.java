@@ -19,13 +19,21 @@ import javax.swing.JOptionPane;
  * @author pepes
  */
 public class BTree implements Serializable {
-
+    private String Father_filepath = "";
     private BTreeNode root;
     private int t;
 
     public BTree(int t) {
         this.t = t;
         this.root = new BTreeNode(t, true);
+    }
+
+    public String getFather_filepath() {
+        return Father_filepath;
+    }
+
+    public void setFather_filepath(String Father_filepath) {
+        this.Father_filepath = Father_filepath;
     }
 
     public BTree() {
