@@ -170,7 +170,9 @@ public class Archivo {
             metadata = new Metadata(
                     Integer.parseInt(temp_metadata[0].trim()),
                     campos,
-                    Integer.parseInt(temp_metadata[2].trim())
+                    Integer.parseInt(temp_metadata[2].trim()),
+                    Integer.parseInt(temp_metadata[3].trim()),
+                    Integer.parseInt(temp_metadata[4].trim())
             );
             return true;
         } catch (IOException e) {

@@ -4,11 +4,13 @@
  */
 package estru2_proyecto;
 
+import java.awt.Color;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -79,17 +81,45 @@ public class Metadata {
                     }
                 }
             }
-            //falta
             if (campo.isIskey_secundary()) {
                 if (KeyElements_Secundary[0] != -1) {
                     if (KeyElements_Secundary[1] != -1) {
                         int option = JOptionPane.showConfirmDialog(null, "Ya tiene 2 llaves secundarias\nDesea replazarla 1 por la nueva llave que introdujo?.", "Error: Ya hay una key principal", JOptionPane.YES_NO_OPTION);
                         if (option == JOptionPane.YES_OPTION) {
-                            
+
+                            Object[] options = {campos.get(KeyElements_Secundary[0]), campos.get(KeyElements_Secundary[1])};
+
+                            // Display the JOptionPane
+                            int result = JOptionPane.showOptionDialog(
+                                    null,
+                                    "Cual campo desea cambiar:",
+                                    "Opciones",
+                                    JOptionPane.YES_NO_OPTION, // Use YES_NO_OPTION type for simplicity
+                                    JOptionPane.QUESTION_MESSAGE, // Icon type
+                                    null, // Default icon
+                                    options, // Custom options
+                                    options[1] // Default option (highlighted)
+                            );
+                            if (result == 0) {
+                                campo.setIskey_secundary(true);
+                                campos.set(KeyElements_Secundary[0], campo);
+                            } else if (result == 1) {
+                                campo.setIskey_secundary(true);
+                                campos.set(KeyElements_Secundary[1], campo);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Error: El campo se va a añadir como campo normal");
+                                campo.setIskey_secundary(false);
+                                campo.setIskey_secundary(false);
+                            }
                         } else {
-                            
+                            campo.setIskey_secundary(false);
+                            campo.setIskey(false);
                         }
+                    } else {
+                        KeyElements_Secundary[1] = 1;
                     }
+                } else {
+                    KeyElements_Secundary[0] = 1;
                 }
             }
             campos.add(campo);
@@ -124,21 +154,24 @@ public class Metadata {
 
     @Override
     public String toString() {
-        String temp = "";
+        String temp1 = "";
         for (Campo campo : campos) {
-            temp += campo.toString();
+            temp1 += campo.toString();
         }
-        return ((RRN_headAvail == -1) ? -1 : " " + RRN_headAvail) + ";" + temp + ";" + KeyElement + ";";
+
+        return ((RRN_headAvail == -1) ? -1 : " " + RRN_headAvail) + ";" + temp1 + ";" + KeyElement + ";" + KeyElements_Secundary[0] + ";" + KeyElements_Secundary[1] + ";";
     }
 
     public ArrayList<String> getKeys() {
         ArrayList<String> keys = new ArrayList();
-        keys.add(campos.get(KeyElement).getNombre_campo() + "-" + KeyElement);
+        if (KeyElement != -1) {
+            keys.add(campos.get(KeyElement).getNombre_campo() + "-" + KeyElement);
+        }
         if (KeyElements_Secundary[0] != -1) {
-            keys.add(campos.get(KeyElements_Secundary[0]).getNombre_campo() + "-" + KeyElement);
+            keys.add(campos.get(KeyElements_Secundary[0]).getNombre_campo() + "-" + KeyElements_Secundary[0]);
         }
         if (KeyElements_Secundary[1] != -1) {
-            keys.add(campos.get(KeyElements_Secundary[1]).getNombre_campo() + "-" + KeyElement);
+            keys.add(campos.get(KeyElements_Secundary[1]).getNombre_campo() + "-" + KeyElements_Secundary[1]);
         }
         return keys;
     }

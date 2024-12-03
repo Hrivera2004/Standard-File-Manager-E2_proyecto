@@ -1407,7 +1407,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jPanel_Archivo_crearLayout.setVerticalGroup(
             jPanel_Archivo_crearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_Archivo_crearLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(14, Short.MAX_VALUE)
                 .addComponent(jTextField_Archivo_Crear, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel_Archivo_crearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1505,15 +1505,15 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jPanel_ArchivoLayout.setHorizontalGroup(
             jPanel_ArchivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_ArchivoLayout.createSequentialGroup()
-                .addGap(68, 68, 68)
+                .addContainerGap(61, Short.MAX_VALUE)
                 .addGroup(jPanel_ArchivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel_Archivo_currentFile, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                    .addComponent(jLabel_Archivo_currentFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton_Archivo_Nuevo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton_Archivo_Salvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton_Archivo_Cerrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton_Archivo_Nuevo, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
-                    .addComponent(jButton_Archivo_Abrir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton_Archivo_Nuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton_Archivo_Abrir, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel_ArchivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel_Archivo_crear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1526,7 +1526,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 .addGroup(jPanel_ArchivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_ArchivoLayout.createSequentialGroup()
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel_Archivo_crear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel_ArchivoLayout.createSequentialGroup()
                         .addComponent(jLabel_Archivo_currentFile, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1536,13 +1537,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                         .addGap(49, 49, 49)
                         .addComponent(jButton_Archivo_Salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(49, 49, 49)
-                        .addGroup(jPanel_ArchivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel_ArchivoLayout.createSequentialGroup()
-                                .addComponent(jButton_Archivo_Cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton_Archivo_Nuevo1))
-                            .addComponent(jPanel_Archivo_crear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(49, 49, 49))))
+                        .addComponent(jButton_Archivo_Cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                        .addComponent(jButton_Archivo_Nuevo1)))
+                .addGap(49, 49, 49))
         );
 
         jTabbedPane_Menu.addTab("Archivo", jPanel_Archivo);
@@ -1754,6 +1752,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         jList_Indices_CrearIndices.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList_Indices_CrearIndices.setPreferredSize(new java.awt.Dimension(170, 285));
         jScrollPane5.setViewportView(jList_Indices_CrearIndices);
 
         jLabel_indices_crearIndices.setText("Archivo: ");
@@ -1764,9 +1763,9 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
+                .addContainerGap(44, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton_Indicie_Crear, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                    .addComponent(jButton_Indicie_Crear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel_indices_crearIndices, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(44, 44, 44))
@@ -1786,7 +1785,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jPanel9.setBackground(new java.awt.Color(0, 153, 51));
 
         jList_Indices_ReIndexar.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jList_Indices_ReIndexar.setPreferredSize(new java.awt.Dimension(12, 2));
+        jList_Indices_ReIndexar.setPreferredSize(new java.awt.Dimension(170, 285));
         jScrollPane8.setViewportView(jList_Indices_ReIndexar);
 
         jButton_Indices_ReIndexar.setText("Re Indexar Archivo");
@@ -1804,7 +1803,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(56, Short.MAX_VALUE)
+                .addContainerGap(44, Short.MAX_VALUE)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1832,7 +1831,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(92, 92, 92)
+                .addGap(93, 93, 93)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2155,6 +2154,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         // Validación de si es llave (iskey)
         if (jRadioButton_Campos_No.isSelected()) {
             temp.setIskey(false);
+            temp.setIskey_secundary(false);
         } else if (jRadioButton_Campos_Si.isSelected()) {
             if (temp.getTipo() == 0 && temp.getTipo() == 4) { // Validar que boolean no sea llave
                 JOptionPane.showMessageDialog(jDialog_Campos_Crear, "Un campo de tipo boolean/Char no puede ser llave.");
@@ -2166,8 +2166,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             // Display the JOptionPane
             int result = JOptionPane.showOptionDialog(
                     null,
-                    "Choose an option:",
-                    "Custom Options",
+                    "Va a ser llave secundaria o primaria",
+                    "Eleccion",
                     JOptionPane.YES_NO_OPTION, // Use YES_NO_OPTION type for simplicity
                     JOptionPane.QUESTION_MESSAGE, // Icon type
                     null, // Default icon
@@ -2177,14 +2177,13 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             if (result == 0) {
                 temp.setIskey(false);
                 temp.setIskey_secundary(true);
-            }else if (result == 1){
+            } else if (result == 1) {
                 temp.setIskey(true);
                 temp.setIskey_secundary(false);
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Error espesifique el tipo de llave");
                 return;
             }
-            temp.setIskey(true);
         } else {
             JOptionPane.showMessageDialog(jDialog_Campos_Crear, "Debe especificar si es llave.");
             return;
@@ -2225,7 +2224,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             }
             jList_Indices_CrearIndices.setModel(model);
             jLabel_indices_crearIndices.setText(archivo1_principal.getFilename());
-            loadJList(archivo1_principal, jList_Indices_CrearIndices, jLabel_indices_crearIndices);
         }
     }//GEN-LAST:event_jButton_Campos_CrearCampoMouseClicked
 
@@ -2377,7 +2375,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             }
             jList_Indices_CrearIndices.setModel(model);
             jLabel_indices_crearIndices.setText(archivo1_principal.getFilename());
-            loadJList(archivo1_principal, jList_Indices_CrearIndices, jLabel_indices_crearIndices);
         }
         jDialog_Campos_Modificar.setVisible(false);
 
@@ -2521,7 +2518,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 }
                 jList_Indices_CrearIndices.setModel(model);
                 jLabel_indices_crearIndices.setText(archivo1_principal.getFilename());
-                loadJList(archivo1_principal, jList_Indices_CrearIndices, jLabel_indices_crearIndices);
 
             }
         }
@@ -3001,26 +2997,24 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 return;
             }
             int option = JOptionPane.showInternalConfirmDialog(null, "Esta seguro que desea continuar?", "Confirmacion", JOptionPane.YES_NO_OPTION);
-            if (option == 1) {
+            if (option == 0) {
                 String[] split = jList_Indices_CrearIndices.getSelectedValue().split("-");
                 int key_pos = Integer.parseInt(split[1]);
 
                 btree = new BTree(3);
                 long cant_Registros = archivo1_principal.cant_Registros();
                 if (cant_Registros != 0) {
-                    for (long i = 0; i < cant_Registros; i++) {
+                    for (int i = 0; i < cant_Registros; i++) {
                         Registro registro = archivo1_principal.LoadRegistro(i);
-                        //se tiene que cambiar
                         btree.insert(new Llave((Comparable) registro.getData().get(key_pos), i));
-
+                        btree.printTree();
                     }
                     guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getCampos().get(key_pos).getNombre_campo());
                     JOptionPane.showMessageDialog(null, "Se ha creado el Archivo en ./Btree/");
+                    btree.printTree();
                 } else {
                     JOptionPane.showMessageDialog(null, "Intente ingresar registros en el archivo antes de continuar");
-
                 }
-
             } else {
                 return;
             }
@@ -3327,14 +3321,11 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 if (archivo.getMetadata() != null) {
                     DefaultListModel model = new DefaultListModel<>();
                     for (String campo : archivo.getMetadata().getKeys()) {
-                        if (rootPaneCheckingEnabled) {
-                            model.add(model.size(), campo);
-                        }
-
+                        System.out.println(campo);
+                        model.add(model.size(), campo);
                     }
                     jList_Indices_CrearIndices.setModel(model);
                     jLabel_indices_crearIndices.setText(archivo.getFilename());
-                    loadJList(archivo, jList_Indices_CrearIndices, jLabel_indices_crearIndices);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "El archivo no existe: " + selected.getName());
