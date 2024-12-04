@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -162,18 +163,17 @@ public class Metadata {
         return ((RRN_headAvail == -1) ? -1 : " " + RRN_headAvail) + ";" + temp1 + ";" + KeyElement + ";" + KeyElements_Secundary[0] + ";" + KeyElements_Secundary[1] + ";";
     }
 
-    public ArrayList<String> getKeys() {
-        ArrayList<String> keys = new ArrayList();
+    public HashMap<String, Integer> getKeys() {
+        HashMap<String, Integer> keys = new HashMap<>();
         if (KeyElement != -1) {
-            keys.add(campos.get(KeyElement).getNombre_campo() + "-" + KeyElement);
+            keys.put(campos.get(KeyElement).getNombre_campo(), KeyElement);
         }
         if (KeyElements_Secundary[0] != -1) {
-            keys.add(campos.get(KeyElements_Secundary[0]).getNombre_campo() + "-" + KeyElements_Secundary[0]);
+            keys.put(campos.get(KeyElements_Secundary[0]).getNombre_campo(), KeyElements_Secundary[0]);
         }
         if (KeyElements_Secundary[1] != -1) {
-            keys.add(campos.get(KeyElements_Secundary[1]).getNombre_campo() + "-" + KeyElements_Secundary[1]);
+            keys.put(campos.get(KeyElements_Secundary[1]).getNombre_campo(), KeyElements_Secundary[1]);
         }
         return keys;
     }
-
 }

@@ -93,14 +93,15 @@ public class Archivo {
         FileRegistros = selected;
         int lastIndex = selected.getName().lastIndexOf('.');
         filename = selected.getName().substring(0, lastIndex);
-        try {
-            return LoadMetaData();
-        } catch (Exception e) {
-            return false;
+        try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "rw")) {
+            if (file.length() >= 500) {
+                return LoadMetaData();
+            }
         }
+        return false;
     }
-
     //modificar
+
     public void close_file() throws IOException {//guarda y cierra el archivo
         try {
             if (metadata != null) {
@@ -274,7 +275,7 @@ public class Archivo {
         }
         return -1;
     }
-
+    
     public Registro buscarRegistroSecuencial(Object claveBusqueda, int posicionClave) {
         try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "r")) {
             long offset = 500; // Saltar la metadata

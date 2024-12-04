@@ -15,6 +15,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -2217,9 +2219,9 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         if (archivo1_principal.getMetadata() != null) {
             DefaultListModel model = new DefaultListModel<>();
-            for (String campo : archivo1_principal.getMetadata().getKeys()) {
+            for (String key : archivo1_principal.getMetadata().getKeys().keySet()) {
                 if (rootPaneCheckingEnabled) {
-                    model.add(model.size(), campo);
+                    model.add(model.size(), key);
                 }
             }
             jList_Indices_CrearIndices.setModel(model);
@@ -2368,10 +2370,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         if (archivo1_principal.getMetadata() != null) {
             DefaultListModel model = new DefaultListModel<>();
-            for (String campo : archivo1_principal.getMetadata().getKeys()) {
-                if (rootPaneCheckingEnabled) {
-                    model.add(model.size(), campo);
-                }
+            for (String campo : archivo1_principal.getMetadata().getKeys().keySet()) {
+                model.add(model.size(), key);
             }
             jList_Indices_CrearIndices.setModel(model);
             jLabel_indices_crearIndices.setText(archivo1_principal.getFilename());
@@ -2510,11 +2510,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         if (archivo1_principal.getMetadata() != null) {
             if (archivo1_principal.getMetadata() != null) {
                 DefaultListModel model = new DefaultListModel<>();
-                for (String campo : archivo1_principal.getMetadata().getKeys()) {
-                    if (rootPaneCheckingEnabled) {
-                        model.add(model.size(), campo);
-                    }
-
+                for (String key : archivo1_principal.getMetadata().getKeys().keySet()) {
+                    model.add(model.size(), key);
                 }
                 jList_Indices_CrearIndices.setModel(model);
                 jLabel_indices_crearIndices.setText(archivo1_principal.getFilename());
@@ -2857,7 +2854,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 btree.insert(new Llave((Comparable) key, archivo1_principal.getLatest_modified()));
                 // Guardar el árbol B en un archivo binario
                 btree.printTree();
-                guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getKeyElement().getNombre_campo());
+                guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getKeyElement().getNombre_campo(), btree);
                 JOptionPane.showMessageDialog(null, "Se ha creado el registro y actualizado el árbol B.");
             }
             jDialog_Registros_Introducir.show(false);
@@ -2998,8 +2995,9 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             }
             int option = JOptionPane.showInternalConfirmDialog(null, "Esta seguro que desea continuar?", "Confirmacion", JOptionPane.YES_NO_OPTION);
             if (option == 0) {
-                String[] split = jList_Indices_CrearIndices.getSelectedValue().split("-");
-                int key_pos = Integer.parseInt(split[1]);
+                String name = jList_Indices_CrearIndices.getSelectedValue();
+
+                int key_pos = archivo1_principal.getMetadata().getKeys().get(name);;
 
                 btree = new BTree(3);
                 long cant_Registros = archivo1_principal.cant_Registros();
@@ -3009,7 +3007,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                         btree.insert(new Llave((Comparable) registro.getData().get(key_pos), i));
                         btree.printTree();
                     }
-                    guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getCampos().get(key_pos).getNombre_campo());
+                    guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getCampos().get(key_pos).getNombre_campo(), btree);
                     JOptionPane.showMessageDialog(null, "Se ha creado el Archivo en ./Btree/");
                     btree.printTree();
                 } else {
@@ -3024,6 +3022,59 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
     private void jButton_Indices_ReIndexarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Indices_ReIndexarMouseClicked
         // TODO add your handling code here:
+        if (jList_Indices_ReIndexar.isSelectionEmpty()) {
+            return;
+        } else {
+
+            String filename = "./ArbolesB/" + jList_Indices_ReIndexar.getSelectedValue(); // Nombre completo del archivo
+            File file = new File(filename);
+
+            if (!file.exists()) {
+                JOptionPane.showMessageDialog(null, "Error: El archivo no existe o fue movido de direccion ");
+                return;
+            }
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+                BTree temporal = (BTree) ois.readObject();
+
+                Archivo archivo = new Archivo();
+
+                int indexOf = jList_Indices_ReIndexar.getSelectedValue().indexOf("-");
+                if (indexOf != -1) {
+
+                    if (archivo.open_file(new File(temporal.getFather_filepath()))) {
+                        String fieldname = jList_Indices_ReIndexar.getSelectedValue().substring(indexOf);
+                        HashMap<String, Integer> keys = archivo.getMetadata().getKeys();
+                        int pos = 0;
+                        if (keys.containsKey(fieldname)) {
+                            pos = keys.get(fieldname);
+
+                        }
+
+                        //Crear nuevo arbol B
+                        BTree NewTree = new BTree(3);
+                        NewTree.setFather_filepath(temporal.getFather_filepath());
+                        for (long i = 0; i < archivo.cant_Registros(); i++) {
+                            Registro registro = archivo.LoadRegistro(i);
+                            Llave key = new Llave((Comparable) registro.getData().get(pos), i);
+                            NewTree.insert(key);
+                        }
+                        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./ArbolesB/" + archivo.getFilename() + "-"))) {
+                            oos.writeObject(NewTree);
+                        } catch (IOException e) {
+                            JOptionPane.showMessageDialog(null, "Error al guardar el árbol B en el archivo: " + e.getMessage());
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error: El archivo que se introdujo esta vacio o hay un error con su estructura.");
+                    }
+                }
+
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error al cargar el archivo: " + e.getMessage());
+            } catch (ClassNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "No se pudo encontrar la clase BTree: " + e.getMessage());
+            }
+
+        }
     }//GEN-LAST:event_jButton_Indices_ReIndexarMouseClicked
 
     public static void main(String args[]) {
@@ -3320,10 +3371,13 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 }
                 if (archivo.getMetadata() != null) {
                     DefaultListModel model = new DefaultListModel<>();
-                    for (String campo : archivo.getMetadata().getKeys()) {
-                        System.out.println(campo);
-                        model.add(model.size(), campo);
+
+                    for (Map.Entry<String, Integer> entry : archivo.getMetadata().getKeys().entrySet()) {
+                        String campo = entry.getKey();  // Field name (key)
+                        Integer position = entry.getValue();  // Position (value)
+                        model.add(model.size(), campo);  // If you only need to add the field name to the model
                     }
+
                     jList_Indices_CrearIndices.setModel(model);
                     jLabel_indices_crearIndices.setText(archivo.getFilename());
                 }
@@ -3334,9 +3388,9 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jLabel_Archivo_currentFile.setText("Archivo Abierto: " + archivo1_principal.getFilename());
     }
 
-    public void guardarArbolEnArchivo(Archivo archivo, String fieldname) {
+    public void guardarArbolEnArchivo(Archivo archivo, String fieldname, BTree btree) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./ArbolesB/" + archivo.getFilename() + "-" + fieldname + ".dat"))) {
-            btree.setFather_filepath(archivo.getFileRegistros().getCanonicalPath());
+            btree.setFather_filepath(archivo.getFileRegistros().getPath());
             oos.writeObject(btree);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al guardar el árbol B en el archivo: " + e.getMessage());
@@ -3367,8 +3421,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         if (archivo.getMetadata() == null) {
             archivo.LoadMetaData();
         }
-        for (String keys : archivo.getMetadata().getKeys()) {
-            jcombobox.addItem(keys);
+        for (String key : archivo.getMetadata().getKeys().keySet()) {
+            jcombobox.addItem(key);
         }
 
     }
