@@ -275,39 +275,30 @@ public class Archivo {
         }
         return -1;
     }
-    
-    public Registro buscarRegistroSecuencial(Object claveBusqueda, int posicionClave) {
-        try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "r")) {
-            long offset = 500; // Saltar la metadata
-            long totalRegistros = cant_Registros();
 
-            for (int i = 0; i < totalRegistros; i++) {
-                file.seek(offset + i * 256);
-                byte[] bytes = new byte[256];
-                file.read(bytes);
-                String line = new String(bytes).trim();
-                String[] split = line.split("\\|");
+    public Registro buscarRegistroConArbol(Object claveBusqueda, BTree arbol) {
+        // Buscar la llave en el árbol B
+        Llave llaveEncontrada = null;
+        BTreeNode nodoEncontrado = arbol.search(claveBusqueda);
 
-                if (!Boolean.parseBoolean(split[1])) { // Verificar que no esté marcado como borrado
-                    String[] datos = split[0].split(";");
-                    if (datos[posicionClave].equals(claveBusqueda.toString())) {
-                        ArrayList<Object> registroData = new ArrayList<>();
-                        for (String dato : datos) {
-                            registroData.add(dato);
-                        }
-                        int RRN_next = Integer.parseInt(split[2]); // Leer el siguiente RRN
-                        return new Registro(registroData, false, i, RRN_next); // "i" es el RRN actual
-                    }
-                }
+        if (nodoEncontrado != null) {
+            // Si encontramos el nodo, buscar la clave dentro del nodo
+            int posicion = nodoEncontrado.binarySearch(claveBusqueda);
+            if (posicion >= 0) {
+                llaveEncontrada = nodoEncontrado.getKeys()[posicion];
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error al buscar el registro.");
-            e.printStackTrace();
         }
-        return null; // Si no se encuentra
+
+        if (llaveEncontrada != null) {
+            // Si la llave fue encontrada, cargar el registro desde el archivo
+            return LoadRegistro(llaveEncontrada.getRRN());
+        } else {
+            // Si la llave no está en el árbol, retornamos null
+            return null;
+        }
     }
 
-    public boolean borrarRegistro(int RRN) {
+    public boolean borrarRegistro(long RRN) {
         try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "rw")) {
             long offset = 500 + RRN * 256; // Calcular posición del registro
             file.seek(offset);
@@ -342,6 +333,26 @@ public class Archivo {
             e.printStackTrace();
         }
         return false; // Si algo falla
+    }
+
+    public boolean borrarRegistroConArbol(Comparable clave, BTree arbol) {
+        BTreeNode nodoEncontrado = arbol.search(clave);
+
+        if (nodoEncontrado != null) {
+            // Buscar la posición de la clave dentro del nodo
+            int posicion = nodoEncontrado.binarySearch(clave);
+            if (posicion >= 0) {
+                Llave llave = nodoEncontrado.getKeys()[posicion];
+
+                // Eliminar el registro del archivo utilizando el RRN de la llave
+                boolean borradoExitoso = borrarRegistro(llave.getRRN());
+                if (borradoExitoso) {
+                    arbol.delete(clave); // Eliminar la clave del árbol B
+                    return true;
+                }
+            }
+        }
+        return false; // Si no se encuentra la clave
     }
 
     public boolean modificarRegistro(int RRN, ArrayList<Object> nuevosDatos) {

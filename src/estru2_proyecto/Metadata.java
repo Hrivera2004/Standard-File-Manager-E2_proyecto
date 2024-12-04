@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 //500 bytes
 public class Metadata {
 
-    private int RRN_headAvail = -1;
+    private long RRN_headAvail = -1;
     //Solo 10 porque es una cantidad rasonable
     private ArrayList<Campo> campos;
     private int KeyElement = -1;
@@ -58,11 +58,11 @@ public class Metadata {
         this.KeyElement = KeyElement;
     }
 
-    public int getRRN_headAvail() {
+    public long getRRN_headAvail() {
         return RRN_headAvail;
     }
 
-    public void setRRN_headAvail(int RRN_headAvail) {
+    public void setRRN_headAvail(long RRN_headAvail) {
         this.RRN_headAvail = RRN_headAvail;
     }
 

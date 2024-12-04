@@ -2652,7 +2652,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
     private void jButton_Registros_BuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_BuscarMouseClicked
         // TODO add your handling code here:
-        //Busqueda actual sequencial
         if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes.");
             return;
@@ -2664,10 +2663,14 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             return;
         }
 
-        int posicionClave = 0; // Cambiar según el índice de la clave en la lista de campos
-        Registro encontrado = archivo1_principal.buscarRegistroSecuencial(claveBusqueda, posicionClave);
+        // Aquí definimos el índice del campo que es la clave primaria (esto depende de la estructura de tu archivo y metadata)
+        int posicionClave = archivo1_principal.getMetadata().getKeyElement_pos();
+
+        // Realizar la búsqueda en el árbol B
+        Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
 
         if (encontrado != null) {
+            // Si encontramos el registro, mostrar los datos en la tabla
             DefaultTableModel model = new DefaultTableModel();
             for (Campo campo : archivo1_principal.getMetadata().getCampos()) {
                 model.addColumn(campo.getNombre_campo());
@@ -2678,7 +2681,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Registro no encontrado.");
         }
-
     }//GEN-LAST:event_jButton_Registros_BuscarMouseClicked
 
     private void jButton_Registros_PruebaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_PruebaMouseClicked
@@ -2722,13 +2724,15 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             return;
         }
 
-        int posicionClave = 0; // Ajustar según el índice de la clave
-        Registro encontrado = archivo1_principal.buscarRegistroSecuencial(claveBusqueda, posicionClave);
+        // Realizar la búsqueda en el árbol B para encontrar el registro
+        Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
 
         if (encontrado != null) {
+            // Confirmación de eliminación
             int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea borrar este registro?");
             if (confirmacion == JOptionPane.YES_OPTION) {
-                boolean exito = archivo1_principal.borrarRegistro((int) encontrado.getRRN()); // Usar el RRN actual
+                // Intentar borrar el registro tanto en el árbol como en el archivo
+                boolean exito = archivo1_principal.borrarRegistroConArbol(claveBusqueda, btree);
                 if (exito) {
                     JOptionPane.showMessageDialog(null, "Registro borrado con éxito.");
                 } else {
