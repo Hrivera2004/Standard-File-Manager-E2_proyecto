@@ -192,12 +192,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jLabel_Registros_Cruzar_Archivo5 = new javax.swing.JLabel();
         jLabel_Registros_Cruzar_Archivo6 = new javax.swing.JLabel();
         jLabel_Registros_OpcionesRegistros5 = new javax.swing.JLabel();
-        jDialog_Cruze = new javax.swing.JDialog();
-        jPanel10 = new javax.swing.JPanel();
-        jLabel_Registros_OpcionesRegistros6 = new javax.swing.JLabel();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        jTextArea_cruze = new javax.swing.JTextArea();
-        jButtonVolver = new javax.swing.JButton();
         jTabbedPane_Menu = new javax.swing.JTabbedPane();
         jPanel_Archivo = new javax.swing.JPanel();
         jPanel_Archivo_crear = new javax.swing.JPanel();
@@ -1346,63 +1340,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             .addComponent(jPanel_Registros_Cruzar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jPanel10.setBackground(new java.awt.Color(0, 153, 0));
-        jPanel10.setForeground(new java.awt.Color(0, 204, 51));
-
-        jLabel_Registros_OpcionesRegistros6.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
-        jLabel_Registros_OpcionesRegistros6.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel_Registros_OpcionesRegistros6.setText("Cruze de Campos");
-        jLabel_Registros_OpcionesRegistros6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        jTextArea_cruze.setColumns(20);
-        jTextArea_cruze.setRows(5);
-        jScrollPane9.setViewportView(jTextArea_cruze);
-
-        jButtonVolver.setText("Volver");
-        jButtonVolver.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonVolverMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                .addContainerGap(202, Short.MAX_VALUE)
-                .addComponent(jLabel_Registros_OpcionesRegistros6)
-                .addGap(198, 198, 198))
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel_Registros_OpcionesRegistros6)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jDialog_CruzeLayout = new javax.swing.GroupLayout(jDialog_Cruze.getContentPane());
-        jDialog_Cruze.getContentPane().setLayout(jDialog_CruzeLayout);
-        jDialog_CruzeLayout.setHorizontalGroup(
-            jDialog_CruzeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jDialog_CruzeLayout.setVerticalGroup(
-            jDialog_CruzeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTabbedPane_Menu.setBackground(new java.awt.Color(153, 153, 153));
@@ -1983,7 +1920,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             try {
                 // TODO add your handling code here:
                 archivo1_principal.close_file();
-                btree = new BTree(3);
+                btree = new BTree(6);
                 jLabel_Archivo_currentFile.setText("Archivo Abierto: n\\a");
                 jList_Indices_CrearIndices.setModel(new DefaultListModel<>());
                 jLabel_indices_crearIndices.setText("n\\a");
@@ -2648,17 +2585,28 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         try {
             // Solicitar el RRN del registro a modificar
             String rrnStr = JOptionPane.showInputDialog("Ingrese el RRN del registro que desea modificar:");
+
             if (rrnStr == null || rrnStr.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Debe ingresar un RRN válido.");
                 return;
             }
+            Object llave = convertirValor(archivo1_principal.getMetadata().getKeyElement().getTipo(), rrnStr);
 
-            int RRN = Integer.parseInt(rrnStr);
+            BTreeNode node = btree.search(llave);
+            if (node == null) {
+                JOptionPane.showMessageDialog(null, "No se encontro");
+                return;
+            }
+            int x = node.binarySearch(llave);
+            if (x < 0) {
+                return;
+            }
+            long RRN = node.getKeys()[x].getRRN();
             Registro registro = archivo1_principal.LoadRegistro(RRN);
 
             // Verificar si el registro existe y no está marcado como eliminado
             if (registro == null || registro.isBorrado()) {
-                JOptionPane.showMessageDialog(null, "El registro con RRN " + RRN + " no existe o está marcado como eliminado.");
+                JOptionPane.showMessageDialog(null, "El registro no existe o está marcado como eliminado.");
                 return;
             }
 
@@ -2669,27 +2617,28 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             // Iterar sobre cada campo y solicitar nuevo valor
             for (int i = 0; i < campos.size(); i++) {
                 Campo campo = campos.get(i);
-                String valorActual = registro.getData().get(i).toString();
-                String nuevoValor = JOptionPane.showInputDialog(
-                        "Ingrese el nuevo valor para el campo '" + campo.getNombre_campo() + "' (Actual: " + valorActual + "):",
-                        valorActual
-                );
-
-                // Validar y convertir el nuevo valor
-                if (nuevoValor != null && !nuevoValor.isEmpty()) {
-                    if (determineMatch(campo.getTipo(), nuevoValor)) {
-                        nuevosDatos.add(convertirValor(campo.getTipo(), nuevoValor));
+                if (!campo.iskey && !campo.iskey_secundary) {
+                    String valorActual = registro.getData().get(i).toString();
+                    String nuevoValor = JOptionPane.showInputDialog(
+                            "Ingrese el nuevo valor para el campo '" + campo.getNombre_campo() + "' (Actual: " + valorActual + "):",
+                            valorActual
+                    );
+                    // Validar y convertir el nuevo valor
+                    if (nuevoValor != null && !nuevoValor.isEmpty()) {
+                        if (determineMatch(campo.getTipo(), nuevoValor)) {
+                            nuevosDatos.add(convertirValor(campo.getTipo(), nuevoValor));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "El valor ingresado para el campo '" + campo.getNombre_campo() + "' no es válido.");
+                            return;
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "El valor ingresado para el campo '" + campo.getNombre_campo() + "' no es válido.");
-                        return;
+                        nuevosDatos.add(registro.getData().get(i)); // Mantener el valor actual
                     }
-                } else {
-                    nuevosDatos.add(registro.getData().get(i)); // Mantener el valor actual
                 }
             }
 
             // Intentar modificar el registro
-            if (archivo1_principal.modificarRegistro(RRN, nuevosDatos)) {
+            if (archivo1_principal.modificarRegistro((int) RRN, nuevosDatos)) {
                 JOptionPane.showMessageDialog(null, "El registro fue modificado exitosamente.");
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo modificar el registro.");
@@ -2724,9 +2673,32 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes.");
             return;
         }
+        String userInput = JOptionPane.showInputDialog("Ingrese la clave de búsqueda:");
+        Object claveBusqueda; // Declare as Object to handle various types
+        if (userInput == null || userInput.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave de búsqueda.");
+            return;
+        }
+        int keyType = archivo1_principal.getMetadata().getKeyElement().getTipo();
 
-        String claveBusqueda = JOptionPane.showInputDialog("Ingrese la clave de búsqueda:");
-        if (claveBusqueda == null || claveBusqueda.isEmpty()) {
+        // Parse the user input based on the type
+        switch (keyType) {
+            case 1: // Integer
+                claveBusqueda = Integer.parseInt(userInput);
+                break;
+            case 2: // Float
+                claveBusqueda = Float.parseFloat(userInput);
+                break;
+            case 3: // String
+                claveBusqueda = userInput; // No conversion needed
+                break;
+            default:
+                throw new IllegalArgumentException("Tipo de clave desconocido: " + keyType);
+        }
+
+        Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
+        //tipo: 0 = boolean, 1 = int, 2 = float, 3 = string, 4 = char
+        if (claveBusqueda == null) {
             JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave de búsqueda.");
             return;
         }
@@ -2735,8 +2707,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         int posicionClave = archivo1_principal.getMetadata().getKeyElement_pos();
 
         // Realizar la búsqueda en el árbol B
-        Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
-
         if (encontrado != null) {
             // Si encontramos el registro, mostrar los datos en la tabla
             DefaultTableModel model = new DefaultTableModel();
@@ -2771,6 +2741,15 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         }
         CrearRegistrosPrueba("Personas", file1, "ID", "Nombre", "Edad", "ID de cuidad", "Apellido");
         CrearRegistrosPrueba("Cuidades", file2, "ID de cuidad", "Nombre de Cuidad", "Edad", "Departamentos de policia", "Estado");
+        File folder = new File("./ArbolesB/");
+        File[] files = folder.listFiles();
+        DefaultListModel model = new DefaultListModel<String>();
+        for (File file : files) {
+            if (file.getName().endsWith(".dat")) {
+                model.add(model.size(), file.getName());
+            }
+        }
+        jList_Indices_ReIndexar.setModel(model);
     }//GEN-LAST:event_jButton_Registros_PruebaMouseClicked
 
     private void jButton_Registros_CruzarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_CruzarMouseClicked
@@ -2803,30 +2782,101 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             return;
         }
 
-        String claveBusqueda = JOptionPane.showInputDialog("Ingrese la clave del registro a borrar:");
-        if (claveBusqueda == null || claveBusqueda.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave.");
+        String userInput = JOptionPane.showInputDialog("Ingrese la clave del registro a borrar:");
+
+        int keyType = archivo1_principal.getMetadata().getKeyElement().getTipo();
+        if (userInput == null || userInput.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave de búsqueda.");
             return;
         }
+        // Parse the user input based on the type
+        switch (keyType) {
+            case 1: { // Integer
+                Integer claveBusqueda = Integer.parseInt(userInput);
+                if (claveBusqueda == null) {
+                    JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave.");
+                    return;
+                }
 
-        // Realizar la búsqueda en el árbol B para encontrar el registro
-        Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
+                // Realizar la búsqueda en el árbol B para encontrar el registro
+                Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
 
-        if (encontrado != null) {
-            // Confirmación de eliminación
-            int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea borrar este registro?");
-            if (confirmacion == JOptionPane.YES_OPTION) {
-                // Intentar borrar el registro tanto en el árbol como en el archivo
-                boolean exito = archivo1_principal.borrarRegistroConArbol(claveBusqueda, btree);
-                if (exito) {
-                    JOptionPane.showMessageDialog(null, "Registro borrado con éxito.");
+                if (encontrado != null) {
+                    // Confirmación de eliminación
+                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea borrar este registro?");
+                    if (confirmacion == JOptionPane.YES_OPTION) {
+                        // Intentar borrar el registro tanto en el árbol como en el archivo
+                        boolean exito = archivo1_principal.borrarRegistroConArbol(claveBusqueda, btree);
+                        if (exito) {
+                            guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getKeyElement().getNombre_campo(), btree);
+                            JOptionPane.showMessageDialog(null, "Registro borrado con éxito.");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error al intentar borrar el registro.");
+                        }
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Error al intentar borrar el registro.");
+                    JOptionPane.showMessageDialog(null, "Registro no encontrado.");
                 }
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Registro no encontrado.");
+            break;
+            case 2: { // Float
+                Float claveBusqueda = Float.parseFloat(userInput);
+                if (claveBusqueda == null) {
+                    JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave.");
+                    return;
+                }
+
+                // Realizar la búsqueda en el árbol B para encontrar el registro
+                Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
+
+                if (encontrado != null) {
+                    // Confirmación de eliminación
+                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea borrar este registro?");
+                    if (confirmacion == JOptionPane.YES_OPTION) {
+                        // Intentar borrar el registro tanto en el árbol como en el archivo
+                        boolean exito = archivo1_principal.borrarRegistroConArbol(claveBusqueda, btree);
+                        if (exito) {
+                            JOptionPane.showMessageDialog(null, "Registro borrado con éxito.");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error al intentar borrar el registro.");
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Registro no encontrado.");
+                }
+            }
+            break;
+            case 3: { // String
+                String claveBusqueda = userInput; // No conversion needed
+                if (claveBusqueda == null) {
+                    JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave.");
+                    return;
+                }
+
+                // Realizar la búsqueda en el árbol B para encontrar el registro
+                Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
+
+                if (encontrado != null) {
+                    // Confirmación de eliminación
+                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea borrar este registro?");
+                    if (confirmacion == JOptionPane.YES_OPTION) {
+                        // Intentar borrar el registro tanto en el árbol como en el archivo
+                        boolean exito = archivo1_principal.borrarRegistroConArbol(claveBusqueda, btree);
+                        if (exito) {
+                            JOptionPane.showMessageDialog(null, "Registro borrado con éxito.");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error al intentar borrar el registro.");
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Registro no encontrado.");
+                }
+            }
+            break;
+            default:
+                throw new IllegalArgumentException("Tipo de clave desconocido: " + keyType);
         }
+
     }//GEN-LAST:event_jButton_Registros_borrarMouseClicked
 
     private void jButton_Archivo_crearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Archivo_crearMouseClicked
@@ -2920,6 +2970,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         for (int i = 0; i < model.getColumnCount(); i++) {
             Object temp = model.getValueAt(0, i);
             if (determineMatch(archivo1_principal.getMetadata().getCampos().get(i).getTipo(), temp)) {
+
                 datos.add(temp);
             } else {
                 JOptionPane.showMessageDialog(null, "Asegúrese que el dato en la columna " + i + " de la línea 1 esté ingresado correctamente.");
@@ -2928,27 +2979,37 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         }
         Registro registro = new Registro(datos);
         try {
+
             int keyIndex = archivo1_principal.getMetadata().getKeyElement_pos();
+
             // Obtener la clave principal del registro
             if (keyIndex == -1) {
                 JOptionPane.showMessageDialog(null, "No se ha definido una clave principal.");
                 return;
             }
 
-            Object key = datos.get(keyIndex);
+            Object key = convertirValor(archivo1_principal.getMetadata().getKeyElement().getTipo(), datos.get(keyIndex).toString());
+
             if (btree.search(key) != null) {
                 JOptionPane.showMessageDialog(null, "No se puede insertar elementos repetidos");
             } else {
+                System.out.println("111111");
                 btree = cargarArbolDesdeArchivo(archivo1_principal, archivo1_principal.getMetadata().getKeyElement().getNombre_campo());
                 // Introducir registro en archivo principal
+
+                System.out.println("222222");
                 archivo1_principal.introducirRegistro(registro);
+                System.out.println("333333");
                 // Insertar clave en el árbol B
                 btree.insert(new Llave((Comparable) key, archivo1_principal.getLatest_modified()));
                 // Guardar el árbol B en un archivo binario
+                System.out.println("444444");
                 btree.printTree();
+                System.out.println("55555");
                 guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getKeyElement().getNombre_campo(), btree);
                 JOptionPane.showMessageDialog(null, "Se ha creado el registro y actualizado el árbol B.");
             }
+
             jDialog_Registros_Introducir.show(false);
             this.show(true);
         } catch (Exception e) {
@@ -3067,10 +3128,9 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         }
         Cruzar();
-        JOptionPane.showMessageDialog(null, "Fin");
         this.setVisible(true);
         jDialog_Registros_cruzar.setVisible(false);
-        
+
     }//GEN-LAST:event_jButton_Registros_Cruzar_CruzarMouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
@@ -3092,14 +3152,14 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
                 int key_pos = archivo1_principal.getMetadata().getKeys().get(name);
 
-                BTree btree = new BTree(3);
+                BTree btree = new BTree(6);
                 long cant_Registros = archivo1_principal.cant_Registros();
                 if (cant_Registros != 0) {
                     for (int i = 0; i < cant_Registros; i++) {
                         Registro registro = archivo1_principal.LoadRegistro(i);
                         btree.insert(new Llave((Comparable) registro.getData().get(key_pos), i));
                     }
-                    
+
                     guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getCampos().get(key_pos).getNombre_campo(), btree);
                     JOptionPane.showMessageDialog(null, "Se ha creado el Archivo en ./Btree/");
                     btree.printTree();
@@ -3108,7 +3168,15 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 }
             }
         }
-
+        File folder = new File("./ArbolesB/");
+        File[] files = folder.listFiles();
+        DefaultListModel model = new DefaultListModel<String>();
+        for (File file : files) {
+            if (file.getName().endsWith(".dat")) {
+                model.add(model.size(), file.getName());
+            }
+        }
+        jList_Indices_ReIndexar.setModel(model);
     }//GEN-LAST:event_jButton_Indicie_CrearMouseClicked
 
     private void jButton_Indices_ReIndexarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Indices_ReIndexarMouseClicked
@@ -3142,7 +3210,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                         }
 
                         //Crear nuevo arbol B
-                        BTree NewTree = new BTree(3);
+                        BTree NewTree = new BTree(6);
                         NewTree.setFather_filepath(temporal.getFather_filepath());
                         for (long i = 0; i < archivo.cant_Registros(); i++) {
                             Registro registro = archivo.LoadRegistro(i);
@@ -3167,10 +3235,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_jButton_Indices_ReIndexarMouseClicked
-
-    private void jButtonVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonVolverMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonVolverMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -3213,7 +3277,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup_ModificarTipo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButtonVolver;
     private javax.swing.JButton jButton_Archivo_Abrir;
     private javax.swing.JButton jButton_Archivo_Cerrar;
     private javax.swing.JButton jButton_Archivo_Nuevo;
@@ -3252,7 +3315,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JDialog jDialog_Campos_Eliminar;
     private javax.swing.JDialog jDialog_Campos_Listar;
     private javax.swing.JDialog jDialog_Campos_Modificar;
-    private javax.swing.JDialog jDialog_Cruze;
     private javax.swing.JDialog jDialog_Registros_Introducir;
     private javax.swing.JDialog jDialog_Registros_buscar;
     private javax.swing.JDialog jDialog_Registros_cruzar;
@@ -3289,14 +3351,12 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_Registros_OpcionesRegistros1;
     private javax.swing.JLabel jLabel_Registros_OpcionesRegistros4;
     private javax.swing.JLabel jLabel_Registros_OpcionesRegistros5;
-    private javax.swing.JLabel jLabel_Registros_OpcionesRegistros6;
     private javax.swing.JLabel jLabel_indices_crearIndices;
     private javax.swing.JList<String> jList_Indices_CrearIndices;
     private javax.swing.JList<String> jList_Indices_ReIndexar;
     private javax.swing.JList<String> jList_Registros_Cruzar_Campos1;
     private javax.swing.JList<String> jList_Registros_Cruzar_Campos2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -3342,7 +3402,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSpinner jSpinner_Campos_Longitud;
     private javax.swing.JSpinner jSpinner_Campos_Modificar_Longitud;
     private javax.swing.JTabbedPane jTabbedPane_Menu;
@@ -3350,7 +3409,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JTable jTable_Registro_introducir;
     private javax.swing.JTable jTable_Registros_buscar;
     private javax.swing.JTable jTable_Registros_listar;
-    private javax.swing.JTextArea jTextArea_cruze;
     private javax.swing.JTextField jTextField_Archivo_Crear;
     private javax.swing.JTextField jTextField_Campos_Eliminar_Longitud;
     private javax.swing.JTextField jTextField_Campos_Eliminar_Nombre;
@@ -3360,7 +3418,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
     static Archivo archivo1_principal = new Archivo();
     static Archivo archivo2_temporal = new Archivo();
-    static BTree btree = new BTree(3);
+    static BTree btree = new BTree(6);
 
     public void loadJList(Archivo archivo, JList jlist, JLabel jlabel) {
         DefaultListModel model = new DefaultListModel<>();
@@ -3482,10 +3540,16 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                     jList_Indices_CrearIndices.setModel(model);
                     jLabel_indices_crearIndices.setText(archivo.getFilename());
                 }
+                btree = cargarArbolDesdeArchivo(archivo, archivo.getMetadata().getKeyElement().getNombre_campo());
+                if (btree == null) {
+                    btree = new BTree(6);
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "El archivo no existe: " + selected.getName());
             }
+
         }
+
         jLabel_Archivo_currentFile.setText("Archivo Abierto: " + archivo1_principal.getFilename());
     }
 
@@ -3504,7 +3568,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         if (!file.exists()) {
             JOptionPane.showMessageDialog(null, "El archivo no existe: " + filename);
-            return new BTree(3);
+            return new BTree(6);
         }
 
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
@@ -3529,13 +3593,13 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }
 
     private void Cruzar() {
-        
+
         String Key1_name = jComboBox_Registros_cruzar1.getSelectedItem().toString();
         int Key1_pos = archivo1_principal.getMetadata().getKeys().get(Key1_name);
-        
+
         String Key2_name = jComboBox_Registros_cruzar2.getSelectedItem().toString();
         int Key2_pos = archivo2_temporal.getMetadata().getKeys().get(Key2_name);
-        
+
         if (archivo1_principal.getMetadata().getCampos().get(Key1_pos).getTipo() != archivo2_temporal.getMetadata().getCampos().get(Key2_pos).getTipo()) {
             JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Error: No se pudo relacionar los campos selecionados");
             return;
@@ -3591,7 +3655,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
         }
         ArrayList datos;
-        BTree temp_btree = new BTree(3);
+        BTree temp_btree = new BTree(6);
         Random random = new Random();
         try {
             for (int i = 0; i < 10000; i++) {
@@ -3601,13 +3665,16 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 datos.add(10 + random.nextInt(91));
                 datos.add(1000 + random.nextInt(9000));
                 datos.add(Campo5 + i);
+
                 Registro registro = new Registro(datos);
+
                 archivo_temp.introducirRegistro(registro);
                 temp_btree.insert(new Llave(i, i));
-                
+
             }
             guardarArbolEnArchivo(archivo_temp, Campo1, temp_btree);
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error");
         }
 

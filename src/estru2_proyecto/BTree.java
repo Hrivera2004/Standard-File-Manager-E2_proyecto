@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -19,6 +18,9 @@ import javax.swing.JOptionPane;
  * @author pepes
  */
 public class BTree implements Serializable {
+
+    private static final long SerialVersionUID = 777;
+
     private String Father_filepath = "";
     private BTreeNode root;
     private int t;
@@ -49,7 +51,7 @@ public class BTree implements Serializable {
     }
 
     public int getT() {
-        return t;
+        return (int) t;
     }
 
     public void setT(int t) {
@@ -79,23 +81,14 @@ public class BTree implements Serializable {
     }
 
     public void insert(Llave key) {
-        if (root == null) {
-            root = new BTreeNode(t, true);
-        }
-        if (search(key.getKey()) != null) {
-            System.out.println("No pueden haber elementos repetidos");
-            return;
-        }
-
-        if (root.getNumKeys() == 2 * t - 1) {
+        BTreeNode r = root;
+        if (r.getNumKeys() == t - 1) { // Nodo lleno (t - 1 claves)
             BTreeNode newNode = new BTreeNode(t, false);
-            newNode.getChildren()[0] = root;
+            newNode.getChildren()[0] = r;
             splitChild(newNode, 0);
             this.root = newNode;
         }
-
         insertNonFull(root, key);
-        System.out.println("Estructura del árbol después de insertar: ");
     }
 
     // Método para insertar una clave en un nodo que no está lleno
@@ -128,7 +121,7 @@ public class BTree implements Serializable {
             }
 
             // Si el hijo está lleno, lo dividimos antes de insertar
-            if (node.getChildren()[position] != null && node.getChildren()[position].getNumKeys() == 2 * t - 1) {
+            if (node.getChildren()[position] != null && node.getChildren()[position].getNumKeys() == t - 1) {
                 splitChild(node, position);
 
                 // Después de dividir, el hijo medio se mueve a la posición i del nodo actual
@@ -147,36 +140,38 @@ public class BTree implements Serializable {
     // Método para dividir un hijo cuando está lleno
     private void splitChild(BTreeNode parent, int index) {
         BTreeNode fullChild = parent.getChildren()[index];
-        BTreeNode newChild = new BTreeNode(t, fullChild.isLeaf());  // Crear un nuevo nodo
+        BTreeNode newChild = new BTreeNode(t, fullChild.isLeaf());
 
-        // Transferir las claves del nodo lleno al nuevo nodo
-        for (int i = 0; i < t - 1; i++) {
-            newChild.getKeys()[i] = fullChild.getKeys()[i + t];
+        int splitPoint = (t - 1) / 2; // Punto de división
+
+        // Transfiere las claves y los hijos al nuevo nodo
+        for (int i = 0; i < t - 1 - splitPoint - 1; i++) {
+            newChild.getKeys()[i] = fullChild.getKeys()[i + splitPoint + 1];
         }
 
         if (!fullChild.isLeaf()) {
-            // Transferir los hijos del nodo lleno al nuevo nodo
-            for (int i = 0; i < t; i++) {
-                newChild.getChildren()[i] = fullChild.getChildren()[i + t];
+            for (int i = 0; i < t - splitPoint - 1; i++) {
+                newChild.getChildren()[i] = fullChild.getChildren()[i + splitPoint + 1];
             }
         }
 
-        // Ajustar el número de claves de ambos nodos
-        fullChild.setNumKeys(t - 1);
-        newChild.setNumKeys(t - 1);
+        // Ajusta el número de claves en el nodo dividido
+        fullChild.setNumKeys(splitPoint);
+        newChild.setNumKeys(t - 1 - splitPoint - 1);
 
-        // Mover la clave del medio del nodo lleno a la clave de su padre
+        // Mueve la clave del medio al padre
         for (int i = parent.getNumKeys(); i > index; i--) {
             parent.getKeys()[i] = parent.getKeys()[i - 1];
         }
-        parent.getKeys()[index] = fullChild.getKeys()[t - 1];
-        parent.setNumKeys(parent.getNumKeys() + 1);
+        parent.getKeys()[index] = fullChild.getKeys()[splitPoint];
 
-        // Añadir el nuevo hijo al nodo padre
-        for (int i = parent.getChildren().length - 1; i > index + 1; i--) {
+        // Inserta el nuevo hijo en el padre
+        for (int i = parent.getNumKeys() + 1; i > index + 1; i--) {
             parent.getChildren()[i] = parent.getChildren()[i - 1];
         }
         parent.getChildren()[index + 1] = newChild;
+
+        parent.setNumKeys(parent.getNumKeys() + 1);
     }
 
     public void CrossTree(BTree Btree2, File file, Archivo archivo1, Archivo archivo2, int[] campo1, int[] campo2) {
@@ -191,31 +186,35 @@ public class BTree implements Serializable {
         if (node != null) {
             try {
                 // Imprimir las claves del nodo
-                try (BufferedWriter bf = new BufferedWriter(new FileWriter(file,true))) {
+                try (BufferedWriter bf = new BufferedWriter(new FileWriter(file, true))) {
                     for (Llave key : node.getKeys()) {
                         if (key != null) {
                             Registro registro1 = archivo1.LoadRegistro(key.getRRN());
-                            BTreeNode temp = Btree2.search(key.getKey());
-                            if (temp != null) {
-                                Llave llave_temp = temp.getKeys()[temp.binarySearch(key.getKey())];
-                                Registro registro2 = archivo2.LoadRegistro(llave_temp.getRRN());
-                                StringBuilder write = new StringBuilder();
+                            if (!registro1.isBorrado()) {
+                                BTreeNode temp = Btree2.search(key.getKey());
+                                if (temp != null) {
+                                    Llave llave_temp = temp.getKeys()[temp.binarySearch(key.getKey())];
+                                    Registro registro2 = archivo2.LoadRegistro(llave_temp.getRRN());
+                                    if (!registro2.isBorrado()) {
+                                        StringBuilder write = new StringBuilder();
 
-                                for (int i : campo1) {
-                                    write.append(registro1.getData().get(i).toString()).append(" ");
+                                        for (int i : campo1) {
+                                            write.append(registro1.getData().get(i).toString()).append(" ");
+                                        }
+                                        write.append("- ");
+                                        for (int i : campo2) {
+                                            write.append(registro2.getData().get(i).toString()).append(" ");
+                                        }
+                                        bf.write(write.toString() + "\n");
+                                        bf.flush();
+                                    }
                                 }
-                                write.append("- ");
-                                for (int i : campo2) {
-                                    write.append(registro2.getData().get(i).toString()).append(" ");
-                                }
-                                bf.write(write.toString() + "\n");
-                                bf.flush();
                             }
+
                         }
                     }
                     bf.close();
                 }
-
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Error in cross tree: ");
                 Logger.getLogger(BTree.class.getName()).log(Level.SEVERE, null, ex);
@@ -260,33 +259,31 @@ public class BTree implements Serializable {
 
         deleteKey(root, key);
 
-        // Si la raíz se queda sin claves y no es hoja, actualizamos la raíz.
+        // Si la raíz se queda sin claves y no es hoja, actualizamos la raíz
         if (root.getNumKeys() == 0 && !root.isLeaf()) {
             root = root.getChildren()[0];
         }
     }
 
 // Método principal para eliminar una clave en un nodo
+    ///binary search no sirve
     private void deleteKey(BTreeNode node, Comparable key) {
         int position = node.binarySearch(key);
-
+        
         // Caso 1: La clave está en el nodo actual
         if (position < node.getNumKeys() && node.getKeys()[position].getKey().compareTo(key) == 0) {
             if (node.isLeaf()) {
-                // Caso 1a: Si el nodo es hoja, simplemente elimina la clave
                 removeKey(node, position);
             } else {
-                // Caso 1b: Si el nodo no es hoja, buscar predecesor o sucesor
-                if (node.getChildren()[position].getNumKeys() >= t) {
+                if (node.getChildren()[position].getNumKeys() >= getMinKeys()) {
                     Llave predecessorKey = findPredecessorKey(node, position);
                     node.getKeys()[position] = predecessorKey;
                     deleteKey(node.getChildren()[position], predecessorKey.getKey());
-                } else if (node.getChildren()[position + 1].getNumKeys() >= t) {
+                } else if (node.getChildren()[position + 1].getNumKeys() >= getMinKeys()) {
                     Llave successorKey = findSuccessorKey(node, position);
                     node.getKeys()[position] = successorKey;
                     deleteKey(node.getChildren()[position + 1], successorKey.getKey());
                 } else {
-                    // Caso 1c: Ambos hijos tienen menos de t claves, fusionar
                     mergeNodes(node, position);
                     deleteKey(node.getChildren()[position], key);
                 }
@@ -301,8 +298,8 @@ public class BTree implements Serializable {
             boolean lastChild = (position == node.getNumKeys());
             BTreeNode child = node.getChildren()[position];
 
-            // Asegurarse de que el hijo tenga al menos t claves
-            if (child.getNumKeys() < t) {
+            // Asegurarse de que el hijo tenga al menos el mínimo de claves
+            if (child.getNumKeys() < getMinKeys()) {
                 fixChild(node, position);
             }
 
@@ -324,6 +321,7 @@ public class BTree implements Serializable {
     }
 
 // Encuentra el predecesor de una clave en un nodo
+    // Encuentra el predecesor de una clave en un nodo
     private Llave findPredecessorKey(BTreeNode node, int index) {
         BTreeNode child = node.getChildren()[index];
         while (!child.isLeaf()) {
@@ -342,6 +340,7 @@ public class BTree implements Serializable {
     }
 
 // Fusiona dos nodos en el índice dado
+    // Fusiona dos nodos en el índice dado
     private void mergeNodes(BTreeNode parent, int index) {
         BTreeNode leftChild = parent.getChildren()[index];
         BTreeNode rightChild = parent.getChildren()[index + 1];
@@ -374,13 +373,13 @@ public class BTree implements Serializable {
         parent.setNumKeys(parent.getNumKeys() - 1);
     }
 
-// Arregla un hijo para que tenga al menos t claves
+// Arregla un hijo para que tenga al menos el mínimo de claves
     private void fixChild(BTreeNode parent, int index) {
         BTreeNode child = parent.getChildren()[index];
 
-        if (index > 0 && parent.getChildren()[index - 1].getNumKeys() >= t) {
+        if (index > 0 && parent.getChildren()[index - 1].getNumKeys() >= getMinKeys()) {
             moveKey(parent, index - 1, index);
-        } else if (index < parent.getNumKeys() && parent.getChildren()[index + 1].getNumKeys() >= t) {
+        } else if (index < parent.getNumKeys() && parent.getChildren()[index + 1].getNumKeys() >= getMinKeys()) {
             moveKey(parent, index + 1, index);
         } else {
             if (index < parent.getNumKeys()) {
@@ -405,8 +404,18 @@ public class BTree implements Serializable {
                 toChild.getKeys()[i] = toChild.getKeys()[i - 1];
             }
             toChild.getKeys()[0] = parent.getKeys()[fromIndex];
-            parent.getKeys()[fromIndex] = fromChild.getKeys()[0];
+            parent.getKeys()[fromIndex] = fromChild.getKeys()[fromChild.getNumKeys() - 1];
             fromChild.setNumKeys(fromChild.getNumKeys() - 1);
         }
+    }
+
+// Método que define el nuevo número mínimo de claves por nodo
+    private int getMinKeys() {
+        return (int) Math.floor((t - 1) / 2.0);
+    }
+
+// Método que define el número máximo de claves por nodo
+    private int getMaxKeys() {
+        return t - 1;
     }
 }

@@ -12,7 +12,7 @@ import java.util.HashMap;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
+    
 /**
  *
  * @author hriverav
@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 //tipo: 0 = boolean, 1 = int, 2 = float, 3 = string, 4 = char
 //500 bytes
 public class Metadata {
-
+        
     private long RRN_headAvail = -1;
     //Solo 10 porque es una cantidad rasonable
     private ArrayList<Campo> campos;
@@ -172,19 +172,14 @@ public class Metadata {
     public HashMap<String, Integer> getKeys() {
         HashMap<String, Integer> keys = new HashMap<>();
         if (KeyElement != -1) {
-            System.out.println("111111-"+KeyElement);
             keys.put(campos.get(KeyElement).getNombre_campo(), KeyElement);
         }
         if (KeyElements_Secundary[0] != -1) {
-                        System.out.println("222222-"+KeyElements_Secundary[0]);
-
             keys.put(campos.get(KeyElements_Secundary[0]).getNombre_campo(), KeyElements_Secundary[0]);
         }
         if (KeyElements_Secundary[1] != -1) {
-            System.out.println("3333333-"+KeyElements_Secundary[1]);
             keys.put(campos.get(KeyElements_Secundary[1]).getNombre_campo(), KeyElements_Secundary[1]);
         }
-        System.out.println("44444444");
         return keys;
     }
 }

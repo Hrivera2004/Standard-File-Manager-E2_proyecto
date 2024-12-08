@@ -16,15 +16,15 @@ public class BTreeNode implements Serializable {
     private BTreeNode[] children;
     private boolean isLeaf;
     private int t;
-    int n;
+    int numKeys;
     private static final long SerialVersionUID = 777;
 
     public BTreeNode(int t, boolean leaf) {
         this.t = t;
         this.isLeaf = leaf;
-        keys = new Llave[2 * t - 1];
-        children = new BTreeNode[2 * t];
-        this.n = 0;
+        this.keys = new Llave[t - 1]; // Máximo de claves: t - 1
+        this.children = new BTreeNode[t]; // Máximo de hijos: t
+        this.numKeys = 0;
     }
 
     public Llave[] getKeys() {
@@ -44,19 +44,19 @@ public class BTreeNode implements Serializable {
     }
 
     public int getDegree() {
-        return t;
+        return (int) t;
     }
 
     public int getNumKeys() {
-        return n;
+        return numKeys;
     }
 
     public void setNumKeys(int n) {
-        this.n = n;
+        this.numKeys = n;
     }
 
     public int binarySearch(Object key) {
-        int left = 0, right = n - 1;
+        int left = 0, right = numKeys - 1;
 
         while (left <= right) {
             int mid = (left + right) / 2;
@@ -79,11 +79,11 @@ public class BTreeNode implements Serializable {
     }
 
     public String toString() {
-        if (n == 0) {
+        if (numKeys == 0) {
             return "Nodo vacío"; // O cualquier mensaje que te ayude a ver que el nodo está vacío
         }
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < numKeys; i++) {
             sb.append(keys[i]).append(" ");
         }
         return sb.toString().trim();  // Devuelve las claves como una cadena separada por espacios

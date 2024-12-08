@@ -141,7 +141,27 @@ public class Archivo {
             throw e;
         }
     }
+    public void addMetadataToFile_modify() throws IOException {
+        try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "rw")) {
+            // Convertir la metadata en una cadena y asegurarse de que tenga exactamente 500 bytes
+            String metadataString = metadata.toString();
+            StringBuilder sb = new StringBuilder(metadataString);
 
+            // Rellenar con espacios si es más corto
+            while (sb.length() < 499) {
+                sb.append(" ");
+            }
+            metadataString = sb.toString();
+
+            // Sobrescribir los primeros 500 bytes del archivo
+            file.seek(0);
+            file.writeBytes(metadataString);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error: No se pudo escribir los metadatos.");
+            e.printStackTrace();
+            throw e;
+        }
+    }
     public boolean LoadMetaData() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FileRegistros))) {
             // Leer la primera línea de los metadatos y limpiar espacios innecesarios
@@ -251,7 +271,7 @@ public class Archivo {
             for (int i = 0; i < split2.length; i++) {
                 data.add(split2[i]);
             }
-            Registro registro = new Registro(data, ((split1[1].trim().isEmpty()) ? false : true), ((split1[2].trim().isEmpty()) ? -1 : Integer.parseInt(split1[2])));
+            Registro registro = new Registro(data, (!(split1[1].trim().isEmpty())), ((split1[2].trim().isEmpty()) ? -1 : Integer.parseInt(split1[2])));
             return registro;
 
         } catch (FileNotFoundException e) {
@@ -285,7 +305,6 @@ public class Archivo {
         // Buscar la llave en el árbol B
         Llave llaveEncontrada = null;
         BTreeNode nodoEncontrado = arbol.search(claveBusqueda);
-
         if (nodoEncontrado != null) {
             // Si encontramos el nodo, buscar la clave dentro del nodo
             int posicion = nodoEncontrado.binarySearch(claveBusqueda);
@@ -315,8 +334,8 @@ public class Archivo {
             // Verificar que el registro no esté ya marcado como borrado
             if (!Boolean.parseBoolean(split[1])) {
                 // Marcar como borrado y apuntar al siguiente registro disponible
-
-                StringBuilder sb = new StringBuilder(split[0] + "|" + true + "|" + metadata.getRRN_headAvail());
+                System.out.println(split[0]);
+                StringBuilder sb = new StringBuilder(split[0] + "|*|" + ((metadata.getRRN_headAvail() == -1) ? " " : metadata.getRRN_headAvail()) + "|");
 
                 // Asegurar que el registro ocupe exactamente 256 bytes
                 while (sb.length() < 255) {
@@ -325,12 +344,13 @@ public class Archivo {
                 sb.append("\n"); // Asegurar que haya un salto de línea al final
 
                 // Sobrescribir el registro con los datos actualizados
+                file.seek(0);
                 file.seek(offset);
                 file.writeBytes(sb.toString());
 
                 // Actualizar la metadata para reflejar el nuevo head del avail list
                 metadata.setRRN_headAvail(RRN);
-                addMetadataToFile();
+                addMetadataToFile_modify();
                 return true;
             }
         } catch (IOException e) {
@@ -352,7 +372,7 @@ public class Archivo {
                 // Eliminar el registro del archivo utilizando el RRN de la llave
                 boolean borradoExitoso = borrarRegistro(llave.getRRN());
                 if (borradoExitoso) {
-                    arbol.delete(clave); // Eliminar la clave del árbol B
+                    arbol.delete(clave);
                     return true;
                 }
             }
@@ -426,8 +446,7 @@ public class Archivo {
             for (Object dato : nuevosDatos) {
                 sb.append(dato.toString()).append(";");
             }
-            sb.deleteCharAt(sb.length() - 1); // Eliminar el último ";"
-            sb.append("|").append(false).append("|").append(split[2]).append("|"); // Mantener el RRN_next
+            sb.append("| |").append(split[2]).append("|"); // Mantener el RRN_next
 
             while (sb.length() < 255) {
                 sb.append(" "); // Completar hasta 255 caracteres
