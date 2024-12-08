@@ -160,20 +160,31 @@ public class Metadata {
             temp1 += campo.toString();
         }
 
-        return ((RRN_headAvail == -1) ? -1 : " " + RRN_headAvail) + ";" + temp1 + ";" + KeyElement + ";" + KeyElements_Secundary[0] + ";" + KeyElements_Secundary[1] + ";";
+        return ((RRN_headAvail == -1) ? " " : RRN_headAvail) + ";"
+                + temp1 + ";"
+                + ((KeyElement == -1) ? " " : KeyElement) + ";"
+                + ((KeyElements_Secundary[0] == -1) ? " " : KeyElements_Secundary[0]) + ";"
+                + ((KeyElements_Secundary[1] == -1) ? " " : KeyElements_Secundary[1]) + ";";
+        
+                
     }
 
     public HashMap<String, Integer> getKeys() {
         HashMap<String, Integer> keys = new HashMap<>();
         if (KeyElement != -1) {
+            System.out.println("111111-"+KeyElement);
             keys.put(campos.get(KeyElement).getNombre_campo(), KeyElement);
         }
         if (KeyElements_Secundary[0] != -1) {
+                        System.out.println("222222-"+KeyElements_Secundary[0]);
+
             keys.put(campos.get(KeyElements_Secundary[0]).getNombre_campo(), KeyElements_Secundary[0]);
         }
         if (KeyElements_Secundary[1] != -1) {
+            System.out.println("3333333-"+KeyElements_Secundary[1]);
             keys.put(campos.get(KeyElements_Secundary[1]).getNombre_campo(), KeyElements_Secundary[1]);
         }
+        System.out.println("44444444");
         return keys;
     }
 }

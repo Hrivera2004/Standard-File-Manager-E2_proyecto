@@ -5,16 +5,12 @@
 package estru2_proyecto;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -26,6 +22,13 @@ public class Archivo {
     private long latest_modified = -1;
 
     public Archivo() {
+    }
+
+    public Archivo(File FileRegistros, String filename, Metadata metadata, long latest_modified) {
+        this.FileRegistros = FileRegistros;
+        this.filename = filename;
+        this.metadata = metadata;
+        this.latest_modified = latest_modified;
     }
 
     public long getLatest_modified() {
@@ -93,6 +96,7 @@ public class Archivo {
         FileRegistros = selected;
         int lastIndex = selected.getName().lastIndexOf('.');
         filename = selected.getName().substring(0, lastIndex);
+
         try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "rw")) {
             if (file.length() >= 500) {
                 return LoadMetaData();
@@ -142,6 +146,7 @@ public class Archivo {
         try (BufferedReader reader = new BufferedReader(new FileReader(FileRegistros))) {
             // Leer la primera línea de los metadatos y limpiar espacios innecesarios
             String line = reader.readLine();
+
             if (line == null || line.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Metadatos vacíos o archivo no válido.");
                 return false;
@@ -150,6 +155,7 @@ public class Archivo {
 
             // Procesar la línea como metadatos
             String[] temp_metadata = line.split(";");
+
             if (temp_metadata.length < 3) {
                 return false;
             }
@@ -169,11 +175,11 @@ public class Archivo {
             }
 
             metadata = new Metadata(
-                    Integer.parseInt(temp_metadata[0].trim()),
+                    ((temp_metadata[0].trim().isEmpty()) ? -1 : Integer.parseInt(temp_metadata[0].trim())),
                     campos,
-                    Integer.parseInt(temp_metadata[2].trim()),
-                    Integer.parseInt(temp_metadata[3].trim()),
-                    Integer.parseInt(temp_metadata[4].trim())
+                    ((temp_metadata[2].trim().isEmpty()) ? -1 : Integer.parseInt(temp_metadata[2].trim())),
+                    ((temp_metadata[3].trim().isEmpty()) ? -1 : Integer.parseInt(temp_metadata[3].trim())),
+                    ((temp_metadata[4].trim().isEmpty()) ? -1 : Integer.parseInt(temp_metadata[4].trim()))
             );
             return true;
         } catch (IOException e) {
@@ -226,8 +232,8 @@ public class Archivo {
             e.printStackTrace();
         }
     }
-// almomento de leer usar \\| porque | es char especial
 
+    // almomento de leer usar \\| porque | es char especial
     public Registro LoadRegistro(long RRN) {
         try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "rw")) {
             long offset = 500; // Start after metadata
@@ -245,8 +251,7 @@ public class Archivo {
             for (int i = 0; i < split2.length; i++) {
                 data.add(split2[i]);
             }
-
-            Registro registro = new Registro(data, Boolean.parseBoolean(split1[1]), Integer.parseInt(split1[2]));
+            Registro registro = new Registro(data, ((split1[1].trim().isEmpty()) ? false : true), ((split1[2].trim().isEmpty()) ? -1 : Integer.parseInt(split1[2])));
             return registro;
 
         } catch (FileNotFoundException e) {
@@ -307,10 +312,10 @@ public class Archivo {
 
             String line = new String(bytes).trim();
             String[] split = line.split("\\|");
-
             // Verificar que el registro no esté ya marcado como borrado
             if (!Boolean.parseBoolean(split[1])) {
                 // Marcar como borrado y apuntar al siguiente registro disponible
+
                 StringBuilder sb = new StringBuilder(split[0] + "|" + true + "|" + metadata.getRRN_headAvail());
 
                 // Asegurar que el registro ocupe exactamente 256 bytes

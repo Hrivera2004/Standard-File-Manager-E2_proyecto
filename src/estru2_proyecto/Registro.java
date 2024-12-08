@@ -78,7 +78,8 @@ public class Registro {
         for (Object dato : data) {
             temp.append(dato).append(";");
         }
-        return temp + "|" + borrado + "|" + RRN_next + '|';
+        
+        return temp + "|" + ((borrado) ? " " : "*") + "|" + ((RRN_next==-1) ? " " : RRN_next) + '|';
     }
 
 }

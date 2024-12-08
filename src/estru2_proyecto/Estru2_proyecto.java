@@ -192,6 +192,12 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jLabel_Registros_Cruzar_Archivo5 = new javax.swing.JLabel();
         jLabel_Registros_Cruzar_Archivo6 = new javax.swing.JLabel();
         jLabel_Registros_OpcionesRegistros5 = new javax.swing.JLabel();
+        jDialog_Cruze = new javax.swing.JDialog();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel_Registros_OpcionesRegistros6 = new javax.swing.JLabel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        jTextArea_cruze = new javax.swing.JTextArea();
+        jButtonVolver = new javax.swing.JButton();
         jTabbedPane_Menu = new javax.swing.JTabbedPane();
         jPanel_Archivo = new javax.swing.JPanel();
         jPanel_Archivo_crear = new javax.swing.JPanel();
@@ -738,7 +744,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel_Campos_Modificar_Longitud, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jSpinner_Campos_Modificar_Longitud))))
-                .addGap(215, 257, Short.MAX_VALUE))
+                .addGap(215, 253, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jButton_Campos_Modificar_Regresar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1340,6 +1346,63 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             .addComponent(jPanel_Registros_Cruzar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        jPanel10.setBackground(new java.awt.Color(0, 153, 0));
+        jPanel10.setForeground(new java.awt.Color(0, 204, 51));
+
+        jLabel_Registros_OpcionesRegistros6.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
+        jLabel_Registros_OpcionesRegistros6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel_Registros_OpcionesRegistros6.setText("Cruze de Campos");
+        jLabel_Registros_OpcionesRegistros6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jTextArea_cruze.setColumns(20);
+        jTextArea_cruze.setRows(5);
+        jScrollPane9.setViewportView(jTextArea_cruze);
+
+        jButtonVolver.setText("Volver");
+        jButtonVolver.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonVolverMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addContainerGap(202, Short.MAX_VALUE)
+                .addComponent(jLabel_Registros_OpcionesRegistros6)
+                .addGap(198, 198, 198))
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jLabel_Registros_OpcionesRegistros6)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jDialog_CruzeLayout = new javax.swing.GroupLayout(jDialog_Cruze.getContentPane());
+        jDialog_Cruze.getContentPane().setLayout(jDialog_CruzeLayout);
+        jDialog_CruzeLayout.setHorizontalGroup(
+            jDialog_CruzeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jDialog_CruzeLayout.setVerticalGroup(
+            jDialog_CruzeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTabbedPane_Menu.setBackground(new java.awt.Color(153, 153, 153));
@@ -1693,9 +1756,12 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             .addGroup(jPanel_RegistrosLayout.createSequentialGroup()
                 .addGroup(jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_RegistrosLayout.createSequentialGroup()
+                        .addGap(310, 310, 310)
+                        .addComponent(jLabel_Registros_OpcionesRegistros))
+                    .addGroup(jPanel_RegistrosLayout.createSequentialGroup()
                         .addGap(90, 90, 90)
                         .addGroup(jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton_Registros_Prueba, javax.swing.GroupLayout.PREFERRED_SIZE, 646, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton_Registros_Prueba, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel_RegistrosLayout.createSequentialGroup()
                                 .addGroup(jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jButton_Registros_Buscar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1705,11 +1771,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                                 .addGroup(jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jButton_Registros_borrar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jButton_Registros_Cruzar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton_Registros_Listar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(jPanel_RegistrosLayout.createSequentialGroup()
-                        .addGap(310, 310, 310)
-                        .addComponent(jLabel_Registros_OpcionesRegistros)))
-                .addContainerGap(60, Short.MAX_VALUE))
+                                    .addComponent(jButton_Registros_Listar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         jPanel_RegistrosLayout.setVerticalGroup(
             jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1972,9 +2035,14 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes");
         } else {
             try {
-                archivo1_principal.addMetadataToFile();
-                //archivo.addRecordsToFile();
-                JOptionPane.showMessageDialog(jPanel_Campos, "Se guardo de manera exitosa");
+                if (archivo1_principal.getMetadata() != null) {
+                    archivo1_principal.addMetadataToFile();
+                    //archivo.addRecordsToFile();
+                    JOptionPane.showMessageDialog(jPanel_Campos, "Se guardo de manera exitosa");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error: aun no a generado nada para guardar.");
+                }
+
             } catch (IOException ex) {
                 Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -2685,6 +2753,24 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
     private void jButton_Registros_PruebaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_PruebaMouseClicked
         // TODO add your handling code here:
+        File file1 = new File("./Registros/Personas.txt");
+        File file2 = new File("./Registros/Cuidades.txt");
+        if (!file1.exists()) {
+            try {
+                file1.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (!file2.exists()) {
+            try {
+                file2.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        CrearRegistrosPrueba("Personas", file1, "ID", "Nombre", "Edad", "ID de cuidad", "Apellido");
+        CrearRegistrosPrueba("Cuidades", file2, "ID de cuidad", "Nombre de Cuidad", "Edad", "Departamentos de policia", "Estado");
     }//GEN-LAST:event_jButton_Registros_PruebaMouseClicked
 
     private void jButton_Registros_CruzarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_CruzarMouseClicked
@@ -2701,7 +2787,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 loadJComboBox(archivo1_principal, jComboBox_Registros_cruzar1);
                 loadJComboBox(archivo2_temporal, jComboBox_Registros_cruzar2);
                 abrirDialog(jDialog_Registros_cruzar);
-                this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null, "El archivo selecionado esta vacio");
             }
@@ -2824,7 +2909,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
     private void jButton_IntroducirRegistros_crearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_IntroducirRegistros_crearMouseClicked
         // TODO add your handling code here:
-        jTable_Registro_introducir.clearSelection();
+
+        if (jTable_Registro_introducir.isEditing()) {
+            jTable_Registro_introducir.getCellEditor().stopCellEditing();
+        }
         DefaultTableModel model = (DefaultTableModel) jTable_Registro_introducir.getModel();
         ArrayList<Object> datos = new ArrayList<>();
 
@@ -2899,9 +2987,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 for (Campo campo : archivo1_principal.getMetadata().getCampos()) {
                     model.addColumn(campo.getNombre_campo());
                 }
-                Random rand = new Random();
-                if (registros >= 10) {
-                    for (int i = 0; i < 10; i++) {
+                if (registros >= 24) {
+                    for (int i = 0; i < 24; i++) {
                         ArrayList<Object> temp = archivo1_principal.LoadRegistro(i).getData();
                         model.addRow(temp.toArray());
                     }
@@ -2980,8 +3067,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         }
         Cruzar();
-        jDialog_Registros_cruzar.setVisible(false);
+        JOptionPane.showMessageDialog(null, "Fin");
         this.setVisible(true);
+        jDialog_Registros_cruzar.setVisible(false);
+        
     }//GEN-LAST:event_jButton_Registros_Cruzar_CruzarMouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
@@ -3001,24 +3090,22 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             if (option == 0) {
                 String name = jList_Indices_CrearIndices.getSelectedValue();
 
-                int key_pos = archivo1_principal.getMetadata().getKeys().get(name);;
+                int key_pos = archivo1_principal.getMetadata().getKeys().get(name);
 
-                btree = new BTree(3);
+                BTree btree = new BTree(3);
                 long cant_Registros = archivo1_principal.cant_Registros();
                 if (cant_Registros != 0) {
                     for (int i = 0; i < cant_Registros; i++) {
                         Registro registro = archivo1_principal.LoadRegistro(i);
                         btree.insert(new Llave((Comparable) registro.getData().get(key_pos), i));
-                        btree.printTree();
                     }
+                    
                     guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getCampos().get(key_pos).getNombre_campo(), btree);
                     JOptionPane.showMessageDialog(null, "Se ha creado el Archivo en ./Btree/");
                     btree.printTree();
                 } else {
                     JOptionPane.showMessageDialog(null, "Intente ingresar registros en el archivo antes de continuar");
                 }
-            } else {
-                return;
             }
         }
 
@@ -3081,6 +3168,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton_Indices_ReIndexarMouseClicked
 
+    private void jButtonVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonVolverMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonVolverMouseClicked
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -3122,6 +3213,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup_ModificarTipo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonVolver;
     private javax.swing.JButton jButton_Archivo_Abrir;
     private javax.swing.JButton jButton_Archivo_Cerrar;
     private javax.swing.JButton jButton_Archivo_Nuevo;
@@ -3160,6 +3252,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JDialog jDialog_Campos_Eliminar;
     private javax.swing.JDialog jDialog_Campos_Listar;
     private javax.swing.JDialog jDialog_Campos_Modificar;
+    private javax.swing.JDialog jDialog_Cruze;
     private javax.swing.JDialog jDialog_Registros_Introducir;
     private javax.swing.JDialog jDialog_Registros_buscar;
     private javax.swing.JDialog jDialog_Registros_cruzar;
@@ -3196,12 +3289,14 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_Registros_OpcionesRegistros1;
     private javax.swing.JLabel jLabel_Registros_OpcionesRegistros4;
     private javax.swing.JLabel jLabel_Registros_OpcionesRegistros5;
+    private javax.swing.JLabel jLabel_Registros_OpcionesRegistros6;
     private javax.swing.JLabel jLabel_indices_crearIndices;
     private javax.swing.JList<String> jList_Indices_CrearIndices;
     private javax.swing.JList<String> jList_Indices_ReIndexar;
     private javax.swing.JList<String> jList_Registros_Cruzar_Campos1;
     private javax.swing.JList<String> jList_Registros_Cruzar_Campos2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -3247,6 +3342,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSpinner jSpinner_Campos_Longitud;
     private javax.swing.JSpinner jSpinner_Campos_Modificar_Longitud;
     private javax.swing.JTabbedPane jTabbedPane_Menu;
@@ -3254,6 +3350,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JTable jTable_Registro_introducir;
     private javax.swing.JTable jTable_Registros_buscar;
     private javax.swing.JTable jTable_Registros_listar;
+    private javax.swing.JTextArea jTextArea_cruze;
     private javax.swing.JTextField jTextField_Archivo_Crear;
     private javax.swing.JTextField jTextField_Campos_Eliminar_Longitud;
     private javax.swing.JTextField jTextField_Campos_Eliminar_Nombre;
@@ -3432,14 +3529,13 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }
 
     private void Cruzar() {
-        String[] Split1 = jComboBox_Registros_cruzar1.getSelectedItem().toString().split("-");
-        String Key1_name = Split1[0];
-        int Key1_pos = Integer.parseInt(Split1[1]);
-
-        String[] Split2 = jComboBox_Registros_cruzar2.getSelectedItem().toString().split("-");
-        String Key2_name = Split2[0];
-        int Key2_pos = Integer.parseInt(Split2[1]);
-
+        
+        String Key1_name = jComboBox_Registros_cruzar1.getSelectedItem().toString();
+        int Key1_pos = archivo1_principal.getMetadata().getKeys().get(Key1_name);
+        
+        String Key2_name = jComboBox_Registros_cruzar2.getSelectedItem().toString();
+        int Key2_pos = archivo2_temporal.getMetadata().getKeys().get(Key2_name);
+        
         if (archivo1_principal.getMetadata().getCampos().get(Key1_pos).getTipo() != archivo2_temporal.getMetadata().getCampos().get(Key2_pos).getTipo()) {
             JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Error: No se pudo relacionar los campos selecionados");
             return;
@@ -3470,5 +3566,51 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void CrearRegistrosPrueba(String filename, File NombreArchivo, String Campo1, String Campo2, String Campo3, String Campo4, String Campo5) {
+        ArrayList<Campo> campos = new ArrayList<>();
+        //llave primaria
+        campos.add(new Campo(Campo1, 1, 1, true, false));
+        //llave secundaria
+        campos.add(new Campo(Campo2, 3, 25, false, true));
+        //resto
+        campos.add(new Campo(Campo3, 1, 1, false, false));
+        campos.add(new Campo(Campo4, 1, 1, false, false));
+        campos.add(new Campo(Campo5, 3, 1, false, false));
+
+        Metadata temp_meta = new Metadata(-1, campos, 0, 1, -1);
+        Archivo archivo_temp = new Archivo();
+        archivo_temp.setFileRegistros(NombreArchivo);
+        archivo_temp.setFilename(filename);
+        archivo_temp.setMetadata(temp_meta);
+
+        try {
+            archivo_temp.addMetadataToFile();
+        } catch (IOException ex) {
+            Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ArrayList datos;
+        BTree temp_btree = new BTree(3);
+        Random random = new Random();
+        try {
+            for (int i = 0; i < 10000; i++) {
+                datos = new ArrayList();
+                datos.add(i);
+                datos.add(Campo2 + i);
+                datos.add(10 + random.nextInt(91));
+                datos.add(1000 + random.nextInt(9000));
+                datos.add(Campo5 + i);
+                Registro registro = new Registro(datos);
+                archivo_temp.introducirRegistro(registro);
+                temp_btree.insert(new Llave(i, i));
+                
+            }
+            guardarArbolEnArchivo(archivo_temp, Campo1, temp_btree);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error");
+        }
+
+        JOptionPane.showMessageDialog(null, "Se han cargado de manera exitosa los archivos");
     }
 }

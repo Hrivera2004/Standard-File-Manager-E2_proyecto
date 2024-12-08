@@ -191,7 +191,7 @@ public class BTree implements Serializable {
         if (node != null) {
             try {
                 // Imprimir las claves del nodo
-                try (BufferedWriter bf = new BufferedWriter(new FileWriter(file))) {
+                try (BufferedWriter bf = new BufferedWriter(new FileWriter(file,true))) {
                     for (Llave key : node.getKeys()) {
                         if (key != null) {
                             Registro registro1 = archivo1.LoadRegistro(key.getRRN());
@@ -208,8 +208,8 @@ public class BTree implements Serializable {
                                 for (int i : campo2) {
                                     write.append(registro2.getData().get(i).toString()).append(" ");
                                 }
-                                
                                 bf.write(write.toString() + "\n");
+                                bf.flush();
                             }
                         }
                     }
