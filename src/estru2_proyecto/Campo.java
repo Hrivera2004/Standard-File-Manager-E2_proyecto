@@ -69,11 +69,12 @@ public class Campo {
         this.iskey = iskey;
     }
 
-    public void modify(int tipo, int longitud, String nombre_campo, boolean iskey) {
+    public void modify(int tipo, int longitud, String nombre_campo, boolean iskey,boolean iskey_secundary) {
         this.tipo = tipo;
         this.longitud = longitud;
         this.nombre_campo = nombre_campo;
         this.iskey = iskey;
+        this.iskey_secundary=iskey_secundary;
     }
 
     @Override

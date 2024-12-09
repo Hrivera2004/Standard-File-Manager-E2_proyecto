@@ -5,9 +5,11 @@
 package estru2_proyecto;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -141,6 +143,7 @@ public class Archivo {
             throw e;
         }
     }
+
     public void addMetadataToFile_modify() throws IOException {
         try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "rw")) {
             // Convertir la metadata en una cadena y asegurarse de que tenga exactamente 500 bytes
@@ -162,6 +165,7 @@ public class Archivo {
             throw e;
         }
     }
+
     public boolean LoadMetaData() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FileRegistros))) {
             // Leer la primera línea de los metadatos y limpiar espacios innecesarios
@@ -334,7 +338,6 @@ public class Archivo {
             // Verificar que el registro no esté ya marcado como borrado
             if (!Boolean.parseBoolean(split[1])) {
                 // Marcar como borrado y apuntar al siguiente registro disponible
-                System.out.println(split[0]);
                 StringBuilder sb = new StringBuilder(split[0] + "|*|" + ((metadata.getRRN_headAvail() == -1) ? " " : metadata.getRRN_headAvail()) + "|");
 
                 // Asegurar que el registro ocupe exactamente 256 bytes
@@ -466,5 +469,46 @@ public class Archivo {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void exportToXML(String filePath) {
+        try {
+            StringBuilder guardar = new StringBuilder();
+            guardar.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
+            guardar.append("<registros>\n");
+
+            long totalRegistros = cant_Registros();
+
+            for (int k = 0; k < totalRegistros; k++) {
+                Registro registro = LoadRegistro(k);
+                if (registro != null && !registro.isBorrado()) {
+                    guardar.append("    <registro>\n");
+
+                    for (int s = 0; s < metadata.getCampos().size(); s++) {
+                        Campo campo = metadata.getCampos().get(s);
+                        String fieldName = campo.getNombre_campo().replace(" ", "");
+                        
+                        Object fieldValue = registro.getData().get(s);
+                        
+                        guardar.append("        <").append(fieldName).append(">")
+                                .append(fieldValue != null ? fieldValue.toString() : "")
+                                .append("</").append(fieldName).append(">\n");
+                    }
+
+                    guardar.append("    </registro>\n");
+                }
+            }
+
+            guardar.append("</registros>");
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(filePath)))) {
+                writer.write(guardar.toString());
+            }
+
+            JOptionPane.showMessageDialog(null, "Archivo exportado exitosamente");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al exportar el archivo");
+        }
     }
 }

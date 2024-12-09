@@ -67,15 +67,15 @@ public class BTreeNode implements Serializable {
             int cmp = midKey.compareTo(searchKey);
 
             if (cmp == 0) {
-                return mid; // Clave encontrada
+                return mid; // Key found
             } else if (cmp < 0) {
-                left = mid + 1; // Buscar en la mitad derecha
+                left = mid + 1; // Search right half
             } else {
-                right = mid - 1; // Buscar en la mitad izquierda
+                right = mid - 1; // Search left half
             }
         }
 
-        return -(left + 1); // Retorna la posición de inserción como valor negativo
+        return -(left + 1); // Return insertion point as a negative value
     }
 
     public String toString() {

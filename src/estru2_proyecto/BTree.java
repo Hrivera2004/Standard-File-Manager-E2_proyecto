@@ -269,12 +269,16 @@ public class BTree implements Serializable {
     ///binary search no sirve
     private void deleteKey(BTreeNode node, Comparable key) {
         int position = node.binarySearch(key);
-        
-        // Caso 1: La clave está en el nodo actual
-        if (position < node.getNumKeys() && node.getKeys()[position].getKey().compareTo(key) == 0) {
+
+        // Case 1: The key is in the current node
+        if (position >= 0 && position < node.getNumKeys()
+                && node.getKeys()[position].getKey().compareTo(key) == 0) {
+
             if (node.isLeaf()) {
+                // Directly remove the key from the leaf node
                 removeKey(node, position);
             } else {
+                // If the node is internal, handle deletion via predecessors/successors
                 if (node.getChildren()[position].getNumKeys() >= getMinKeys()) {
                     Llave predecessorKey = findPredecessorKey(node, position);
                     node.getKeys()[position] = predecessorKey;
@@ -289,21 +293,24 @@ public class BTree implements Serializable {
                 }
             }
         } else {
-            // Caso 2: La clave no está en este nodo
+            // Case 2: The key is not in this node
             if (node.isLeaf()) {
-                System.out.println("La clave " + key + " no está en el árbol.");
+                System.out.println("The key " + key + " is not in the tree.");
                 return;
             }
+
+            // Interpret position if it's negative
+            position = -(position + 1);
 
             boolean lastChild = (position == node.getNumKeys());
             BTreeNode child = node.getChildren()[position];
 
-            // Asegurarse de que el hijo tenga al menos el mínimo de claves
+            // Ensure the child has at least the minimum number of keys
             if (child.getNumKeys() < getMinKeys()) {
                 fixChild(node, position);
             }
 
-            // Llamada recursiva al hijo correcto
+            // Recursive call on the correct child
             if (lastChild && position > node.getNumKeys()) {
                 deleteKey(node.getChildren()[position - 1], key);
             } else {

@@ -4,10 +4,16 @@
  */
 package estru2_proyecto;
 
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
 import java.awt.HeadlessException;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -192,6 +198,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jLabel_Registros_Cruzar_Archivo5 = new javax.swing.JLabel();
         jLabel_Registros_Cruzar_Archivo6 = new javax.swing.JLabel();
         jLabel_Registros_OpcionesRegistros5 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jTabbedPane_Menu = new javax.swing.JTabbedPane();
         jPanel_Archivo = new javax.swing.JPanel();
         jPanel_Archivo_crear = new javax.swing.JPanel();
@@ -235,6 +242,14 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jButton_Indices_ReIndexar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jPanel_Estandarizacion = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jButton_estandar_Exportar_XML = new javax.swing.JButton();
+        jButton_estandar_Exportar_Excel = new javax.swing.JButton();
 
         jDialog_Campos_Crear.setResizable(false);
 
@@ -1340,6 +1355,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             .addComponent(jPanel_Registros_Cruzar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Exportar Excel");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTabbedPane_Menu.setBackground(new java.awt.Color(153, 153, 153));
@@ -1862,15 +1881,102 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         jTabbedPane_Menu.addTab("Indices", jPanel_indices);
 
+        jPanel10.setBackground(new java.awt.Color(204, 255, 204));
+
+        jPanel11.setBackground(new java.awt.Color(0, 102, 0));
+        jPanel11.setPreferredSize(new java.awt.Dimension(493, 290));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("      Exportar Excel");
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("       Exportar XML");
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/xml (1).png"))); // NOI18N
+        jLabel9.setText(" ");
+
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/excel (1).png"))); // NOI18N
+        jLabel10.setText(" ");
+
+        jButton_estandar_Exportar_XML.setText("Exportar a XML Schema");
+        jButton_estandar_Exportar_XML.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_estandar_Exportar_XMLMouseClicked(evt);
+            }
+        });
+
+        jButton_estandar_Exportar_Excel.setText("Exportar a excel");
+        jButton_estandar_Exportar_Excel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_estandar_Exportar_ExcelMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton_estandar_Exportar_Excel, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton_estandar_Exportar_XML, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(59, 59, 59))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel10)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton_estandar_Exportar_Excel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton_estandar_Exportar_XML, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 758, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(33, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel_EstandarizacionLayout = new javax.swing.GroupLayout(jPanel_Estandarizacion);
         jPanel_Estandarizacion.setLayout(jPanel_EstandarizacionLayout);
         jPanel_EstandarizacionLayout.setHorizontalGroup(
             jPanel_EstandarizacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 796, Short.MAX_VALUE)
+            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel_EstandarizacionLayout.setVerticalGroup(
             jPanel_EstandarizacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 464, Short.MAX_VALUE)
+            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jTabbedPane_Menu.addTab("Estandarizacion", jPanel_Estandarizacion);
@@ -2247,6 +2353,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         int tipo = 0;
         int longitud = 0;
         boolean key = false;
+        boolean key2 = false;
 
         // Validación: Verificar si el nombre del campo está vacío
         if (jTextField_Campos_Modificar_Nombre.getText().isEmpty()) {
@@ -2329,7 +2436,22 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 buttonGroup_Campos_Llave.clearSelection(); // Limpiar selección de llave
                 return;
             }
-            key = true;
+            Object[] options = {"Secundaria", "Primaria"};
+            int result = JOptionPane.showOptionDialog(
+                    null,
+                    "¿Va a ser llave secundaria o primaria?",
+                    "Elección",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[1]
+            );
+            if (result == JOptionPane.YES_OPTION) {
+                key2 = true;
+            } else if (result == JOptionPane.NO_OPTION) {
+                key = true;
+            }
         } else {
             JOptionPane.showMessageDialog(jDialog_Campos_Modificar, "Debe especificar si es llave.");
             return;
@@ -2358,7 +2480,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         }
 
         // Modificar el campo en la lista de campos
-        archivo1_principal.getMetadata().edit_campo(jComboBox_Modificar.getSelectedIndex(), tipo, longitud, nombre, key);
+        archivo1_principal.getMetadata().edit_campo(jComboBox_Modificar.getSelectedIndex(), tipo, longitud, nombre, key, key2);
+
         try {
             archivo1_principal.addMetadataToFile();
             JOptionPane.showMessageDialog(jDialog_Campos_Modificar, "Campo modificado exitosamente.");
@@ -3048,15 +3171,26 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 for (Campo campo : archivo1_principal.getMetadata().getCampos()) {
                     model.addColumn(campo.getNombre_campo());
                 }
-                if (registros >= 24) {
-                    for (int i = 0; i < 24; i++) {
-                        ArrayList<Object> temp = archivo1_principal.LoadRegistro(i).getData();
-                        model.addRow(temp.toArray());
+
+                int max_lim = 24;
+                if (registros >= max_lim) {
+                    for (int i = 0; i < max_lim; i++) {
+                        Registro registro = archivo1_principal.LoadRegistro(i);
+                        if (!registro.isBorrado()) {
+                            ArrayList<Object> temp = registro.getData();
+                            model.addRow(temp.toArray());
+
+                        } else {
+                            max_lim++;
+                        }
                     }
                 } else {
                     for (int i = 0; i < registros; i++) {
-                        ArrayList<Object> temp = archivo1_principal.LoadRegistro(i).getData();
-                        model.addRow(temp.toArray());
+                        Registro registro = archivo1_principal.LoadRegistro(i);
+                        if (!registro.isBorrado()) {
+                            ArrayList<Object> temp = registro.getData();
+                            model.addRow(temp.toArray());
+                        }
                     }
                 }
                 jTable_Registros_listar.setModel(model);
@@ -3157,7 +3291,9 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 if (cant_Registros != 0) {
                     for (int i = 0; i < cant_Registros; i++) {
                         Registro registro = archivo1_principal.LoadRegistro(i);
-                        btree.insert(new Llave((Comparable) registro.getData().get(key_pos), i));
+                        if (!registro.isBorrado()) {
+                            btree.insert(new Llave((Comparable) registro.getData().get(key_pos), i));
+                        }
                     }
 
                     guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getCampos().get(key_pos).getNombre_campo(), btree);
@@ -3214,8 +3350,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                         NewTree.setFather_filepath(temporal.getFather_filepath());
                         for (long i = 0; i < archivo.cant_Registros(); i++) {
                             Registro registro = archivo.LoadRegistro(i);
-                            Llave key = new Llave((Comparable) registro.getData().get(pos), i);
-                            NewTree.insert(key);
+                            if (!registro.isBorrado()) {
+                                Llave key = new Llave((Comparable) registro.getData().get(pos), i);
+                                NewTree.insert(key);
+                            }
                         }
                         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./ArbolesB/" + archivo.getFilename() + "-"))) {
                             oos.writeObject(NewTree);
@@ -3236,6 +3374,44 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton_Indices_ReIndexarMouseClicked
 
+    private void jButton_estandar_Exportar_XMLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_estandar_Exportar_XMLMouseClicked
+        // TODO add your handling code here:
+        if (archivo1_principal == null || archivo1_principal.getMetadata() == null) {
+            JOptionPane.showMessageDialog(null, "Error: Carge un archivo con informacion antes de exportar");
+            return;
+        }
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Seleccionar ubicacion para guardar el archivo XML");
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnValue = fileChooser.showSaveDialog(null);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedDirectory = fileChooser.getSelectedFile();
+
+            String fileName = JOptionPane.showInputDialog("Introduce el nombre del archivo (sin extension):");
+            if (fileName == null || fileName.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: El nombre del archivo no puede estar vacío.");
+                return;
+            }
+            if (!fileName.matches("[a-zA-Z0-9_\\-]+")) {
+                JOptionPane.showMessageDialog(null, "Error: El nombre del archivo contiene caracteres no válidos.");
+                return;
+            }
+
+            if (!fileName.endsWith(".xml")) {
+                fileName += ".xml";
+            }
+            File fileToSave = new File(selectedDirectory, fileName);
+            archivo1_principal.exportToXML(fileToSave.getAbsolutePath());
+            JOptionPane.showMessageDialog(null, "Archivo exportado exitosamente a: " + fileToSave.getAbsolutePath());
+        }
+    }//GEN-LAST:event_jButton_estandar_Exportar_XMLMouseClicked
+
+    private void jButton_estandar_Exportar_ExcelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_estandar_Exportar_ExcelMouseClicked
+        // TODO add your handling code here:
+        exportarDatosAExcel();
+    }//GEN-LAST:event_jButton_estandar_Exportar_ExcelMouseClicked
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -3247,16 +3423,24 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Estru2_proyecto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Estru2_proyecto.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Estru2_proyecto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Estru2_proyecto.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Estru2_proyecto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Estru2_proyecto.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Estru2_proyecto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Estru2_proyecto.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -3307,6 +3491,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JButton jButton_Registros_Regresar;
     private javax.swing.JButton jButton_Registros_borrar;
     private javax.swing.JButton jButton_Registros_introducir;
+    private javax.swing.JButton jButton_estandar_Exportar_Excel;
+    private javax.swing.JButton jButton_estandar_Exportar_XML;
     private javax.swing.JComboBox<String> jComboBox_Eliminar;
     private javax.swing.JComboBox<String> jComboBox_Modificar;
     private javax.swing.JComboBox<String> jComboBox_Registros_cruzar1;
@@ -3320,10 +3506,15 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JDialog jDialog_Registros_cruzar;
     private javax.swing.JDialog jDialog_Registros_listar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabel_Archivo_currentFile;
     private javax.swing.JLabel jLabel_Campos_CrearCampo;
     private javax.swing.JLabel jLabel_Campos_CrearCampo1;
@@ -3357,6 +3548,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JList<String> jList_Registros_Cruzar_Campos1;
     private javax.swing.JList<String> jList_Registros_Cruzar_Campos2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -3448,7 +3641,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     public void llenar_Tabla(JTable tabla) {
         String tipo = "";
         tabla.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{
-            "Nombre de Campo", "Tipo de Dato", "Longitud", "Es Llave?"}));
+            "Nombre de Campo", "Tipo de Dato", "Longitud", "Llave Primaria?", "Llave Secundaria?"}));
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         for (Campo c : archivo1_principal.getMetadata().getCampos()) {
             switch (c.getTipo()) {
@@ -3470,7 +3663,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 default:
                     break;
             }
-            Object[] row = {c.getNombre_campo(), tipo, c.getLongitud(), c.isIskey()};
+            Object[] row = {c.getNombre_campo(), tipo, c.getLongitud(), c.isIskey(), c.iskey_secundary};
             modelo.addRow(row);
             tipo = "";
         }
@@ -3525,8 +3718,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             if (selected.exists()) {
                 try {
                     archivo.open_file(selected);
+
                 } catch (IOException ex) {
-                    Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Estru2_proyecto.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
                 if (archivo.getMetadata() != null) {
                     DefaultListModel model = new DefaultListModel<>();
@@ -3610,8 +3805,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         } else {
             try {
                 cross.createNewFile();
+
             } catch (IOException ex) {
-                Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Estru2_proyecto.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -3627,8 +3824,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         );
         try {
             JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Se creo el archivo cruzado en: " + cross.getCanonicalPath());
+
         } catch (IOException ex) {
-            Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Estru2_proyecto.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -3651,8 +3850,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         try {
             archivo_temp.addMetadataToFile();
+
         } catch (IOException ex) {
-            Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Estru2_proyecto.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         ArrayList datos;
         BTree temp_btree = new BTree(6);
@@ -3679,5 +3880,55 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         }
 
         JOptionPane.showMessageDialog(null, "Se han cargado de manera exitosa los archivos");
+    }
+
+    public void exportarDatosAExcel() {
+        Exportar_Excel x = new Exportar_Excel();
+        JTable pepe = new JTable(); // Crear tabla para los datos
+
+        if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes");
+            return;
+        }
+
+        long registros = archivo1_principal.cant_Registros();
+        if (registros == 0) {
+            JOptionPane.showMessageDialog(null, "Intente ingresar registros antes de exportar");
+            return;
+        }
+
+        // Obtener los nombres de las columnas desde los campos de la metadata
+        ArrayList<Campo> campos = archivo1_principal.getMetadata().getCampos();
+        int columnas = campos.size();
+
+        // Crear matriz de datos para la tabla directamente
+        String[] nombresColumnas = new String[columnas];
+        for (int i = 0; i < columnas; i++) {
+            nombresColumnas[i] = campos.get(i).getNombre_campo();
+        }
+
+        Object[][] datos = new Object[(int) registros][columnas];
+        int cont = 0;
+        for (int i = 0; i < registros; i++) {
+            Registro registro = archivo1_principal.LoadRegistro(i);
+            if (!registro.isBorrado()) {
+                ArrayList<Object> valores = registro.getData();
+                for (int j = 0; j < columnas; j++) {
+                    datos[i - cont][j] = valores.get(j);
+                }
+            } else {
+                cont++;
+            }
+        }
+
+        // Asignar nombres de columnas y datos directamente a la tabla
+        pepe.setModel(new javax.swing.table.DefaultTableModel(datos, nombresColumnas));
+
+        // Exportar directamente
+        try {
+            x.exportar(pepe);
+        } catch (IOException ex) {
+            Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
