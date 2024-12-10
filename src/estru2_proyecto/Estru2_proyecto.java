@@ -4,18 +4,10 @@
  */
 package estru2_proyecto;
 
-import org.w3c.dom.*;
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.File;
 import java.awt.HeadlessException;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -2854,16 +2846,31 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        if (!file2.exists()) {
+        } else {
+            file1.delete();
             try {
-                file2.createNewFile();
+                file1.createNewFile();
             } catch (IOException ex) {
                 Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        CrearRegistrosPrueba("Personas", file1, "ID", "Nombre", "Edad", "ID de cuidad", "Apellido");
-        CrearRegistrosPrueba("Cuidades", file2, "ID de cuidad", "Nombre de Cuidad", "Edad", "Departamentos de policia", "Estado");
+
+        if (!file2.exists()) {
+            try {
+                file2.createNewFile();
+            } catch (IOException ex) {
+
+            }
+        } else {
+            file2.delete();
+            try {
+                file2.createNewFile();
+            } catch (IOException ex) {
+
+            }
+        }
+        CrearRegistrosPrueba_archivoPersona("Personas", file1);
+        CrearRegistrosPrueba_archivoCuidad("Cuidades", file2);
         File folder = new File("./ArbolesB/");
         File[] files = folder.listFiles();
         DefaultListModel model = new DefaultListModel<String>();
@@ -3112,23 +3119,22 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             }
 
             Object key = convertirValor(archivo1_principal.getMetadata().getKeyElement().getTipo(), datos.get(keyIndex).toString());
-
+            if (btree == null) {
+                btree = new BTree(6);
+            }
             if (btree.search(key) != null) {
                 JOptionPane.showMessageDialog(null, "No se puede insertar elementos repetidos");
             } else {
-                System.out.println("111111");
                 btree = cargarArbolDesdeArchivo(archivo1_principal, archivo1_principal.getMetadata().getKeyElement().getNombre_campo());
                 // Introducir registro en archivo principal
-
-                System.out.println("222222");
+                if (btree == null) {
+                    btree = new BTree(6);
+                }
                 archivo1_principal.introducirRegistro(registro);
-                System.out.println("333333");
                 // Insertar clave en el árbol B
                 btree.insert(new Llave((Comparable) key, archivo1_principal.getLatest_modified()));
                 // Guardar el árbol B en un archivo binario
-                System.out.println("444444");
                 btree.printTree();
-                System.out.println("55555");
                 guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getKeyElement().getNombre_campo(), btree);
                 JOptionPane.showMessageDialog(null, "Se ha creado el registro y actualizado el árbol B.");
             }
@@ -3320,7 +3326,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         if (jList_Indices_ReIndexar.isSelectionEmpty()) {
             return;
         } else {
-
             String filename = "./ArbolesB/" + jList_Indices_ReIndexar.getSelectedValue(); // Nombre completo del archivo
             File file = new File(filename);
 
@@ -3333,30 +3338,51 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
                 Archivo archivo = new Archivo();
 
-                int indexOf = jList_Indices_ReIndexar.getSelectedValue().indexOf("-");
-                if (indexOf != -1) {
+                int indexOf1 = jList_Indices_ReIndexar.getSelectedValue().indexOf("-");
+                int indexOf2 = jList_Indices_ReIndexar.getSelectedValue().indexOf(".");
+                if (indexOf1 != -1 && indexOf2 != -1) {
 
                     if (archivo.open_file(new File(temporal.getFather_filepath()))) {
-                        String fieldname = jList_Indices_ReIndexar.getSelectedValue().substring(indexOf);
+                        String fieldname = jList_Indices_ReIndexar.getSelectedValue().substring(indexOf1 + 1, indexOf2);
                         HashMap<String, Integer> keys = archivo.getMetadata().getKeys();
                         int pos = 0;
                         if (keys.containsKey(fieldname)) {
                             pos = keys.get(fieldname);
-
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error: Campos no concuerdan");
+                            return;
                         }
 
                         //Crear nuevo arbol B
                         BTree NewTree = new BTree(6);
-                        NewTree.setFather_filepath(temporal.getFather_filepath());
+
                         for (long i = 0; i < archivo.cant_Registros(); i++) {
                             Registro registro = archivo.LoadRegistro(i);
                             if (!registro.isBorrado()) {
-                                Llave key = new Llave((Comparable) registro.getData().get(pos), i);
+                                Llave key;
+                                switch (archivo.getMetadata().getCampos().get(pos).getTipo()) {
+                                    
+                                    case 1: // int
+                                        key = new Llave(Integer.parseInt(registro.getData().get(pos).toString()), i);
+                                        break;
+                                    case 2: // float
+                                        key = new Llave(Float.parseFloat(registro.getData().get(pos).toString()), i);
+                                        break;
+                                    case 3: // string
+                                        key = new Llave(registro.getData().get(pos).toString(), i);
+                                        break;
+                                        default:
+                                            key = new Llave(registro.getData().get(pos).toString(), i);
+                                }
+                                System.out.println(key.toString());
                                 NewTree.insert(key);
                             }
                         }
-                        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./ArbolesB/" + archivo.getFilename() + "-"))) {
+
+                        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./ArbolesB/" + archivo.getFilename() + "-" + fieldname + ".dat"))) {
+                            NewTree.setFather_filepath(archivo.getFileRegistros().getPath());
                             oos.writeObject(NewTree);
+                            JOptionPane.showMessageDialog(null, "Se ha vuelto a generar el arbol en:" + "./ArbolesB/" + archivo.getFilename() + "-" + fieldname + ".dat");
                         } catch (IOException e) {
                             JOptionPane.showMessageDialog(null, "Error al guardar el árbol B en el archivo: " + e.getMessage());
                         }
@@ -3397,12 +3423,14 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error: El nombre del archivo contiene caracteres no válidos.");
                 return;
             }
+            String temp = fileName;
 
             if (!fileName.endsWith(".xml")) {
                 fileName += ".xml";
             }
+
             File fileToSave = new File(selectedDirectory, fileName);
-            archivo1_principal.exportToXML(fileToSave.getAbsolutePath());
+            archivo1_principal.exportToXMLSchema(fileToSave.getAbsolutePath(), temp);
             JOptionPane.showMessageDialog(null, "Archivo exportado exitosamente a: " + fileToSave.getAbsolutePath());
         }
     }//GEN-LAST:event_jButton_estandar_Exportar_XMLMouseClicked
@@ -3751,6 +3779,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     public void guardarArbolEnArchivo(Archivo archivo, String fieldname, BTree btree) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./ArbolesB/" + archivo.getFilename() + "-" + fieldname + ".dat"))) {
             btree.setFather_filepath(archivo.getFileRegistros().getPath());
+            System.out.println(btree.getFather_filepath());
             oos.writeObject(btree);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al guardar el árbol B en el archivo: " + e.getMessage());
@@ -3763,7 +3792,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         if (!file.exists()) {
             JOptionPane.showMessageDialog(null, "El archivo no existe: " + filename);
-            return new BTree(6);
+            return null;
         }
 
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
@@ -3799,6 +3828,14 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Error: No se pudo relacionar los campos selecionados");
             return;
         }
+        BTree btree_temporal_1 = cargarArbolDesdeArchivo(archivo1_principal, Key1_name);
+        if (btree_temporal_1 == null) {
+            return;
+        }
+        BTree btree_temporal_2 = cargarArbolDesdeArchivo(archivo2_temporal, Key2_name);
+        if (btree_temporal_2 == null) {
+            return;
+        }
         File cross = new File("./CrossFiles/" + archivo1_principal.getFilename() + "-" + archivo2_temporal.getFilename() + ".txt");
         if (cross.exists()) {
             cross.delete();
@@ -3811,9 +3848,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
-
-        BTree btree_temporal_1 = cargarArbolDesdeArchivo(archivo1_principal, Key1_name);
-        BTree btree_temporal_2 = cargarArbolDesdeArchivo(archivo2_temporal, Key2_name);
 
         btree_temporal_1.CrossTree(btree_temporal_2,
                 cross,
@@ -3829,57 +3863,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             Logger.getLogger(Estru2_proyecto.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    private void CrearRegistrosPrueba(String filename, File NombreArchivo, String Campo1, String Campo2, String Campo3, String Campo4, String Campo5) {
-        ArrayList<Campo> campos = new ArrayList<>();
-        //llave primaria
-        campos.add(new Campo(Campo1, 1, 1, true, false));
-        //llave secundaria
-        campos.add(new Campo(Campo2, 3, 25, false, true));
-        //resto
-        campos.add(new Campo(Campo3, 1, 1, false, false));
-        campos.add(new Campo(Campo4, 1, 1, false, false));
-        campos.add(new Campo(Campo5, 3, 1, false, false));
-
-        Metadata temp_meta = new Metadata(-1, campos, 0, 1, -1);
-        Archivo archivo_temp = new Archivo();
-        archivo_temp.setFileRegistros(NombreArchivo);
-        archivo_temp.setFilename(filename);
-        archivo_temp.setMetadata(temp_meta);
-
-        try {
-            archivo_temp.addMetadataToFile();
-
-        } catch (IOException ex) {
-            Logger.getLogger(Estru2_proyecto.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-        ArrayList datos;
-        BTree temp_btree = new BTree(6);
-        Random random = new Random();
-        try {
-            for (int i = 0; i < 10000; i++) {
-                datos = new ArrayList();
-                datos.add(i);
-                datos.add(Campo2 + i);
-                datos.add(10 + random.nextInt(91));
-                datos.add(1000 + random.nextInt(9000));
-                datos.add(Campo5 + i);
-
-                Registro registro = new Registro(datos);
-
-                archivo_temp.introducirRegistro(registro);
-                temp_btree.insert(new Llave(i, i));
-
-            }
-            guardarArbolEnArchivo(archivo_temp, Campo1, temp_btree);
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error");
-        }
-
-        JOptionPane.showMessageDialog(null, "Se han cargado de manera exitosa los archivos");
     }
 
     public void exportarDatosAExcel() {
@@ -3930,5 +3913,86 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void CrearRegistrosPrueba_archivoPersona(String filename, File NombreArchivo) {
+        ArrayList<Campo> campos = new ArrayList<>();
+        // llave 1
+        campos.add(new Campo("PersonId", 1, 1, true, false));
+        // lalve 2
+        campos.add(new Campo("CityId", 1, 1, false, true));
+        campos.add(new Campo("PersonName", 3, 20, false, false));
+        campos.add(new Campo("PersonAge", 1, 1, false, false));
+
+        Metadata temp_meta = new Metadata(-1, campos, 0, 1, -1);
+        Archivo archivo_temp = new Archivo();
+        archivo_temp.setFileRegistros(NombreArchivo);
+        archivo_temp.setFilename(filename);
+        archivo_temp.setMetadata(temp_meta);
+
+        try {
+            archivo_temp.addMetadataToFile();
+        } catch (IOException ex) {
+            Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        ArrayList<Object> datos;
+        BTree temp_btree = new BTree(6);
+        Random random = new Random();
+        try {
+            for (int i = 0; i < 10000; i++) {
+                datos = new ArrayList<>();
+                datos.add(i);
+                datos.add(i);
+                datos.add("Person" + i);
+                datos.add(18 + random.nextInt(83));
+                Registro registro = new Registro(datos);
+                archivo_temp.introducirRegistro(registro);
+                temp_btree.insert(new Llave((Comparable) i, i));
+            }
+            guardarArbolEnArchivo(archivo_temp, "PersonId", temp_btree);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error");
+        }
+        JOptionPane.showMessageDialog(null, "Se han cargado de manera exitosa los archivos");
+    }
+
+    private void CrearRegistrosPrueba_archivoCuidad(String filename, File NombreArchivo) {
+        ArrayList<Campo> campos = new ArrayList<>();
+        //llave primaria
+        campos.add(new Campo("CityId", 1, 1, true, false));
+        //llave secundaria
+        campos.add(new Campo("CityName", 3, 25, false, true));
+        Metadata temp_meta = new Metadata(-1, campos, 0, 1, -1);
+        Archivo archivo_temp = new Archivo();
+        archivo_temp.setFileRegistros(NombreArchivo);
+        archivo_temp.setFilename(filename);
+        archivo_temp.setMetadata(temp_meta);
+        try {
+            archivo_temp.addMetadataToFile();
+
+        } catch (IOException ex) {
+            Logger.getLogger(Estru2_proyecto.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        ArrayList datos;
+        BTree temp_btree = new BTree(6);
+        Random random = new Random();
+        try {
+            for (int i = 0; i < 10000; i++) {
+                datos = new ArrayList();
+                datos.add(i);
+                datos.add("City" + i);
+                Registro registro = new Registro(datos);
+                archivo_temp.introducirRegistro(registro);
+                temp_btree.insert(new Llave((Comparable) i, i));
+            }
+            guardarArbolEnArchivo(archivo_temp, "CityId", temp_btree);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error");
+        }
+        JOptionPane.showMessageDialog(null, "Se han cargado de manera exitosa los archivos");
     }
 }

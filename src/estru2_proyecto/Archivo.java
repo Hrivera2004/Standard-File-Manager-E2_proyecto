@@ -471,10 +471,22 @@ public class Archivo {
         return false;
     }
 
-    public void exportToXML(String filePath) {
+    public void exportToXMLSchema(String filePath, String name) {
         try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(filePath)));
+            String schema = new File(filePath).getParent() + File.separator + name + ".xsd";
+            
+            generateXSD(schema,name, metadata.getCampos()); // Use schema to ensure the path is correct
+
             StringBuilder guardar = new StringBuilder();
-            guardar.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
+            guardar.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
+            guardar.append("<xml>\n");
+
+            guardar.append("    <!-- XML Schema Definition -->\n");
+            guardar.append("    <schema xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n");
+            guardar.append("            xsi:noNamespaceSchemaLocation=\"").append(schema).append("\">\n");
+            guardar.append("    </schema>\n");
+
             guardar.append("<registros>\n");
 
             long totalRegistros = cant_Registros();
@@ -483,32 +495,82 @@ public class Archivo {
                 Registro registro = LoadRegistro(k);
                 if (registro != null && !registro.isBorrado()) {
                     guardar.append("    <registro>\n");
-
                     for (int s = 0; s < metadata.getCampos().size(); s++) {
                         Campo campo = metadata.getCampos().get(s);
                         String fieldName = campo.getNombre_campo().replace(" ", "");
-                        
                         Object fieldValue = registro.getData().get(s);
-                        
                         guardar.append("        <").append(fieldName).append(">")
                                 .append(fieldValue != null ? fieldValue.toString() : "")
                                 .append("</").append(fieldName).append(">\n");
                     }
-
                     guardar.append("    </registro>\n");
                 }
             }
-
-            guardar.append("</registros>");
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(filePath)))) {
-                writer.write(guardar.toString());
-            }
+            guardar.append("</registros>\n");
+            guardar.append("</xml>");
+            writer.write(guardar.toString());
+            writer.close();
 
             JOptionPane.showMessageDialog(null, "Archivo exportado exitosamente");
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error al exportar el archivo");
+        }
+    }
+
+    public void generateXSD(String path,String nanme, ArrayList<Campo> campos) throws IOException {
+        String schema = new File(path).getParent() + File.separator + nanme + ".xsd";
+        try (FileWriter writer = new FileWriter(new File(schema))) {
+            StringBuilder xsd = new StringBuilder();
+            xsd.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            xsd.append("<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" elementFormDefault=\"qualified\">\n");
+
+            xsd.append("    <xs:element name=\"registros\">\n");
+            xsd.append("        <xs:complexType>\n");
+            xsd.append("            <xs:sequence>\n");
+            xsd.append("                <xs:element name=\"registro\" maxOccurs=\"unbounded\">\n");
+            xsd.append("                    <xs:complexType>\n");
+            xsd.append("                        <xs:sequence>\n");
+            for (Campo campo : campos) {
+                String fieldType = getXSDType(campo.getTipo());
+                xsd.append("                            <xs:element name=\"")
+                        .append(campo.getNombre_campo())
+                        .append("\" type=\"")
+                        .append(fieldType)
+                        .append("\" minOccurs=\"0\" maxOccurs=\"1\"");
+                if (campo.getTipo() == 3 || campo.getTipo() == 4) {
+                    xsd.append(">\n");
+                    xsd.append("                                <xs:simpleType>\n");
+                    xsd.append("                                    <xs:restriction base=\"xs:").append(fieldType).append("\">\n");
+                    xsd.append("                                        <xs:maxLength value=\"").append(campo.getLongitud()).append("\"/>\n");
+                    xsd.append("                                    </xs:restriction>\n");
+                    xsd.append("                                </xs:simpleType>\n");
+                    xsd.append("                            </xs:element>\n");
+                } else {
+                    xsd.append("/>\n");
+                }
+            }
+            xsd.append("                        </xs:sequence>\n");
+            xsd.append("                    </xs:complexType>\n");
+            xsd.append("                </xs:element>\n");
+            xsd.append("            </xs:sequence>\n");
+            xsd.append("        </xs:complexType>\n");
+            xsd.append("    </xs:element>\n");
+            xsd.append("</xs:schema>");
+            writer.write(xsd.toString());
+        }
+    }
+
+    private static String getXSDType(int tipo) {
+        switch (tipo) {
+            case 0:
+                return "xs:boolean";
+            case 1:
+                return "xs:int";
+            case 2:
+                return "xs:float";
+            default:
+                return "xs:string";
         }
     }
 }
