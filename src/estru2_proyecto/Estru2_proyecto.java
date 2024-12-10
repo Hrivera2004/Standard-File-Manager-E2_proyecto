@@ -1565,6 +1565,11 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jLabel_Campos_OpcionesCampo.setText("Opciones Campo:");
 
         jButton_Campos_Crear.setText("Crear Campo");
+        jButton_Campos_Crear.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_Campos_CrearMouseClicked(evt);
+            }
+        });
         jButton_Campos_Crear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_Campos_CrearActionPerformed(evt);
@@ -2116,11 +2121,16 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_Campos_ListarMouseClicked
 
     private void jButton_Campos_ModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Campos_ModificarMouseClicked
+
         if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes");
         } else if (archivo1_principal.getMetadata() == null || archivo1_principal.getMetadata().getCampos() == null || archivo1_principal.getMetadata().getCampos().isEmpty()) {
             JOptionPane.showMessageDialog(null, "No tiene campos para modificar.");
         } else {
+            if (archivo1_principal.cant_Registros() > 0) {
+                JOptionPane.showMessageDialog(null, "Error: Ya hay registros no se pueden modificar los campos");
+                return;
+            }
             jComboBox_Modificar.removeAllItems();
             for (int i = 0; i < archivo1_principal.getMetadata().getCampos().size(); i++) {
                 jComboBox_Modificar.addItem(archivo1_principal.getMetadata().getCampos().get(i).getNombre_campo());
@@ -2130,9 +2140,14 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_Campos_ModificarMouseClicked
 
     private void jButton_Campos_CrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Campos_CrearActionPerformed
+
         if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes");
         } else {
+            if (archivo1_principal.cant_Registros() > 0) {
+                JOptionPane.showMessageDialog(null, "Error: Ya hay registros no se pueden modificar los campos");
+                return;
+            }
             abrirDialog(jDialog_Campos_Crear);
             jTextField_Campos_Nombre.setText("");
             buttonGroup_Campos_Dato.clearSelection();
@@ -2490,9 +2505,13 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         if (archivo1_principal.getMetadata() != null) {
             DefaultListModel model = new DefaultListModel<>();
-            for (String campo : archivo1_principal.getMetadata().getKeys().keySet()) {
-                model.add(model.size(), key);
+
+            for (Map.Entry<String, Integer> entry : archivo1_principal.getMetadata().getKeys().entrySet()) {
+                String campo = entry.getKey();  // Field name (key)
+                Integer position = entry.getValue();  // Position (value)
+                model.add(model.size(), campo);  // If you only need to add the field name to the model
             }
+
             jList_Indices_CrearIndices.setModel(model);
             jLabel_indices_crearIndices.setText(archivo1_principal.getFilename());
         }
@@ -2556,7 +2575,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 jRadioButton_Campos_Modificar_Si.setEnabled(false);
             }
             jSpinner_Campos_Modificar_Longitud.setValue(c.getLongitud());
-            if (c.isIskey() == false) {
+            if (c.isIskey() == false && c.isIskey_secundary() == false) {
                 jRadioButton_Campos_Modificar_No.setSelected(true);
             } else {
                 jRadioButton_Campos_Modificar_Si.setSelected(true);
@@ -2650,11 +2669,16 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton_Campos_Eliminar_StringActionPerformed
 
     private void jButton_Campos_EliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Campos_EliminarMouseClicked
+
         if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes");
         } else if (archivo1_principal.getMetadata() == null || archivo1_principal.getMetadata().getCampos() == null || archivo1_principal.getMetadata().getCampos().isEmpty()) {
             JOptionPane.showMessageDialog(null, "No tiene campos para eliminar.");
         } else {
+            if (archivo1_principal.cant_Registros() > 0) {
+                JOptionPane.showMessageDialog(null, "Error: Ya hay registros no se pueden modificar los campos");
+                return;
+            }
             jComboBox_Eliminar.removeAllItems();
             for (int i = 0; i < archivo1_principal.getMetadata().getCampos().size(); i++) {
                 jComboBox_Eliminar.addItem(archivo1_principal.getMetadata().getCampos().get(i).getNombre_campo());
@@ -2699,7 +2723,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
         try {
             // Solicitar el RRN del registro a modificar
-            String rrnStr = JOptionPane.showInputDialog("Ingrese el RRN del registro que desea modificar:");
+            String rrnStr = JOptionPane.showInputDialog("Ingrese la clave principal del registro que desea modificar:");
 
             if (rrnStr == null || rrnStr.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Debe ingresar un RRN válido.");
@@ -3117,12 +3141,25 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "No se ha definido una clave principal.");
                 return;
             }
-
-            Object key = convertirValor(archivo1_principal.getMetadata().getKeyElement().getTipo(), datos.get(keyIndex).toString());
+            Llave key;
+            switch (archivo1_principal.getMetadata().getKeyElement().getTipo()) {
+                case 1: // int
+                    key = new Llave(Integer.parseInt(datos.get(keyIndex).toString()), archivo1_principal.getLatest_modified());
+                    break;
+                case 2: // float
+                    key = new Llave(Float.parseFloat(datos.get(keyIndex).toString()), archivo1_principal.getLatest_modified());
+                    break;
+                case 3: // string
+                    key = new Llave(datos.get(keyIndex).toString(), archivo1_principal.getLatest_modified());
+                    break;
+                default:
+                    key = new Llave(datos.get(keyIndex).toString(), archivo1_principal.getLatest_modified());
+            }
+            
             if (btree == null) {
                 btree = new BTree(6);
             }
-            if (btree.search(key) != null) {
+            if (btree.search(key.getKey()) != null) {
                 JOptionPane.showMessageDialog(null, "No se puede insertar elementos repetidos");
             } else {
                 btree = cargarArbolDesdeArchivo(archivo1_principal, archivo1_principal.getMetadata().getKeyElement().getNombre_campo());
@@ -3132,7 +3169,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 }
                 archivo1_principal.introducirRegistro(registro);
                 // Insertar clave en el árbol B
-                btree.insert(new Llave((Comparable) key, archivo1_principal.getLatest_modified()));
+
+                btree.insert(key);
                 // Guardar el árbol B en un archivo binario
                 btree.printTree();
                 guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getKeyElement().getNombre_campo(), btree);
@@ -3281,6 +3319,13 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
     private void jButton_Indicie_CrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Indicie_CrearMouseClicked
         // TODO add your handling code here:
+        if (archivo1_principal == null) {
+            return;
+        }
+        if (archivo1_principal.cant_Registros() > 0) {
+            JOptionPane.showMessageDialog(null, "Error: Y");
+            return;
+        }
         if (jList_Indices_CrearIndices.getModel().getSize() != 0) {
             if (jList_Indices_CrearIndices.isSelectionEmpty()) {
                 JOptionPane.showMessageDialog(null, "Selecione un campo para crear un archivo de indices correspondiente.");
@@ -3297,9 +3342,21 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 if (cant_Registros != 0) {
                     for (int i = 0; i < cant_Registros; i++) {
                         Registro registro = archivo1_principal.LoadRegistro(i);
-                        if (!registro.isBorrado()) {
-                            btree.insert(new Llave((Comparable) registro.getData().get(key_pos), i));
+                        Llave key;
+                        switch (archivo1_principal.getMetadata().getCampos().get(key_pos).getTipo()) {
+                            case 1: // int
+                                key = new Llave(Integer.parseInt(registro.getData().get(key_pos).toString()), i);
+                                break;
+                            case 2: // float
+                                key = new Llave(Float.parseFloat(registro.getData().get(key_pos).toString()), i);
+                                break;
+                            case 3: // string
+                                key = new Llave(registro.getData().get(key_pos).toString(), i);
+                                break;
+                            default:
+                                key = new Llave(registro.getData().get(key_pos).toString(), i);
                         }
+                        btree.insert(key);
                     }
 
                     guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getCampos().get(key_pos).getNombre_campo(), btree);
@@ -3361,7 +3418,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                             if (!registro.isBorrado()) {
                                 Llave key;
                                 switch (archivo.getMetadata().getCampos().get(pos).getTipo()) {
-                                    
                                     case 1: // int
                                         key = new Llave(Integer.parseInt(registro.getData().get(pos).toString()), i);
                                         break;
@@ -3371,14 +3427,12 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                                     case 3: // string
                                         key = new Llave(registro.getData().get(pos).toString(), i);
                                         break;
-                                        default:
-                                            key = new Llave(registro.getData().get(pos).toString(), i);
+                                    default:
+                                        key = new Llave(registro.getData().get(pos).toString(), i);
                                 }
-                                System.out.println(key.toString());
                                 NewTree.insert(key);
                             }
                         }
-
                         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./ArbolesB/" + archivo.getFilename() + "-" + fieldname + ".dat"))) {
                             NewTree.setFather_filepath(archivo.getFileRegistros().getPath());
                             oos.writeObject(NewTree);
@@ -3439,6 +3493,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         // TODO add your handling code here:
         exportarDatosAExcel();
     }//GEN-LAST:event_jButton_estandar_Exportar_ExcelMouseClicked
+
+    private void jButton_Campos_CrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Campos_CrearMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_Campos_CrearMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
