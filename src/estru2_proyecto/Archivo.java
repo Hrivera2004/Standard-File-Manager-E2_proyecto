@@ -226,7 +226,7 @@ public class Archivo {
             long offset = 500; // Start after metadata
             if (metadata.getRRN_headAvail() != -1) {
                 // Write to the available list position
-                offset += metadata.getRRN_headAvail() * 256;
+                offset += metadata.getRRN_headAvail() * ((metadata.getCampos().size()*25) + 20);
                 //Cambiar la cabeza del avail list
                 Registro head_avail = LoadRegistro(metadata.getRRN_headAvail());
                 next = head_avail.getRRN_next();
@@ -239,8 +239,8 @@ public class Archivo {
             }
 
             StringBuilder sb = new StringBuilder(registro.toString());
-            while (sb.length() < 255) {
-                sb.append(" ");  // Append spaces until length reaches 255
+            while (sb.length() < ((metadata.getCampos().size()*25) + 20)-1) {
+                sb.append(" ");  // Append spaces until length reaches ((metadata.getCampos().size()*25) + 20)-1
             }
             String registrostring = sb.toString() + "\n";
 
@@ -261,10 +261,10 @@ public class Archivo {
     public Registro LoadRegistro(long RRN) {
         try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "rw")) {
             long offset = 500; // Start after metadata
-            offset += 256 * RRN;
+            offset += ((metadata.getCampos().size()*25) + 20) * RRN;
 
             file.seek(offset);
-            byte[] bytes = new byte[256];
+            byte[] bytes = new byte[((metadata.getCampos().size()*25) + 20)];
             file.read(bytes);
             file.close();
 
@@ -292,7 +292,7 @@ public class Archivo {
         long record_ammount;
         try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "rw")) {
             if ((file.length() - 500) >= 0) {
-                record_ammount = (file.length() - 500) / 256;
+                record_ammount = (file.length() - 500) / ((metadata.getCampos().size()*25) + 20);
                 return record_ammount;
             }
         } catch (FileNotFoundException e) {
@@ -328,9 +328,9 @@ public class Archivo {
 
     public boolean borrarRegistro(long RRN) {
         try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "rw")) {
-            long offset = 500 + RRN * 256; // Calcular posición del registro
+            long offset = 500 + RRN * ((metadata.getCampos().size()*25) + 20); // Calcular posición del registro
             file.seek(offset);
-            byte[] bytes = new byte[256];
+            byte[] bytes = new byte[((metadata.getCampos().size()*25) + 20)];
             file.read(bytes);
 
             String line = new String(bytes).trim();
@@ -340,8 +340,8 @@ public class Archivo {
                 // Marcar como borrado y apuntar al siguiente registro disponible
                 StringBuilder sb = new StringBuilder(split[0] + "|*|" + ((metadata.getRRN_headAvail() == -1) ? " " : metadata.getRRN_headAvail()) + "|");
 
-                // Asegurar que el registro ocupe exactamente 256 bytes
-                while (sb.length() < 255) {
+                // Asegurar que el registro ocupe exactamente ((metadata.getCampos().size()*25) + 20) bytes
+                while (sb.length() < ((metadata.getCampos().size()*25) + 20)-1 ) {
                     sb.append(" ");
                 }
                 sb.append("\n"); // Asegurar que haya un salto de línea al final
@@ -390,10 +390,10 @@ public class Archivo {
         }
 
         try (RandomAccessFile file = new RandomAccessFile(FileRegistros, "rw")) {
-            long offset = 500 + RRN * 256; // Calcular posición del registro
+            long offset = 500 + RRN * ((metadata.getCampos().size()*25) + 20); // Calcular posición del registro
             file.seek(offset);
 
-            byte[] bytes = new byte[256];
+            byte[] bytes = new byte[((metadata.getCampos().size()*25) + 20)];
             file.read(bytes);
             String line = new String(bytes).trim();
             String[] split = line.split("\\|");
@@ -412,22 +412,30 @@ public class Archivo {
                 switch (campo.getTipo()) {
                     case 0: // Boolean
                         if (!(valor instanceof Boolean)) {
-                            JOptionPane.showMessageDialog(null, "Error: El campo " + campo.getNombre_campo() + " debe ser un valor booleano.");
-                            return false;
+                            try {
+                                Boolean.parseBoolean(valor.toString());
+                            } catch (Exception e) {
+                                JOptionPane.showMessageDialog(null, "Error: El campo " + campo.getNombre_campo() + " debe ser un valor booleano.");
+                                return false;
+                            }
                         }
                         break;
                     case 1: // Entero
-                        if (!(valor instanceof Integer)) {
-                            JOptionPane.showMessageDialog(null, "Error: El campo " + campo.getNombre_campo() + " debe ser un entero.");
-                            return false;
-                        }
-                        break;
+                    try {
+                        Integer.parseInt(valor.toString());
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "Error: El campo " + campo.getNombre_campo() + " debe ser un entero.");
+                        return false;
+                    }
+                    break;
                     case 2: // Flotante
-                        if (!(valor instanceof Float)) {
-                            JOptionPane.showMessageDialog(null, "Error: El campo " + campo.getNombre_campo() + " debe ser un número flotante.");
-                            return false;
-                        }
-                        break;
+                     try {
+                        Float.parseFloat(valor.toString());
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "Error: El campo " + campo.getNombre_campo() + " debe ser un número flotante.");
+                        return false;
+                    }
+                    break;
                     case 3: // Cadena
                         if (!(valor instanceof String)) {
                             JOptionPane.showMessageDialog(null, "Error: El campo " + campo.getNombre_campo() + " debe ser una cadena de texto.");
@@ -438,12 +446,11 @@ public class Archivo {
                             return false;
                         }
                         break;
-                    default:
-                        JOptionPane.showMessageDialog(null, "Error: Tipo de campo no soportado.");
+                    default: // Unknown Type
+                        JOptionPane.showMessageDialog(null, "Error: Tipo de campo desconocido.");
                         return false;
                 }
             }
-
             // Preparar el nuevo registro para escribir
             StringBuilder sb = new StringBuilder();
             for (Object dato : nuevosDatos) {
@@ -451,14 +458,15 @@ public class Archivo {
             }
             sb.append("| |").append(split[2]).append("|"); // Mantener el RRN_next
 
-            while (sb.length() < 255) {
-                sb.append(" "); // Completar hasta 255 caracteres
+            while (sb.length() < ((metadata.getCampos().size()*25) + 20)-1) {
+                sb.append(" "); // Completar hasta ((metadata.getCampos().size()*25) + 20)-1 caracteres
             }
             sb.append("\n");
 
             // Sobreescribir el registro en el archivo
             file.seek(offset);
             file.writeBytes(sb.toString());
+            
             return true;
 
         } catch (FileNotFoundException e) {
@@ -475,8 +483,8 @@ public class Archivo {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(new File(filePath)));
             String schema = new File(filePath).getParent() + File.separator + name + ".xsd";
-            
-            generateXSD(schema,name, metadata.getCampos()); // Use schema to ensure the path is correct
+
+            generateXSD(schema, name, metadata.getCampos()); // Use schema to ensure the path is correct
 
             StringBuilder guardar = new StringBuilder();
             guardar.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
@@ -518,7 +526,7 @@ public class Archivo {
         }
     }
 
-    public void generateXSD(String path,String nanme, ArrayList<Campo> campos) throws IOException {
+    public void generateXSD(String path, String nanme, ArrayList<Campo> campos) throws IOException {
         String schema = new File(path).getParent() + File.separator + nanme + ".xsd";
         try (FileWriter writer = new FileWriter(new File(schema))) {
             StringBuilder xsd = new StringBuilder();

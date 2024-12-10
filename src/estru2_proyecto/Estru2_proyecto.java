@@ -5,9 +5,12 @@
 package estru2_proyecto;
 
 import java.awt.HeadlessException;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -221,6 +224,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jButton_Registros_Listar = new javax.swing.JButton();
         jButton_Registros_Cruzar = new javax.swing.JButton();
         jButton_Registros_borrar = new javax.swing.JButton();
+        jComboBox_Registros = new javax.swing.JComboBox<>();
         jPanel_indices = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
@@ -1593,6 +1597,9 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton_Campos_ModificarMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton_Campos_ModificarMouseEntered(evt);
+            }
         });
         jButton_Campos_Modificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1702,37 +1709,52 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             }
         });
 
+        jComboBox_Registros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox_Registros.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox_RegistrosItemStateChanged(evt);
+            }
+        });
+        jComboBox_Registros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_RegistrosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel_RegistrosLayout = new javax.swing.GroupLayout(jPanel_Registros);
         jPanel_Registros.setLayout(jPanel_RegistrosLayout);
         jPanel_RegistrosLayout.setHorizontalGroup(
             jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_RegistrosLayout.createSequentialGroup()
+                .addGap(90, 90, 90)
                 .addGroup(jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton_Registros_Prueba, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel_RegistrosLayout.createSequentialGroup()
-                        .addGap(310, 310, 310)
-                        .addComponent(jLabel_Registros_OpcionesRegistros))
-                    .addGroup(jPanel_RegistrosLayout.createSequentialGroup()
-                        .addGap(90, 90, 90)
-                        .addGroup(jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton_Registros_Prueba, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel_RegistrosLayout.createSequentialGroup()
-                                .addGroup(jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jButton_Registros_Buscar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton_Registros_Modificar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton_Registros_introducir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jButton_Registros_borrar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton_Registros_Cruzar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton_Registros_Listar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addGroup(jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButton_Registros_Buscar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton_Registros_Modificar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton_Registros_introducir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButton_Registros_borrar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton_Registros_Cruzar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton_Registros_Listar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(64, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_RegistrosLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jComboBox_Registros, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel_Registros_OpcionesRegistros)
+                .addGap(283, 283, 283))
         );
         jPanel_RegistrosLayout.setVerticalGroup(
             jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_RegistrosLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel_Registros_OpcionesRegistros)
-                .addGap(56, 56, 56)
+                .addGap(29, 29, 29)
+                .addGroup(jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel_Registros_OpcionesRegistros)
+                    .addComponent(jComboBox_Registros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(54, 54, 54)
                 .addGroup(jPanel_RegistrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_RegistrosLayout.createSequentialGroup()
                         .addComponent(jButton_Registros_introducir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2157,7 +2179,38 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_Campos_CrearActionPerformed
 
     private void jTabbedPane_MenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane_MenuMouseClicked
+        if (jTabbedPane_Menu.isEnabled()) {
+            if (!(archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty())) {
+                if (archivo1_principal.getMetadata() != null) {
+                    if (archivo1_principal.getMetadata().getKeys().size() > 0) {
+                        jComboBox_Registros.removeAllItems();
 
+                        // Agregar primero la llave principal
+                        String llavePrincipal = archivo1_principal.getMetadata().getKeyElement().getNombre_campo();
+                        if (llavePrincipal != null) {
+                            jComboBox_Registros.addItem(llavePrincipal);
+                        }
+
+                        // Agregar las demás llaves, excluyendo la llave principal si ya se agregó
+                        for (String key : archivo1_principal.getMetadata().getKeys().keySet()) {
+                            if (!key.equals(llavePrincipal)) {
+                                String nombreArchivoIndice = "./ArbolesB/" + archivo1_principal.getFilename() + "-" + key + ".dat";
+                                File archivoIndice = new File(nombreArchivoIndice);
+                                if (archivoIndice.exists()) {
+                                    jComboBox_Registros.addItem(key);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    jComboBox_Registros.removeAllItems();
+                    jComboBox_Registros.addItem("Aqui van las llaves");
+                }
+            } else {
+                jComboBox_Registros.removeAllItems();
+                jComboBox_Registros.addItem("Aqui van las llaves");
+            }
+        }
     }//GEN-LAST:event_jTabbedPane_MenuMouseClicked
 
     private void jTextField_Campos_NombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_Campos_NombreActionPerformed
@@ -2713,80 +2766,83 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton_Campos_StringItemStateChanged
 
     private void jButton_Registros_ModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_ModificarMouseClicked
-        // TODO add your handling code here:
-        //Modificar registro
-        // Verificar que se haya abierto o creado un archivo1_principal
-        if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes.");
-            return;
-        }
-
-        try {
-            // Solicitar el RRN del registro a modificar
-            String rrnStr = JOptionPane.showInputDialog("Ingrese la clave principal del registro que desea modificar:");
-
-            if (rrnStr == null || rrnStr.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Debe ingresar un RRN válido.");
-                return;
-            }
-            Object llave = convertirValor(archivo1_principal.getMetadata().getKeyElement().getTipo(), rrnStr);
-
-            BTreeNode node = btree.search(llave);
-            if (node == null) {
-                JOptionPane.showMessageDialog(null, "No se encontro");
-                return;
-            }
-            int x = node.binarySearch(llave);
-            if (x < 0) {
-                return;
-            }
-            long RRN = node.getKeys()[x].getRRN();
-            Registro registro = archivo1_principal.LoadRegistro(RRN);
-
-            // Verificar si el registro existe y no está marcado como eliminado
-            if (registro == null || registro.isBorrado()) {
-                JOptionPane.showMessageDialog(null, "El registro no existe o está marcado como eliminado.");
+        if (jButton_Registros_Modificar.isEnabled()) {
+            if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes.");
                 return;
             }
 
-            // Preparar los nuevos datos
-            ArrayList<Object> nuevosDatos = new ArrayList<>();
-            ArrayList<Campo> campos = archivo1_principal.getMetadata().getCampos();
+            try {
+                // Solicitar el RRN del registro a modificar
+                String rrnStr = JOptionPane.showInputDialog("Ingrese la clave principal del registro que desea modificar:");
 
-            // Iterar sobre cada campo y solicitar nuevo valor
-            for (int i = 0; i < campos.size(); i++) {
-                Campo campo = campos.get(i);
-                if (!campo.iskey && !campo.iskey_secundary) {
-                    String valorActual = registro.getData().get(i).toString();
-                    String nuevoValor = JOptionPane.showInputDialog(
-                            "Ingrese el nuevo valor para el campo '" + campo.getNombre_campo() + "' (Actual: " + valorActual + "):",
-                            valorActual
-                    );
-                    // Validar y convertir el nuevo valor
-                    if (nuevoValor != null && !nuevoValor.isEmpty()) {
-                        if (determineMatch(campo.getTipo(), nuevoValor)) {
-                            nuevosDatos.add(convertirValor(campo.getTipo(), nuevoValor));
-                        } else {
-                            JOptionPane.showMessageDialog(null, "El valor ingresado para el campo '" + campo.getNombre_campo() + "' no es válido.");
-                            return;
-                        }
+                if (rrnStr == null || rrnStr.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Debe ingresar un RRN válido.");
+                    return;
+                }
+                Object llave = convertirValor(archivo1_principal.getMetadata().getKeyElement().getTipo(), rrnStr);
+
+                BTreeNode node = btree.search(llave);
+                if (node == null) {
+                    JOptionPane.showMessageDialog(null, "No se encontro");
+                    return;
+                }
+                int x = node.binarySearch(llave);
+                if (x < 0) {
+                    return;
+                }
+                long RRN = node.getKeys()[x].getRRN();
+                Registro registro = archivo1_principal.LoadRegistro(RRN);
+
+                // Verificar si el registro existe y no está marcado como eliminado
+                if (registro == null || registro.isBorrado()) {
+                    JOptionPane.showMessageDialog(null, "El registro no existe o está marcado como eliminado.");
+                    return;
+                }
+
+                // Preparar los nuevos datos
+                ArrayList<Object> nuevosDatos = registro.getData();
+                ArrayList<Campo> campos = archivo1_principal.getMetadata().getCampos();
+
+                // Iterar sobre cada campo y solicitar nuevo valor
+                for (int i = 0; i < campos.size(); i++) {
+                    Campo campo = campos.get(i);
+                    if (campo.iskey || campo.iskey_secundary) {
+
                     } else {
-                        nuevosDatos.add(registro.getData().get(i)); // Mantener el valor actual
+                        String valorActual = registro.getData().get(i).toString();
+                        String nuevoValor = JOptionPane.showInputDialog(
+                                "Ingrese el nuevo valor para el campo '" + campo.getNombre_campo() + "' (Actual: " + valorActual + "):",
+                                valorActual
+                        );
+                        // Validar y convertir el nuevo valor
+                        if (nuevoValor != null && !nuevoValor.isEmpty()) {
+
+                            if (determineMatch(campo.getTipo(), nuevoValor)) {
+                                nuevosDatos.set(i, convertirValor(campo.getTipo(), nuevoValor));
+
+                            } else {
+                                JOptionPane.showMessageDialog(null, "El valor ingresado para el campo '" + campo.getNombre_campo() + "' no es válido.");
+                                return;
+                            }
+                        } else {
+                            nuevosDatos.set(i, registro.getData().get(i)); // Mantener el valor actual
+                        }
                     }
                 }
-            }
 
-            // Intentar modificar el registro
-            if (archivo1_principal.modificarRegistro((int) RRN, nuevosDatos)) {
-                JOptionPane.showMessageDialog(null, "El registro fue modificado exitosamente.");
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo modificar el registro.");
-            }
+                // Intentar modificar el registro
+                if (archivo1_principal.modificarRegistro((int) RRN, nuevosDatos)) {
+                    JOptionPane.showMessageDialog(null, "El registro fue modificado exitosamente.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo modificar el registro.");
+                }
 
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar un número válido para el RRN.");
-        } catch (HeadlessException e) {
-            JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar modificar el registro.");
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Debe ingresar un número válido para el RRN.");
+            } catch (HeadlessException e) {
+                JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar modificar el registro.");
+            }
         }
     }
 
@@ -2807,7 +2863,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_Registros_ModificarMouseClicked
 
     private void jButton_Registros_BuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_BuscarMouseClicked
-        // TODO add your handling code here:
+        BTree temp = null;
         if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes.");
             return;
@@ -2818,8 +2874,29 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave de búsqueda.");
             return;
         }
-        int keyType = archivo1_principal.getMetadata().getKeyElement().getTipo();
+        String name = jComboBox_Registros.getSelectedItem().toString();
+        if (name != archivo1_principal.getMetadata().getKeyElement().getNombre_campo()) {
+            String filename = "./ArbolesB/" + archivo1_principal.getFilename() + "-" + name + ".dat";
+            File file = new File(filename);
 
+            if (!file.exists()) {
+                JOptionPane.showMessageDialog(null, "Error: El archivo no existe o fue movido de direccion ");
+                return;
+            }
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+                temp = (BTree) ois.readObject();
+
+                Archivo archivo = new Archivo();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        int keypos = archivo1_principal.getMetadata().getKeys().get(name);
+        int keyType = archivo1_principal.getMetadata().getCampos().get(keypos).getTipo();
         // Parse the user input based on the type
         switch (keyType) {
             case 1: // Integer
@@ -2834,8 +2911,12 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             default:
                 throw new IllegalArgumentException("Tipo de clave desconocido: " + keyType);
         }
-
-        Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
+        Registro encontrado;
+        if (name == archivo1_principal.getMetadata().getKeyElement().getNombre_campo()) {
+            encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
+        } else {
+            encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, temp);
+        }
         //tipo: 0 = boolean, 1 = int, 2 = float, 3 = string, 4 = char
         if (claveBusqueda == null) {
             JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave de búsqueda.");
@@ -2907,7 +2988,6 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_Registros_PruebaMouseClicked
 
     private void jButton_Registros_CruzarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_CruzarMouseClicked
-        // TODO add your handling code here:
         if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty() || archivo1_principal.getMetadata() == null) {
             JOptionPane.showMessageDialog(null, "Error: Abra, llene o cree el archivo antes.");
             return;
@@ -2917,120 +2997,119 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             if (archivo2_temporal.getMetadata() != null) {
                 loadJList(archivo1_principal, jList_Registros_Cruzar_Campos1, jLabel_Registros_Cruzar_Archivo1);
                 loadJList(archivo2_temporal, jList_Registros_Cruzar_Campos2, jLabel_Registros_Cruzar_Archivo2);
-                loadJComboBox(archivo1_principal, jComboBox_Registros_cruzar1);
-                loadJComboBox(archivo2_temporal, jComboBox_Registros_cruzar2);
+                loadJComboBox(archivo1_principal, jComboBox_Registros_cruzar1, 0);
+                loadJComboBox(archivo2_temporal, jComboBox_Registros_cruzar2, 1);
                 abrirDialog(jDialog_Registros_cruzar);
             } else {
                 JOptionPane.showMessageDialog(null, "El archivo selecionado esta vacio");
             }
         }
-
     }//GEN-LAST:event_jButton_Registros_CruzarMouseClicked
 
     private void jButton_Registros_borrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_borrarMouseClicked
         // TODO add your handling code here:
-        //borrar registro
-        // Verificar que se haya abierto o creado un archivo1_principal
-        if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes.");
-            return;
-        }
-
-        String userInput = JOptionPane.showInputDialog("Ingrese la clave del registro a borrar:");
-
-        int keyType = archivo1_principal.getMetadata().getKeyElement().getTipo();
-        if (userInput == null || userInput.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave de búsqueda.");
-            return;
-        }
-        // Parse the user input based on the type
-        switch (keyType) {
-            case 1: { // Integer
-                Integer claveBusqueda = Integer.parseInt(userInput);
-                if (claveBusqueda == null) {
-                    JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave.");
-                    return;
-                }
-
-                // Realizar la búsqueda en el árbol B para encontrar el registro
-                Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
-
-                if (encontrado != null) {
-                    // Confirmación de eliminación
-                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea borrar este registro?");
-                    if (confirmacion == JOptionPane.YES_OPTION) {
-                        // Intentar borrar el registro tanto en el árbol como en el archivo
-                        boolean exito = archivo1_principal.borrarRegistroConArbol(claveBusqueda, btree);
-                        if (exito) {
-                            guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getKeyElement().getNombre_campo(), btree);
-                            JOptionPane.showMessageDialog(null, "Registro borrado con éxito.");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Error al intentar borrar el registro.");
-                        }
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Registro no encontrado.");
-                }
+        if (jButton_Registros_borrar.isEnabled()) {
+            // Verificar que se haya abierto o creado un archivo1_principal
+            if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes.");
+                return;
             }
-            break;
-            case 2: { // Float
-                Float claveBusqueda = Float.parseFloat(userInput);
-                if (claveBusqueda == null) {
-                    JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave.");
-                    return;
-                }
 
-                // Realizar la búsqueda en el árbol B para encontrar el registro
-                Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
+            String userInput = JOptionPane.showInputDialog("Ingrese la clave del registro a borrar:");
 
-                if (encontrado != null) {
-                    // Confirmación de eliminación
-                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea borrar este registro?");
-                    if (confirmacion == JOptionPane.YES_OPTION) {
-                        // Intentar borrar el registro tanto en el árbol como en el archivo
-                        boolean exito = archivo1_principal.borrarRegistroConArbol(claveBusqueda, btree);
-                        if (exito) {
-                            JOptionPane.showMessageDialog(null, "Registro borrado con éxito.");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Error al intentar borrar el registro.");
-                        }
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Registro no encontrado.");
-                }
+            int keyType = archivo1_principal.getMetadata().getKeyElement().getTipo();
+            if (userInput == null || userInput.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave de búsqueda.");
+                return;
             }
-            break;
-            case 3: { // String
-                String claveBusqueda = userInput; // No conversion needed
-                if (claveBusqueda == null) {
-                    JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave.");
-                    return;
-                }
-
-                // Realizar la búsqueda en el árbol B para encontrar el registro
-                Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
-
-                if (encontrado != null) {
-                    // Confirmación de eliminación
-                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea borrar este registro?");
-                    if (confirmacion == JOptionPane.YES_OPTION) {
-                        // Intentar borrar el registro tanto en el árbol como en el archivo
-                        boolean exito = archivo1_principal.borrarRegistroConArbol(claveBusqueda, btree);
-                        if (exito) {
-                            JOptionPane.showMessageDialog(null, "Registro borrado con éxito.");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Error al intentar borrar el registro.");
-                        }
+            // Parse the user input based on the type
+            switch (keyType) {
+                case 1: { // Integer
+                    Integer claveBusqueda = Integer.parseInt(userInput);
+                    if (claveBusqueda == null) {
+                        JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave.");
+                        return;
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Registro no encontrado.");
+
+                    // Realizar la búsqueda en el árbol B para encontrar el registro
+                    Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
+
+                    if (encontrado != null) {
+                        // Confirmación de eliminación
+                        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea borrar este registro?");
+                        if (confirmacion == JOptionPane.YES_OPTION) {
+                            // Intentar borrar el registro tanto en el árbol como en el archivo
+                            boolean exito = archivo1_principal.borrarRegistroConArbol(claveBusqueda, btree);
+                            if (exito) {
+                                guardarArbolEnArchivo(archivo1_principal, archivo1_principal.getMetadata().getKeyElement().getNombre_campo(), btree);
+                                JOptionPane.showMessageDialog(null, "Registro borrado con éxito.");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Error al intentar borrar el registro.");
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Registro no encontrado.");
+                    }
                 }
+                break;
+                case 2: { // Float
+                    Float claveBusqueda = Float.parseFloat(userInput);
+                    if (claveBusqueda == null) {
+                        JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave.");
+                        return;
+                    }
+
+                    // Realizar la búsqueda en el árbol B para encontrar el registro
+                    Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
+
+                    if (encontrado != null) {
+                        // Confirmación de eliminación
+                        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea borrar este registro?");
+                        if (confirmacion == JOptionPane.YES_OPTION) {
+                            // Intentar borrar el registro tanto en el árbol como en el archivo
+                            boolean exito = archivo1_principal.borrarRegistroConArbol(claveBusqueda, btree);
+                            if (exito) {
+                                JOptionPane.showMessageDialog(null, "Registro borrado con éxito.");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Error al intentar borrar el registro.");
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Registro no encontrado.");
+                    }
+                }
+                break;
+                case 3: { // String
+                    String claveBusqueda = userInput; // No conversion needed
+                    if (claveBusqueda == null) {
+                        JOptionPane.showMessageDialog(null, "Error: No ingresó ninguna clave.");
+                        return;
+                    }
+
+                    // Realizar la búsqueda en el árbol B para encontrar el registro
+                    Registro encontrado = archivo1_principal.buscarRegistroConArbol(claveBusqueda, btree);
+
+                    if (encontrado != null) {
+                        // Confirmación de eliminación
+                        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea borrar este registro?");
+                        if (confirmacion == JOptionPane.YES_OPTION) {
+                            // Intentar borrar el registro tanto en el árbol como en el archivo
+                            boolean exito = archivo1_principal.borrarRegistroConArbol(claveBusqueda, btree);
+                            if (exito) {
+                                JOptionPane.showMessageDialog(null, "Registro borrado con éxito.");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Error al intentar borrar el registro.");
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Registro no encontrado.");
+                    }
+                }
+                break;
+                default:
+                    throw new IllegalArgumentException("Tipo de clave desconocido: " + keyType);
             }
-            break;
-            default:
-                throw new IllegalArgumentException("Tipo de clave desconocido: " + keyType);
         }
-
     }//GEN-LAST:event_jButton_Registros_borrarMouseClicked
 
     private void jButton_Archivo_crearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Archivo_crearMouseClicked
@@ -3048,59 +3127,61 @@ public class Estru2_proyecto extends javax.swing.JFrame {
 
     private void jButton_Registros_introducirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_introducirMouseClicked
         // TODO add your handling code here:
-        if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes");
-        } else {
-            this.setVisible(false);
-            DefaultTableModel model = new DefaultTableModel();
-            //creando la tabla
-            ArrayList<Campo> temp_campos = archivo1_principal.getMetadata().getCampos();
+        if (jButton_Registros_introducir.isEnabled()) {
+            if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes");
+            } else {
+                this.setVisible(false);
+                DefaultTableModel model = new DefaultTableModel();
+                //creando la tabla
+                ArrayList<Campo> temp_campos = archivo1_principal.getMetadata().getCampos();
 
-            for (Campo campo : temp_campos) {
-                model.addColumn(campo.getNombre_campo());
-            }
-            model.setRowCount(1);
-            jTable_Registro_introducir.setModel(model);
-            //hacer lo mismo para 
-            for (int i = 0; i < jTable_Registro_introducir.getColumnCount(); i++) {
-                switch (temp_campos.get(i).getTipo()) {
-                    case 0: {
-                        DefaultCellEditor editor = new DefaultCellEditor(new JCheckBox());
-                        jTable_Registro_introducir.getColumnModel().getColumn(i).setCellEditor(editor);
-                    }
-                    break;
-                    case 1: {
-                        //crear el editor para que solo accepte
-                        NumberFormat integerFormat = NumberFormat.getIntegerInstance();
-                        integerFormat.setGroupingUsed(false);
-                        NumberFormatter numberFormatter = new NumberFormatter(integerFormat);
-                        numberFormatter.setValueClass(Integer.class);
-                        numberFormatter.setAllowsInvalid(false);
-                        numberFormatter.setMinimum(Integer.MIN_VALUE);
-                        numberFormatter.setMaximum(Integer.MAX_VALUE);
-                        JFormattedTextField intField = new JFormattedTextField(numberFormatter);
-                        DefaultCellEditor editor = new DefaultCellEditor(intField);
-
-                        jTable_Registro_introducir.getColumnModel().getColumn(i).setCellEditor(editor);
-                    }
-                    break;
-                    case 2: {
-                        NumberFormat floatFormat = NumberFormat.getNumberInstance();
-                        floatFormat.setGroupingUsed(false);
-                        NumberFormatter numberFormatter = new NumberFormatter(floatFormat);
-                        numberFormatter.setValueClass(Float.class);
-                        numberFormatter.setAllowsInvalid(false);
-                        numberFormatter.setMinimum(Float.MIN_VALUE);
-                        numberFormatter.setMaximum(Float.MAX_VALUE);
-                        JFormattedTextField floatField = new JFormattedTextField(numberFormatter);
-                        DefaultCellEditor editor = new DefaultCellEditor(floatField);
-
-                        jTable_Registro_introducir.getColumnModel().getColumn(i).setCellEditor(editor);
-                    }
-                    break;
+                for (Campo campo : temp_campos) {
+                    model.addColumn(campo.getNombre_campo());
                 }
+                model.setRowCount(1);
+                jTable_Registro_introducir.setModel(model);
+                //hacer lo mismo para 
+                for (int i = 0; i < jTable_Registro_introducir.getColumnCount(); i++) {
+                    switch (temp_campos.get(i).getTipo()) {
+                        case 0: {
+                            DefaultCellEditor editor = new DefaultCellEditor(new JCheckBox());
+                            jTable_Registro_introducir.getColumnModel().getColumn(i).setCellEditor(editor);
+                        }
+                        break;
+                        case 1: {
+                            //crear el editor para que solo accepte
+                            NumberFormat integerFormat = NumberFormat.getIntegerInstance();
+                            integerFormat.setGroupingUsed(false);
+                            NumberFormatter numberFormatter = new NumberFormatter(integerFormat);
+                            numberFormatter.setValueClass(Integer.class);
+                            numberFormatter.setAllowsInvalid(false);
+                            numberFormatter.setMinimum(Integer.MIN_VALUE);
+                            numberFormatter.setMaximum(Integer.MAX_VALUE);
+                            JFormattedTextField intField = new JFormattedTextField(numberFormatter);
+                            DefaultCellEditor editor = new DefaultCellEditor(intField);
+
+                            jTable_Registro_introducir.getColumnModel().getColumn(i).setCellEditor(editor);
+                        }
+                        break;
+                        case 2: {
+                            NumberFormat floatFormat = NumberFormat.getNumberInstance();
+                            floatFormat.setGroupingUsed(false);
+                            NumberFormatter numberFormatter = new NumberFormatter(floatFormat);
+                            numberFormatter.setValueClass(Float.class);
+                            numberFormatter.setAllowsInvalid(false);
+                            numberFormatter.setMinimum(Float.MIN_VALUE);
+                            numberFormatter.setMaximum(Float.MAX_VALUE);
+                            JFormattedTextField floatField = new JFormattedTextField(numberFormatter);
+                            DefaultCellEditor editor = new DefaultCellEditor(floatField);
+
+                            jTable_Registro_introducir.getColumnModel().getColumn(i).setCellEditor(editor);
+                        }
+                        break;
+                    }
+                }
+                abrirDialog(jDialog_Registros_Introducir);
             }
-            abrirDialog(jDialog_Registros_Introducir);
         }
     }//GEN-LAST:event_jButton_Registros_introducirMouseClicked
 
@@ -3155,7 +3236,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                 default:
                     key = new Llave(datos.get(keyIndex).toString(), archivo1_principal.getLatest_modified());
             }
-            
+
             if (btree == null) {
                 btree = new BTree(6);
             }
@@ -3203,44 +3284,45 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable_Registro_introducirKeyPressed
 
     private void jButton_Registros_ListarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_ListarMouseClicked
-        // TODO add your handling code here:
-        if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes");
-        } else {
-            long registros = archivo1_principal.cant_Registros();
-            if (registros == 0) {
-                JOptionPane.showMessageDialog(null, "Intente ingresar registros antes de ");
-            } else if (registros > 0) {
-                DefaultTableModel model = new DefaultTableModel();
-                for (Campo campo : archivo1_principal.getMetadata().getCampos()) {
-                    model.addColumn(campo.getNombre_campo());
-                }
-
-                int max_lim = 24;
-                if (registros >= max_lim) {
-                    for (int i = 0; i < max_lim; i++) {
-                        Registro registro = archivo1_principal.LoadRegistro(i);
-                        if (!registro.isBorrado()) {
-                            ArrayList<Object> temp = registro.getData();
-                            model.addRow(temp.toArray());
-
-                        } else {
-                            max_lim++;
-                        }
-                    }
-                } else {
-                    for (int i = 0; i < registros; i++) {
-                        Registro registro = archivo1_principal.LoadRegistro(i);
-                        if (!registro.isBorrado()) {
-                            ArrayList<Object> temp = registro.getData();
-                            model.addRow(temp.toArray());
-                        }
-                    }
-                }
-                jTable_Registros_listar.setModel(model);
-                abrirDialog(jDialog_Registros_listar);
+        if (jButton_Registros_Listar.isEnabled()) {
+            if (archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: Abra o cree un archivo antes");
             } else {
-                JOptionPane.showMessageDialog(null, "Error: cantidad de registros");
+                long registros = archivo1_principal.cant_Registros();
+                if (registros == 0) {
+                    JOptionPane.showMessageDialog(null, "Intente ingresar registros antes de ");
+                } else if (registros > 0) {
+                    DefaultTableModel model = new DefaultTableModel();
+                    for (Campo campo : archivo1_principal.getMetadata().getCampos()) {
+                        model.addColumn(campo.getNombre_campo());
+                    }
+
+                    int max_lim = 24;
+                    if (registros >= max_lim) {
+                        for (int i = 0; i < max_lim; i++) {
+                            Registro registro = archivo1_principal.LoadRegistro(i);
+                            if (!registro.isBorrado()) {
+                                ArrayList<Object> temp = registro.getData();
+                                model.addRow(temp.toArray());
+
+                            } else {
+                                max_lim++;
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < registros; i++) {
+                            Registro registro = archivo1_principal.LoadRegistro(i);
+                            if (!registro.isBorrado()) {
+                                ArrayList<Object> temp = registro.getData();
+                                model.addRow(temp.toArray());
+                            }
+                        }
+                    }
+                    jTable_Registros_listar.setModel(model);
+                    abrirDialog(jDialog_Registros_listar);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error: cantidad de registros");
+                }
             }
         }
     }//GEN-LAST:event_jButton_Registros_ListarMouseClicked
@@ -3296,14 +3378,13 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton_Campos_BoolMouseClicked
 
     private void jButton_Registros_Cruzar_CruzarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Registros_Cruzar_CruzarMouseClicked
-        // TODO add your handling code here:
         if (jList_Registros_Cruzar_Campos1.isSelectionEmpty() || jList_Registros_Cruzar_Campos2.isSelectionEmpty()) {
             JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Error: porfavor selecione campos para mostrar");
             return;
         }
         if (jComboBox_Registros_cruzar1.getSelectedItem() == null || jComboBox_Registros_cruzar2.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Error: porfavor selecione campos para relacionar con");
-
+            return;
         }
         Cruzar();
         this.setVisible(true);
@@ -3322,7 +3403,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         if (archivo1_principal == null) {
             return;
         }
-        if (archivo1_principal.cant_Registros() > 0) {
+        if (archivo1_principal.cant_Registros() < 0) {
             JOptionPane.showMessageDialog(null, "Error: Y");
             return;
         }
@@ -3498,6 +3579,40 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton_Campos_CrearMouseClicked
 
+    private void jComboBox_RegistrosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_RegistrosItemStateChanged
+        if (!(archivo1_principal.getFilename() == null || archivo1_principal.getFilename().isEmpty())) {
+            if (archivo1_principal.getMetadata() != null) {
+                if (jComboBox_Registros.getSelectedIndex() > -1) {
+                    if (jComboBox_Registros.getSelectedItem().toString() != archivo1_principal.getMetadata().getKeyElement().getNombre_campo()) {
+                        jButton_Registros_introducir.setEnabled(false);
+                        jButton_Registros_Listar.setEnabled(false);
+                        jButton_Registros_borrar.setEnabled(false);
+                        jButton_Registros_Modificar.setEnabled(false);
+                        jButton_Registros_Cruzar.setEnabled(false);
+                        jPanel_Registros.setEnabled(false);
+                        jTabbedPane_Menu.setEnabled(false);
+                    } else {
+                        jButton_Registros_introducir.setEnabled(true);
+                        jButton_Registros_Listar.setEnabled(true);
+                        jButton_Registros_borrar.setEnabled(true);
+                        jButton_Registros_Modificar.setEnabled(true);
+                        jButton_Registros_Cruzar.setEnabled(true);
+                        jPanel_Registros.setEnabled(true);
+                        jTabbedPane_Menu.setEnabled(true);
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_jComboBox_RegistrosItemStateChanged
+
+    private void jButton_Campos_ModificarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_Campos_ModificarMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_Campos_ModificarMouseEntered
+
+    private void jComboBox_RegistrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_RegistrosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox_RegistrosActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -3581,6 +3696,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private javax.swing.JButton jButton_estandar_Exportar_XML;
     private javax.swing.JComboBox<String> jComboBox_Eliminar;
     private javax.swing.JComboBox<String> jComboBox_Modificar;
+    private javax.swing.JComboBox<String> jComboBox_Registros;
     private javax.swing.JComboBox<String> jComboBox_Registros_cruzar1;
     private javax.swing.JComboBox<String> jComboBox_Registros_cruzar2;
     private javax.swing.JDialog jDialog_Campos_Crear;
@@ -3834,6 +3950,27 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jLabel_Archivo_currentFile.setText("Archivo Abierto: " + archivo1_principal.getFilename());
     }
 
+    public void loadJComboBox(Archivo archivo, JComboBox jcombobox, int type) {
+        jcombobox.removeAllItems();
+        if (archivo.getMetadata() == null) {
+            archivo.LoadMetaData();
+        }
+        switch (type) {
+            case 0:
+                for (Campo campo : archivo.getMetadata().getCampos()) {
+                    jcombobox.addItem(campo.getNombre_campo());
+                }
+                break;
+            case 1:
+                for (String key : archivo.getMetadata().getKeys().keySet()) {
+                    jcombobox.addItem(key);
+                }
+                break;
+            default:
+                throw new AssertionError();
+        }
+    }
+
     public void guardarArbolEnArchivo(Archivo archivo, String fieldname, BTree btree) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./ArbolesB/" + archivo.getFilename() + "-" + fieldname + ".dat"))) {
             btree.setFather_filepath(archivo.getFileRegistros().getPath());
@@ -3877,7 +4014,17 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private void Cruzar() {
 
         String Key1_name = jComboBox_Registros_cruzar1.getSelectedItem().toString();
-        int Key1_pos = archivo1_principal.getMetadata().getKeys().get(Key1_name);
+        int Key1_pos = -1;
+        for (int i = 0; i < archivo1_principal.getMetadata().getCampos().size(); i++) {
+            if (archivo1_principal.getMetadata().getCampos().get(i).getNombre_campo().equals(Key1_name)) {
+                Key1_pos = i;
+                break;
+            }
+        }
+        if (Key1_pos == -1) {
+            JOptionPane.showMessageDialog(null, "Error: No se encontro el campo 1");
+            return;
+        }
 
         String Key2_name = jComboBox_Registros_cruzar2.getSelectedItem().toString();
         int Key2_pos = archivo2_temporal.getMetadata().getKeys().get(Key2_name);
@@ -3886,10 +4033,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Error: No se pudo relacionar los campos selecionados");
             return;
         }
-        BTree btree_temporal_1 = cargarArbolDesdeArchivo(archivo1_principal, Key1_name);
-        if (btree_temporal_1 == null) {
-            return;
-        }
+
         BTree btree_temporal_2 = cargarArbolDesdeArchivo(archivo2_temporal, Key2_name);
         if (btree_temporal_2 == null) {
             return;
@@ -3906,20 +4050,37 @@ public class Estru2_proyecto extends javax.swing.JFrame {
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
+        try (BufferedWriter bf = new BufferedWriter(new FileWriter(cross, true))) {
+            for (long i = 0; i < archivo1_principal.cant_Registros(); i++) {
+                Registro registro1 = archivo1_principal.LoadRegistro(i);
+                if (!registro1.isBorrado()) {
+                    Llave key = new Llave((Comparable) convertirValor(archivo1_principal.getMetadata().getCampos().get(Key1_pos).getTipo(),
+                            registro1.getData().get(Key1_pos).toString()), i);
+                    BTreeNode temp = btree_temporal_2.search(key.getKey());
+                    if (temp != null) {
+                        Llave llave_temp = temp.getKeys()[temp.binarySearch(key.getKey())];
+                        Registro registro2 = archivo2_temporal.LoadRegistro(llave_temp.getRRN());
+                        if (!registro2.isBorrado()) {
+                            StringBuilder write = new StringBuilder();
 
-        btree_temporal_1.CrossTree(btree_temporal_2,
-                cross,
-                archivo1_principal,
-                archivo2_temporal,
-                jList_Registros_Cruzar_Campos1.getSelectedIndices(),
-                jList_Registros_Cruzar_Campos2.getSelectedIndices()
-        );
-        try {
+                            for (int j : jList_Registros_Cruzar_Campos1.getSelectedIndices()) {
+                                write.append(registro1.getData().get(j).toString()).append(" ");
+                            }
+                            write.append("- ");
+                            for (int j : jList_Registros_Cruzar_Campos2.getSelectedIndices()) {
+                                write.append(registro2.getData().get(j).toString()).append(" ");
+                            }
+                            bf.write(write.toString() + "\n");
+                            bf.flush();
+                        }
+                    }
+                }
+            }
+            bf.close();
             JOptionPane.showMessageDialog(jDialog_Registros_cruzar, "Se creo el archivo cruzado en: " + cross.getCanonicalPath());
-
         } catch (IOException ex) {
-            Logger.getLogger(Estru2_proyecto.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Estru2_proyecto.class.getName()).log(Level.SEVERE, null, ex
+            );
         }
     }
 
