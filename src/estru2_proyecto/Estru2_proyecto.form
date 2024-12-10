@@ -724,6 +724,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Bool"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButton_Campos_Modificar_BoolActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="jRadioButton_Campos_Modificar_Si">
               <Properties>
@@ -830,6 +833,7 @@
                 <Property name="text" type="java.lang.String" value="String"/>
               </Properties>
               <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jRadioButton_Campos_Modificar_StringMouseClicked"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButton_Campos_Modificar_StringActionPerformed"/>
               </Events>
             </Component>

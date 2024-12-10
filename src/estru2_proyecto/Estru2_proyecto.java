@@ -624,6 +624,11 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jRadioButton_Campos_Modificar_Bool.setFont(new java.awt.Font("DialogInput", 1, 11)); // NOI18N
         jRadioButton_Campos_Modificar_Bool.setForeground(new java.awt.Color(0, 0, 0));
         jRadioButton_Campos_Modificar_Bool.setText("Bool");
+        jRadioButton_Campos_Modificar_Bool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton_Campos_Modificar_BoolActionPerformed(evt);
+            }
+        });
 
         jRadioButton_Campos_Modificar_Si.setBackground(new java.awt.Color(255, 102, 102));
         jRadioButton_Campos_Modificar_Si.setFont(new java.awt.Font("DialogInput", 1, 10)); // NOI18N
@@ -668,6 +673,11 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         jRadioButton_Campos_Modificar_String.setFont(new java.awt.Font("DialogInput", 1, 11)); // NOI18N
         jRadioButton_Campos_Modificar_String.setForeground(new java.awt.Color(0, 0, 0));
         jRadioButton_Campos_Modificar_String.setText("String");
+        jRadioButton_Campos_Modificar_String.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jRadioButton_Campos_Modificar_StringMouseClicked(evt);
+            }
+        });
         jRadioButton_Campos_Modificar_String.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton_Campos_Modificar_StringActionPerformed(evt);
@@ -2577,7 +2587,10 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_Campos_Modificar_RegresarMouseClicked
 
     private void jRadioButton_Campos_Modificar_FloatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_Campos_Modificar_FloatActionPerformed
-        // TODO add your handling code here:
+        jSpinner_Campos_Modificar_Longitud.setEnabled(false);
+        jSpinner_Campos_Modificar_Longitud.setValue(1);
+        jRadioButton_Campos_Modificar_No.setEnabled(true);
+        jRadioButton_Campos_Modificar_Si.setEnabled(true);
     }//GEN-LAST:event_jRadioButton_Campos_Modificar_FloatActionPerformed
 
     private void jRadioButton_Campos_Modificar_NoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_Campos_Modificar_NoActionPerformed
@@ -2593,11 +2606,19 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField_Campos_Modificar_NombreActionPerformed
 
     private void jRadioButton_Campos_Modificar_CharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_Campos_Modificar_CharActionPerformed
-        // TODO add your handling code here:
+        jSpinner_Campos_Modificar_Longitud.setEnabled(false);
+        jSpinner_Campos_Modificar_Longitud.setValue(1);
+        jRadioButton_Campos_Modificar_No.setSelected(true);
+        jRadioButton_Campos_Modificar_Si.setSelected(false);
+        jRadioButton_Campos_Modificar_No.setEnabled(false);
+        jRadioButton_Campos_Modificar_Si.setEnabled(false);
     }//GEN-LAST:event_jRadioButton_Campos_Modificar_CharActionPerformed
 
     private void jRadioButton_Campos_Modificar_IntActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_Campos_Modificar_IntActionPerformed
-        // TODO add your handling code here:
+        jSpinner_Campos_Modificar_Longitud.setEnabled(false);
+        jSpinner_Campos_Modificar_Longitud.setValue(1);
+        jRadioButton_Campos_Modificar_No.setEnabled(true);
+        jRadioButton_Campos_Modificar_Si.setEnabled(true);
     }//GEN-LAST:event_jRadioButton_Campos_Modificar_IntActionPerformed
 
     private void jComboBox_ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_ModificarActionPerformed
@@ -3403,7 +3424,7 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         if (archivo1_principal == null) {
             return;
         }
-        if (archivo1_principal.cant_Registros() < 0) {
+        if (archivo1_principal.cant_Registros() <= 0) {
             JOptionPane.showMessageDialog(null, "Error: Y");
             return;
         }
@@ -3612,6 +3633,21 @@ public class Estru2_proyecto extends javax.swing.JFrame {
     private void jComboBox_RegistrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_RegistrosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox_RegistrosActionPerformed
+
+    private void jRadioButton_Campos_Modificar_StringMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton_Campos_Modificar_StringMouseClicked
+        jSpinner_Campos_Modificar_Longitud.setEnabled(true);
+        jRadioButton_Campos_Modificar_No.setEnabled(true);
+        jRadioButton_Campos_Modificar_Si.setEnabled(true);
+    }//GEN-LAST:event_jRadioButton_Campos_Modificar_StringMouseClicked
+
+    private void jRadioButton_Campos_Modificar_BoolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_Campos_Modificar_BoolActionPerformed
+        jSpinner_Campos_Modificar_Longitud.setEnabled(false);
+        jSpinner_Campos_Modificar_Longitud.setValue(1);
+        jRadioButton_Campos_Modificar_No.setSelected(true);
+        jRadioButton_Campos_Modificar_Si.setSelected(false);
+        jRadioButton_Campos_Modificar_No.setEnabled(false);
+        jRadioButton_Campos_Modificar_Si.setEnabled(false);
+    }//GEN-LAST:event_jRadioButton_Campos_Modificar_BoolActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -4139,8 +4175,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         // llave 1
         campos.add(new Campo("PersonId", 1, 1, true, false));
         // lalve 2
-        campos.add(new Campo("CityId", 1, 1, false, true));
-        campos.add(new Campo("PersonName", 3, 20, false, false));
+        campos.add(new Campo("PersonName", 3, 20, false, true));
+        campos.add(new Campo("CityId", 1, 1, false, false));
         campos.add(new Campo("PersonAge", 1, 1, false, false));
 
         Metadata temp_meta = new Metadata(-1, campos, 0, 1, -1);
@@ -4162,8 +4198,8 @@ public class Estru2_proyecto extends javax.swing.JFrame {
             for (int i = 0; i < 10000; i++) {
                 datos = new ArrayList<>();
                 datos.add(i);
-                datos.add(i);
                 datos.add("Person" + i);
+                datos.add(random.nextInt(20));
                 datos.add(18 + random.nextInt(83));
                 Registro registro = new Registro(datos);
                 archivo_temp.introducirRegistro(registro);
@@ -4198,11 +4234,17 @@ public class Estru2_proyecto extends javax.swing.JFrame {
         ArrayList datos;
         BTree temp_btree = new BTree(6);
         Random random = new Random();
+        String[] cities = {
+            "New York", "Los Angeles", "Chicago", "Houston", "Phoenix",
+            "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose",
+            "Austin", "Jacksonville", "Fort Worth", "Columbus", "San Francisco",
+            "Charlotte", "Indianapolis", "Seattle", "Denver", "Washington"
+        };
         try {
-            for (int i = 0; i < 10000; i++) {
+            for (int i = 0; i < cities.length; i++) {
                 datos = new ArrayList();
                 datos.add(i);
-                datos.add("City" + i);
+                datos.add(cities[i]);
                 Registro registro = new Registro(datos);
                 archivo_temp.introducirRegistro(registro);
                 temp_btree.insert(new Llave((Comparable) i, i));

@@ -146,50 +146,37 @@ public class Metadata {
                 JOptionPane.showMessageDialog(null, "Un campo no puede ser llave primaria y secundaria al mismo tiempo.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            // Manejo de llave primaria
             if (keyPrimaria) {
-                if (KeyElement == pos) {
-                    // Es la misma llave primaria, solo modificar
-                    campo.modify(tipo, longitud, nombre, true, false);
-                } else {
-                    if (KeyElement != -1) { // Ya hay una llave primaria
-                        int option = JOptionPane.showConfirmDialog(
-                                null,
-                                "Ya existe una llave primaria.\n¿Desea reemplazarla por la nueva llave que introdujo?",
-                                "Error: Llave primaria existente",
-                                JOptionPane.YES_NO_OPTION
-                        );
-                        if (option == JOptionPane.YES_OPTION) {
-                            campos.get(KeyElement).setIskey(false); // Quitar la llave primaria anterior
-                            KeyElement = pos; // Asignar la nueva llave primaria
-                            campo.modify(tipo, longitud, nombre, true, false);
-                        } else {
-                            keyPrimaria = false; // Cancelar la asignación como llave primaria
-                        }
+                if (KeyElement != -1 && KeyElement != pos) {
+                    int option = JOptionPane.showConfirmDialog(
+                            null,
+                            "Ya existe una llave primaria.\n¿Desea reemplazarla por la nueva llave que introdujo?",
+                            "Error: Llave primaria existente",
+                            JOptionPane.YES_NO_OPTION
+                    );
+                    if (option == JOptionPane.YES_OPTION) {
+                        campos.get(KeyElement).setIskey(false);
+                        KeyElement = pos;
                     } else {
-                        KeyElement = pos; // Asignar la nueva llave primaria
-                        campo.modify(tipo, longitud, nombre, true, false);
+                        keyPrimaria = false;
                     }
+                } else {
+                    KeyElement = pos;
                 }
-            } else {
-                // Si no es llave primaria, asegurarse de desmarcar el campo como llave primaria
-                if (KeyElement == pos) {
-                    KeyElement = -1; // Eliminar la referencia como llave primaria
-                    campo.setIskey(false); // Desmarcar el campo como llave primaria
-                }
+            } else if (KeyElement == pos) {
+                KeyElement = -1;
             }
 
+            // Manejo de llaves secundarias
             if (keySecundaria) {
                 if (campo.isIskey()) {
                     JOptionPane.showMessageDialog(null, "No se puede asignar una llave secundaria a un campo que ya es llave primaria.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                // Verificar si el campo ya es una llave secundaria
-                if (KeyElements_Secundary[0] == pos || KeyElements_Secundary[1] == pos) {
-                    JOptionPane.showMessageDialog(null, "El campo ya está registrado como llave secundaria.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
+                // Contar las llaves secundarias existentes
                 int secondaryKeyCount = 0;
                 for (int key : KeyElements_Secundary) {
                     if (key != -1) {
@@ -198,13 +185,9 @@ public class Metadata {
                 }
 
                 if (secondaryKeyCount >= 2) {
-                    int option = JOptionPane.showConfirmDialog(
-                            null,
-                            "Ya existen 2 llaves secundarias.\n¿Desea reemplazar una llave secundaria existente?",
-                            "Error: Llaves secundarias existentes",
-                            JOptionPane.YES_NO_OPTION
-                    );
+                    int option = JOptionPane.showConfirmDialog(null, "Ya existen 2 llaves secundarias.\n¿Desea reemplazar una?", "Error", JOptionPane.YES_NO_OPTION);
                     if (option == JOptionPane.YES_OPTION) {
+                        // Reemplazar una llave secundaria existente
                         Object[] options = {
                             campos.get(KeyElements_Secundary[0]).getNombre_campo() + " (Pos: " + KeyElements_Secundary[0] + ")",
                             campos.get(KeyElements_Secundary[1]).getNombre_campo() + " (Pos: " + KeyElements_Secundary[1] + ")"
@@ -221,42 +204,44 @@ public class Metadata {
                         );
 
                         if (result == 0) {
-                            campos.get(KeyElements_Secundary[0]).setIskey_secundary(false); // Quitar el estado de llave secundaria
-                            KeyElements_Secundary[0] = pos; // Reemplazar la posición en el arreglo
+                            campos.get(KeyElements_Secundary[0]).setIskey_secundary(false);
+                            KeyElements_Secundary[0] = pos;
                         } else if (result == 1) {
-                            campos.get(KeyElements_Secundary[1]).setIskey_secundary(false); // Quitar el estado de llave secundaria
-                            KeyElements_Secundary[1] = pos; // Reemplazar la posición en el arreglo
+                            campos.get(KeyElements_Secundary[1]).setIskey_secundary(false);
+                            KeyElements_Secundary[1] = pos;
                         } else {
-                            JOptionPane.showMessageDialog(null, "No se realizó ningún cambio.");
                             keySecundaria = false;
                         }
                     } else {
                         keySecundaria = false;
                     }
                 } else {
-                    // Asignar la llave secundaria a un espacio vacío
+                    // Asignar la llave secundaria al primer espacio disponible
                     if (KeyElements_Secundary[0] == -1) {
                         KeyElements_Secundary[0] = pos;
-                    } else {
+                    } else if (KeyElements_Secundary[1] == -1) {
                         KeyElements_Secundary[1] = pos;
                     }
                 }
-
-                if (keySecundaria) {
-                    campo.modify(tipo, longitud, nombre, false, true); // Marcar como secundaria
-                }
             } else {
-                // Si no es secundaria, asegurarse de desmarcar el campo como secundaria
-                campo.setIskey_secundary(false);
-
-                // Remover la posición del arreglo de llaves secundarias
+                // Remover la llave secundaria si no es seleccionada
                 if (KeyElements_Secundary[0] == pos) {
-                    KeyElements_Secundary[0] = -1; // Eliminar referencia a esta posición
-                } else if (KeyElements_Secundary[1] == pos) {
-                    KeyElements_Secundary[1] = -1; // Eliminar referencia a esta posición
+                    KeyElements_Secundary[0] = -1;
+                }
+                if (KeyElements_Secundary[1] == pos) {
+                    KeyElements_Secundary[1] = -1;
                 }
             }
 
+            // Validar y limpiar el estado del arreglo KeyElements_Secundary
+            for (int i = 0; i < KeyElements_Secundary.length; i++) {
+                if (KeyElements_Secundary[i] >= campos.size()) {
+                    KeyElements_Secundary[i] = -1; // Limpiar referencias inválidas
+                }
+            }
+
+            // Aplicar siempre las modificaciones
+            campo.modify(tipo, longitud, nombre, keyPrimaria, keySecundaria);
         }
     }
 
@@ -277,13 +262,13 @@ public class Metadata {
 
     public HashMap<String, Integer> getKeys() {
         HashMap<String, Integer> keys = new HashMap<>();
-        if (KeyElement != -1) {
+        if (KeyElement != -1 && KeyElement < campos.size()) {
             keys.put(campos.get(KeyElement).getNombre_campo(), KeyElement);
         }
-        if (KeyElements_Secundary[0] != -1) {
+        if (KeyElements_Secundary.length > 0 && KeyElements_Secundary[0] != -1 && KeyElements_Secundary[0] < campos.size()) {
             keys.put(campos.get(KeyElements_Secundary[0]).getNombre_campo(), KeyElements_Secundary[0]);
         }
-        if (KeyElements_Secundary[1] != -1) {
+        if (KeyElements_Secundary.length > 1 && KeyElements_Secundary[1] != -1 && KeyElements_Secundary[1] < campos.size()) {
             keys.put(campos.get(KeyElements_Secundary[1]).getNombre_campo(), KeyElements_Secundary[1]);
         }
         return keys;
